@@ -230,6 +230,7 @@ var defaults = {
         // o.next && this.nextMonth(), o.prev && this.prevMonth(), "function" == typeof this.fns.onDayClick && this.fns.onDayClick.call(this, n, a, s), this.addValue(new Date(n, a, s).getTime()), this.data.closeOnSelect && !this.data.multiple && this.close()
       }
     },
+    // 
     resetMonth: function () {
       var t = 100 * this.monthsTranslate,
         e = getTransform(t, this.isH);
