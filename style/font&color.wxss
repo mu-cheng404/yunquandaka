@@ -1,0 +1,177 @@
+/* 普通字体 */
+.normal {
+  font-size: 18px;
+  line-height: 28px;
+  padding: 5px;
+}
+
+.big {
+  font-size: 38rpx;
+  color: white;
+}
+
+.bigger {
+  font-size: 40rpx;
+}
+
+.subTitie {
+  font-size: 30rpx;
+  color: #cfc2c2;
+}
+
+.text_bold {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.headline {
+  font-size: 40rpx;
+  font-weight: 600;
+}
+
+/* 各种背景颜色 */
+.bgtianlan {
+  background-color: rgb(74, 199, 216);
+}
+
+.bgshenlan {
+  background-color: rgb(45, 62, 211);
+}
+
+.bghong {
+  background-color: rgb(231, 25, 25);
+}
+
+.bgbai {
+  background-color: rgb(217, 228, 230);
+}
+
+.bghuang {
+  background-color: rgb(168, 226, 61);
+}
+
+/* 白色背景色 */
+.bgwhite {
+  background-color: white;
+}
+
+/* 主题颜色背景色 */
+.bgtheme_color {
+  background-color: #3eede7;
+}
+
+/* 背景色 */
+.background_color {
+  background-color: #f8f8f9;
+}
+
+/* 辅助背景色 */
+.bgsub_color {
+  background-color: #999999;
+}
+
+/* 字体颜色 */
+.tianlan {
+  background-color: rgb(74, 199, 216);
+}
+
+.shenlan {
+  background-color: rgb(45, 62, 211);
+}
+
+.hong {
+  background-color: rgb(231, 25, 25);
+}
+
+.bai {
+  background-color: rgb(217, 228, 230);
+}
+
+.huang {
+  background-color: rgb(168, 226, 61);
+}
+
+/* 白色 */
+.white {
+  color: white;
+}
+
+/* 主题颜色
+.theme_color {
+  color: #3eede7;
+} */
+
+/* 标题 */
+.title_color {
+  color: #1C2438;
+}
+
+/* 正文 */
+.content_color {
+  color: #495060;
+}
+
+/* 辅助 */
+.sub_color {
+  color: #999999;
+}
+
+/* 失效 */
+.disabled_color {
+  color: #bbbec4;
+}
+
+/* 边框 */
+.border_color {
+  color: #dddee1;
+}
+
+/* 分割线 */
+.divider_color {
+  color: #e9eaec;
+}
+
+.theme_main {
+  color: #99DE9F;
+}
+
+.bgtheme_main {
+  background-color: #99DE9F;
+}
+
+.theme_hint {
+  color: #FFB850;
+}
+
+.bgtheme_hint {
+  background-color: #FFB850;
+}
+
+.theme_text {
+  color: #000639;
+}
+
+.theme_text_hint {
+  color: #F76360;
+}
+
+.shadow {
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.theme_color {
+  color: #A5DEE4;
+}
+
+.bgTheme_color {
+  background-color: #A5DEE4;
+}
+.button{
+  background-color: #A5DEE4;
+  margin: 20rpx;
+}

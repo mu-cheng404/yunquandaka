@@ -1,0 +1,9 @@
+<wux-tabs controlled scroll current="{{ current }}" bindchange="tabChange">
+  <block wx:for="{{userList}}" wx:key="key">
+    <wux-tab key="{{index}}">
+      <image src="{{item.avatarUrl}}" style="width: 20px; height: 20px; margin-right: 5px;" />
+      <text>{{item.nickName}}</text>
+    </wux-tab>
+  </block>
+</wux-tabs>
+<wux-calendar id="wux-calendar" />

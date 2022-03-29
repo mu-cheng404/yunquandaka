@@ -1,0 +1,11 @@
+#avatarList{
+  width: 750rpx;
+  height: 180rpx;
+  display: flex;
+}
+.image{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-right: -40rpx;
+}

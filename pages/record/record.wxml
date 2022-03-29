@@ -1,0 +1,42 @@
+<view class="first">
+<image id="option" src="../../images/options.png" bindtap="toOptions"></image>
+  <view class="name center headline">
+    <view class="text bgwhite center">{{info.name}}</view>
+  </view>
+  <view class="state bgwhite normal">{{info.state}}</view>
+</view>
+
+<radio-group bindchange="typeChange">
+  <radio value="文字" checked>文字</radio>
+  <radio value="图片">图片</radio>
+  <radio value="快捷">快捷</radio>
+</radio-group>
+<view class="punchContent bgwhite center">
+
+  <!-- 文字 -->
+  <block wx:if="{{type=='文字'}}">
+    <view class="textareaBox">
+      <textarea name="content" id="" cols="30" rows="10" placeholder="请输入正文" auto-focus bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea">
+    </textarea>
+    </view>
+  </block>
+  <!-- 图片 -->
+  <block wx:if="{{type=='图片'}}">
+    <block wx:if="{{fileID}}">
+      <image id="upload" src="{{fileID}}" bindtap="chooseImage"></image>
+    </block>
+    <block wx:else>
+      <image id="upload" src="../../images/new.png" bindtap="chooseImage"></image>
+    </block>
+  </block>
+
+  <block wx:if="{{type=='快捷'}}">
+    <view class="textareaBox">
+      <textarea name="content" id="" cols="30" rows="10" placeholder="请输入正文" auto-focus bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{info.defaultText}}">
+    </textarea>
+    </view>
+  </block>
+
+</view>
+
+<button bindtap="submit" class="button white">打卡</button>

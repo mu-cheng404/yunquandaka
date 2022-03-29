@@ -1,0 +1,9 @@
+<button type="primary" size="mini" plain style="margin:10px" bindtap="chooseAll">{{button_state?"全选":"全不选"}}</button>
+<view class="add">
+  <image src="{{add_state?'../../images/confirm.png':'../../images/new.png'}}" bindtap="add_tap"></image>
+</view>
+<block wx:for="{{infoList}}" wx:for-index="idx" wx:for-item="item" wx:key="key">
+  <wux-swipe-action autoClose right="{{ right }}" class="{{(select_value[idx]+add_state)>0?'':'nodisplay'}} {{select_value[idx]?'':'bgsub_color'}}">
+    <wux-cell id="{{idx}}" thumb="{{item.url}}" title="{{item.name}}" extra="{{value[idx]?'√':''}}" bind:click="onCellClick" isSelfDefined="{{select_value[idx]}}"></wux-cell>
+  </wux-swipe-action> 
+</block>

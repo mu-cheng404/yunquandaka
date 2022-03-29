@@ -1,0 +1,41 @@
+<wux-landscape visible="{{ tip }}" bind:close="tipClose">
+  <image src="../../images/tipImage.png" style="height: 420px" />
+</wux-landscape>
+<image id="tip" src="../../images/tip.png" bindtap="tipOpen"></image>
+<wux-cell-group title="重要信息">
+  <wux-cell hover-class="none">
+    <wux-input label="目标" placeholder="" bind:change="taskInput" value="{{taskName}}"maxlength="6" controlled="true" />
+  </wux-cell>
+  <wux-cell hover-class="none">
+    <wux-input label="说明" placeholder="" bind:change="stateInput" value="{{state}}" controlled="true" />
+  </wux-cell>
+  <wux-cell hover-class="none">
+    <wux-input label="默认打卡内容" placeholder="" bind:change="defaultTextInput" value="{{defaultText}}" controlled="true" />
+  </wux-cell>
+</wux-cell-group>
+<wux-cell-group title="提醒" label="">
+  <!-- <wux-cell title="选择成员" is-link url="../members/members"></wux-cell> -->
+  <!-- 选择周期 -->
+  <picker bindchange="cyclePickerChange" value="{{cycle}}" range="{{cycleArray}}">
+    <wux-cell title="周期" is-link label="" extra="{{cycle}}"></wux-cell>
+  </picker>
+  <!-- 当周期为week时 -->
+  <block wx:if="{{cycle=='每周'}}">
+    <picker bindchange="weekdayPickerChange" value="{{weekday}}" range="{{weekdayArray}}">
+      <wux-cell title="每周几" is-link label="" extra="{{weekday}}"></wux-cell>
+    </picker>
+  </block>
+  <!-- 提醒时间time -->
+  <picker bindchange="clockPickerChange" mode="selector" value="{{clock}}" range="{{clockArray}}">
+    <wux-cell title="提醒时间" is-link label="" extra="{{clock}}"></wux-cell>
+  </picker>
+  <!-- 开始时间 -->
+  <picker bindchange="startPickerChange" mode="date" value="{{start}}" start="{{currentDate}}">
+    <wux-cell title="开始时间" is-link label="" extra="{{start}}"></wux-cell>
+  </picker>
+  <!-- 结束时间 -->
+  <picker bindchange="endPickerChange" mode="date" value="{{end}}" start="{{currentDate}}">
+    <wux-cell title="结束时间" is-link label="" extra="{{end}}"></wux-cell>
+  </picker>
+</wux-cell-group>
+<button bindtap="submit">创建</button>

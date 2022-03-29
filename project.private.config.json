@@ -1,0 +1,124 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "主页home",
+          "pathName": "pages/home/home",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "初始化init",
+          "pathName": "pages/init/init",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "群组flock",
+          "pathName": "pages/flock/flock",
+          "query": "id=332718",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "记录record",
+          "pathName": "pages/record/record",
+          "query": "id=699424",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "添加任务addtk",
+          "pathName": "pages/addtk/addtk",
+          "query": "flock_id=961091",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "详情detail",
+          "pathName": "pages/detail/detail",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "选项options",
+          "pathName": "pages/options/options",
+          "query": "flock_id=961091",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "成员members",
+          "pathName": "pages/members/members",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "分享share",
+          "pathName": "pages/share/share",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "示例demo",
+          "pathName": "pages/demo/demo",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "目标详情页target",
+          "pathName": "pages/target/target",
+          "query": "id=516378",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "我的",
+          "pathName": "pages/mine/mine",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "意见",
+          "pathName": "pages/advice/advice",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/targetOption/targetOption",
+          "query": "id=699424",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "总览view",
+          "pathName": "pages/view/view",
+          "query": "id=407399",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "加载loading",
+          "pathName": "pages/loading/loading",
+          "query": "",
+          "scene": null,
+          "launchMode": "default"
+        }
+      ]
+    }
+  }
+}

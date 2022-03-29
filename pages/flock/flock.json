@@ -1,0 +1,22 @@
+{
+  "navigationBarTitleText": "",
+  "navigationBarBackgroundColor": "#A5DEE4",
+  "usingComponents": {
+    "wux-cell": "../../dist/cell/index",
+    "wux-card": "../../dist/card/index",
+    "wux-wing-blank": "../../dist/wing-blank/index",
+    "but": "../../components/button/button",
+    "wux-accordion-group": "../../dist/accordion-group/index",
+    "wux-accordion": "../../dist/accordion/index",
+    "wux-swipe-action-group": "../../dist/swipe-action-group/index",
+    "wux-swipe-action": "../../dist/swipe-action/index",
+    "wux-cell-group": "../../dist/cell-group/index",
+    "wux-icon": "../../dist/icon/index",
+    "wux-prompt": "../../dist/prompt/index",
+    "wux-circle": "../../dist/circle/index",
+    "wux-white-space": "../../dist/white-space/index",
+    "wux-button": "../../dist/button/index",
+    "wux-progress": "../../dist/progress/index",
+    "wux-divider": "../../dist/divider/index"
+  }
+}

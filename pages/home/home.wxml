@@ -1,0 +1,75 @@
+<!-- 提示对话框 -->
+<wux-dialog id="wux-dialog" />
+<wux-dialog id="wux-dialog--alert" />
+
+<!--搜索框-->
+<view id="searchBar" class=" bgTheme_color">
+  <wux-search-bar clear maxlength="8" bind:change="searchInput" bind:cancel="onCancel" bind:blur="searchBlur" bind:focus="onFocus" placeholder="输入队伍id或者用户id" wux-class="serachBarInner"></wux-search-bar>
+</view>
+<block wx:if="{{isFocus}}">
+  <view id="part1">
+    <block wx:for="{{searchResult}}" wx:key="key">
+      <view id="listItem">
+        <view id="id">{{item.id}}</view>
+        <view id="name">{{item.nickName}}</view>
+        <view id="goto">
+          <button id="{{index}}" size="mini" bindtap="gotoTap">前往</button>
+        </view>
+      </view>
+    </block>
+  </view>
+</block>
+<block wx:if="{{!isFocus}}">
+
+  <view id="groupSwiper" class="shadow">
+
+    <swiper class="swiper" display-multiple-items="1" current="{{swiperIndex}}">
+      <block wx:for="{{groupList}}" wx:key="key">
+        <swiper-item>
+
+          <view id="{{index}}" bindtap="groupTap">
+            <view id="groupContentBox" class="bgwhite shadow center">
+              <image src="../../images/left.png" id="leftSwitch"></image>
+              <image src="../../images/right.png" id="rightSwitch"></image>
+              <view id="groupAvatar">
+                <image src="../../images/avatar.jpg"></image>
+              </view>
+              <view id="groupText">{{item.name}}</view>
+            </view>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <view id="option">
+    <view id="searchButton" class="shadow center" bindtap="onSearch">
+      <image src="../../images/addGroup.png"></image>加入
+    </view>
+    <view id="createButton" class="shadow center" bindtap="creatGroup">
+      <image src="../../images/createGroup.png"></image>创建
+    </view>
+  </view>
+  <view id="targetBox" >
+    <view id="targetLable">
+      <view class="theme_text">近期目标</view>
+    </view>
+    <block wx:for="{{targetList}}" wx:key="key" class="bgwhite">
+      <view id="{{index}}" bindtap="targetTap">
+        <view id="targetContentBox" class="shadow bgwhite">
+          <image src="../../images/avatar.jpg" id="targetIcon"></image>
+          <view id="targetName">
+            <view id="name1">{{item.task_name}}</view>
+            <view id="name2">来自 {{item.flock_name}}</view>
+          </view>
+          <view id="targetClock">{{item.clock}}</view>
+          <block wx:if="{{item.over}}">
+            <image src="../../images/over.png" id="targetOver"></image>
+          </block>
+          <block wx:else>
+            <image src="../../images/unover.png" id="targetOver"></image>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+</block>

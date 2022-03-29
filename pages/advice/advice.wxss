@@ -1,0 +1,10 @@
+.group{
+  background-color: white;
+}
+.radioGroup{
+  width: 750rpx;
+  height: 100rpx;
+}
+.radioGroup radio{
+  margin-right: 60rpx;
+}

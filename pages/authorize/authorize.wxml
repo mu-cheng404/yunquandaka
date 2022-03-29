@@ -1,0 +1,4 @@
+<block wx:if="{{loginFlag==0&&subscribeFlag==1}}"><button bindtap="getInfo">授权登录</button></block>
+<block wx:if="{{loginFlag==1&&subscribeFlag==0}}"><button bindtap="getSub">订阅</button></block>
+<block wx:if="{{loginFlag==0&&subscribeFlag==0}}"><button bindtap="getInfoAndSub">两者都</button></block>
+<wux-dialog id="wux-dialog" />

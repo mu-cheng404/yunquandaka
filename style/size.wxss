@@ -1,0 +1,13 @@
+/* 图标的大小 */
+.option{
+  width: 20px;
+  height: 20px;
+}
+
+/* 代办条的大小 */
+.daiban{
+  width: 100%;
+  height: 28px;
+  padding: 2px;
+  margin-bottom: 2px;
+}

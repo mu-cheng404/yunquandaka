@@ -1,0 +1,87 @@
+Page{
+  padding: 0rpx;
+  margin: 0rpx;
+}
+#info {
+  width: 100%;
+  height: 400rpx;
+}
+
+#head {
+  width: 100%;
+  height: 463rpx;
+  position: relative;
+  flex-direction: column;
+}
+
+#headBg {
+  width: 100%;
+  height: 463rpx;
+  background-image: url('https://cn.bing.com/th?id=OIP.cxQemnU09Ua7BLEJfhn9VgHaEe&w=200&h=120&rs=1&qlt=80&o=6&dpr=1.25&pid=3.1');
+  background-repeat: no-repeat;
+  background-size: 1000rpx 1000rpx;
+  background-position: center;
+  filter: blur(20rpx) contrast(80%) opacity(80%) opacity(80%);
+  position: absolute;
+  left: 0rpx;
+  top: 0rpx;
+  z-index: -1;
+  vertical-align: middle;
+}
+
+#nick {
+  width: 710rpx;
+  height: 150rpx;
+  display: flex;
+  margin: 20rpx;
+  margin-top: -20rpx;
+  border-radius: 20rpx;
+  background-color: rgb(255, 255, 255);
+}
+
+#nick image {
+  width: 50rpx;
+  height: 50rpx;
+  margin-right: 10rpx;
+}
+
+#nickLeft {
+  width: 374rpx;
+  height: 150rpx;
+}
+
+#nickRight {
+  width: 374rpx;
+  height: 150rpx;
+}
+
+#body {
+  width: 710rpx;
+  background-color: white;
+  border-radius: 40rpx;
+  margin: 20rpx;
+  padding: 20rpx 0 20rpx 0;
+
+}
+
+.group {
+  /* color: aqua; */
+  width: 710rpx;
+
+}
+
+#avatar {
+  width: 200rpx;
+  height: 200rpx;
+}
+
+#avatar image {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+}
+
+#nickName {
+  width: 100%;
+  height: 100rpx;
+}

@@ -1,0 +1,62 @@
+.name {
+  width: 100%;
+  height: 80px;
+}
+
+.text {
+  height: 36px;
+  width: 200px;
+}
+
+.state {
+  width: 100%;
+  height: 80px;
+  padding: 20px;
+}
+
+.punchContent {
+  width: 710rpx;
+  margin: 20rpx;
+  margin-bottom: 100rpx;
+  display: flex;
+  flex-direction: column;
+  height: 400rpx;
+  border-radius: 30rpx;
+}
+
+.textareaBox {
+  width: 710rpx;
+  height: 400rpx;
+}
+#upload{
+  width: 200rpx;
+  height: 200rpx;
+}
+.punchContent textarea {
+  width: 710rpx;
+  height: 400rpx;
+  background-color: white;
+  border-top-left-radius: 10rpx;
+  border-top-right-radius: 10rpx;
+  padding: 20rpx;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.displayNone {
+  display: none;
+}
+
+.selectPicture {
+  position: absolute;
+  bottom: 70rpx;
+  width: 100%;
+  height: 100rpx;
+  z-index: 2;
+}
+
+
+#option{
+  width: 50rpx;
+  height: 50rpx;
+}

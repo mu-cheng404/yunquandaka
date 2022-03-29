@@ -1,0 +1,4 @@
+<view class="flex daiban bgtianlan">
+  <image src="../../images/daiban_no.png" class="option"></image>
+  <view>{{text}}</view>
+</view>

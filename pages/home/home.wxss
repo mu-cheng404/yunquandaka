@@ -1,0 +1,222 @@
+.flockBox {
+  width: 700rpx;
+  margin: 0 20rpx 0 20rpx;
+  border-radius: 20rpx;
+  background-color: white;
+  text-align: center;
+}
+
+#searchBar {
+  width: 750rpx;
+  height: 80rpx;
+  padding: 20rpx;
+  border-bottom-left-radius:20rpx ;
+  border-bottom-right-radius:20rpx ;
+}
+
+.serachBarInner {
+  width: 710rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+}
+
+#groupBox {
+  overflow: hidden;
+  height: 500rpx;
+}
+
+#targetLable {
+  width: 710rpx;
+  /* padding-left: 20rpx; */
+  height: 80rpx;
+  display: flex;
+  margin-bottom: -10rpx;
+}
+
+#groupLable image {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+#targetLable image {
+  width: 45rpx;
+  height: 45rpx;
+  margin-top: 10rpx;
+  margin-right: 5rpx;
+}
+
+#groupLable view,
+#targetLable view {
+  margin: 11rpx 0 0 10rpx;
+}
+
+#groupBox {}
+
+#groupSwiper,
+.swiper {
+  width: 750rpx;
+  height: 463rpx;
+  border-radius: 20rpx;
+  /* background-color: aqua; */
+}
+
+#groupContentBox {
+  width: 710rpx;
+  height: 463rpx;
+  margin: 20rpx;
+  flex-direction: column;
+  position: relative;
+  border-radius: 20rpx;
+}
+
+#groupAvatar {
+  width: inherit;
+  height: 130rpx;
+  text-align: center;
+  border-radius: 20rpx;
+}
+
+#groupAvatar image {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-top: 15rpx;
+}
+
+#groupText {
+  width: 100%;
+  height: 84rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#targetBox {
+  margin-top: 20rpx;
+  width: 750rpx;
+  overflow: hidden;
+}
+
+#targetContentBox {
+  width: 710rpx;
+  height: 100rpx;
+  margin: 0rpx 20rpx 10rpx 20rpx;
+  display: flex;
+  border-radius: 20rpx;
+  position: relative;
+}
+
+#targetIcon {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  margin: 20rpx;
+}
+
+#targetName {
+  width: 300rpx;
+  height: 60rpx;
+}
+
+#name1 {
+  margin-top: 20rpx;
+  font-size: medium;
+}
+
+#name2 {
+  color: #7A7A7A;
+  font-size: small;
+}
+
+#targetClock {
+  position:absolute;
+  left: 480rpx;
+  top: 30rpx;
+}
+
+#targetOver {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+
+}
+
+.label {
+  height: 50rpx;
+  margin-left: 20rpx;
+  width: 180rpx;
+  border-radius: 0 20rpx 20rpx 0;
+}
+
+#listItem {
+  width: 100%;
+  height: 50rpx;
+  margin-bottom: 20px;
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+#id {}
+
+#name {
+  margin-left: 40rpx;
+}
+
+#goto {
+  position: absolute;
+  right: 10rpx;
+}
+
+#leftSwitch,
+#rightSwitch {
+  width: 70rpx;
+  height: 70rpx;
+  position: absolute;
+}
+
+#leftSwitch {
+  top: 180rpx;
+  left: 20rpx;
+}
+
+#rightSwitch {
+  top: 180rpx;
+  right: 20rpx;
+}
+
+#option {
+  width: 750rpx;
+  height: 150rpx;
+  margin-top: 20rpx;
+}
+
+#searchButton,
+#createButton {
+  width: 345rpx;
+  height: 150rpx;
+  margin-left: 20rpx;
+  background-color: white;
+  float: left;
+  border-radius: 20rpx;
+  font-size: larger;
+}
+
+#searchButton image{
+  width: 90rpx;
+  height: 90rpx;
+  margin-right: 30rpx;
+}
+#createButton image {
+  width: 100rpx;
+  height: 100rpx;
+  margin-right: 30rpx;
+}
+.theme_text{
+  font-size: large;
+  padding-left: 20rpx;
+}

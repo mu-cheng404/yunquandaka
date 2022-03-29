@@ -1,0 +1,93 @@
+<view id="page" class="bgTheme_color">
+  <!-- 头部 -->
+  <view id="header">
+    <view id="name">
+      <view id="namePart1" class="white">{{flock.name}}
+        <image id="option" src="../../images/option.png" bindtap="toOption"></image>
+      </view>
+      <view id="namePart2" class="white">ID:{{flock.id}}
+      </view>
+      <button open-type="share" id="shareButton" class="bgTheme_color"><image id="share" src="../../images/share.png" bindtap="onShareAppMessage"></image></button>
+    </view>
+    <view id="avatar">
+      <block wx:for="{{avatarList}}" wx:key="key">
+        <view style="z-index: {{100-index}};">
+          <image class="image" src="{{item.avatarUrl}}"></image>
+        </view>
+      </block>
+      <view id="avatarText" class="white">{{avatarList.length}}人</view>
+    </view>
+    <view id="stateBox">
+      <view id="state">{{flock.state==""?"这个小队很懒，没有说明":flock.state}}</view>
+    </view>
+  </view>
+
+
+  <view class="second bgwhite ">
+    <wux-accordion-group title="" default-current="{{ ['0'] }}" wux-class="accordion" has>
+      <wux-accordion title="我们正在" content="">
+        <block wx:if="{{list.length==0}}">
+          <view id="hintMessageOfTarget" class="sub_color">点击下方添加去创建努力的目标吧！</view>
+        </block>
+        <block wx:for="{{list}}" wx:key="key">
+          <view id="{{index}}" bindtap="targetTap">
+            <view id="targetContentBox" class="shadow">
+              <image src="../../images/avatar.jpg" id="targetIcon"></image>
+              <view id="targetName">
+                <view id="name1">{{item.name}}</view>
+              </view>
+              <view id="targetClock">19：00</view>
+              <image src="../../images/over.png" id="targetOver"></image>
+            </view>
+          </view>
+        </block>
+        <wux-cell thumb="../../images/new.png" title="添加" extra="" bindtap="newTask"></wux-cell>
+      </wux-accordion>
+    </wux-accordion-group>
+    <wux-divider  wux-class="divider" showText="{{false}}"/>
+    <!-- 进度条进度环 -->
+    <block wx:if="{{list.length!=0}}">
+      <picker mode="selector" disabled="{{list.length==0}}" range="{{list}}" range-key="name" bindchange="switchTarget">
+      <view id="switchBox">
+        <view id="switchText" class="bgTheme_color white ">{{list[targetIndex].name}}</view>
+        <image id="switchTarget" src="../../images/switch.png"></image>
+      </view>
+    </picker>
+      <view id="progress">
+        <view id="progressText">{{targetInfo[targetIndex].progress.text}}小队完成度 {{targetInfo[targetIndex].progress.percent}}%</view>
+        <wux-progress bar-style="background-color: #A5DEE4" strokeWidth="20" shape="round" percent="{{targetInfo[targetIndex].progress.percent}} " wux-class="wuxProgress" />
+      </view>
+      <view id="cicleBox">
+        <view id="cicleText">{{targetInfo[targetIndex].circle.text>0?"距离目标结束还剩"+targetInfo[targetIndex].circle.text+"天":"已经结束啦"}}</view>
+        <view>
+          <wux-circle percent="{{targetInfo[targetIndex].circle.percent}}" color="#A5DEE4" bindtap="toView">点击查看</wux-circle>
+        </view>
+      </view>
+
+
+    </block>
+
+    <view id="record">
+      <view id="recordBox">
+        <view id="recordText"></view>
+        <view id="recordAvatarList"></view>
+        <view id="recordButton"></view>
+      </view>
+    </view>
+    <!-- 打卡列表 -->
+    <block wx:for="{{targetInfo[targetIndex].recordList}}" wx:key="key" wx:if="{{targetInfo[targetIndex].recordList.length!=0}}">
+      <wux-wing-blank size="default">
+        <wux-card bordered="{{ false }}" title="{{item.nickName}}" extra="额外内容" thumb="{{item.avatar}}">
+          <view slot="body">{{item.content}}</view>
+          <view slot="footer">尾部内容</view>
+        </wux-card>
+      </wux-wing-blank>
+    </block>
+
+    <!-- 打卡列表为空时的提示信息 -->
+    <view class="hint">
+      <wux-prompt visible="{{hintMsg.visible}}" title="{{ hintMsg.title }}" text="{{ hintMsg.text }}" />
+    </view>
+
+  </view>
+</view>

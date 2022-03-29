@@ -1,0 +1,32 @@
+
+<view id="head" class="center">
+  <view id="avatar">
+    <image src="{{userInfo.avatarUrl}}" class="shadow"></image>
+  </view>
+  <view id="nickName" class="center big">
+    {{userInfo.nickName}}
+  </view>
+  <view bindtap="syncInfo">同步微信形象</view>
+  <view id="headBg" style="background-image: url({{userInfo.avatarUrl}});"></view>
+</view>
+<view id="nick" class="bigger">
+  <view id="nickLeft" class="center " bindtap="toAccomplishment">
+    <image src="../../images/chengjiu.png"></image> 成就
+  </view>
+  <view id="nickRight" class="center">
+    <image src="../../images/qita.png"></image> 更多
+  </view>
+</view>
+<view id="body">
+  <wux-cell-group wux-class="group">
+    <wux-cell hasLine thumb="../../images/kefuzhongxin.png" title="客服中心" is-link open-type="contact" bind:contact="onContact">
+    </wux-cell>
+    <wux-white-space size="small" />
+    <wux-cell bindtap="toAdvice" thumb="../../images/yijianfankui.png" title="意见反馈" is-link hasLine="false"></wux-cell>
+    <wux-white-space size="small" />
+    <wux-cell thumb="../../images/fenxiang.png" title="分享给朋友" is-link open-type="share" hasLine="0"></wux-cell>
+    <wux-white-space size="small" />
+    <wux-cell bindtap="toAboutus" thumb="../../images/guanyuwomen.png" title="关于我们" is-link hasLine="false"></wux-cell>
+    <wux-white-space size="small" />
+  </wux-cell-group>
+</view>

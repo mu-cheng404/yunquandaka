@@ -1,0 +1,9 @@
+<wux-cell-group title="输入信息">
+  <wux-cell hover-class="none">
+    <wux-input bind:change="onChangeOfNameInput" label="组名"></wux-input>
+  </wux-cell>
+  <wux-cell hover-class="none">
+    <wux-input bind:change="onChangeOfStateInput"label="说明"></wux-input>
+  </wux-cell>
+</wux-cell-group>
+<button bindtap="navi_to_flock" class="button white">创建</button>

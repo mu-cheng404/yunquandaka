@@ -1,0 +1,18 @@
+{
+  "navigationBarTitleText": "首页",
+  "navigationBarBackgroundColor": "#A5DEE4",
+  "usingComponents": {
+    "wux-search-bar": "../../dist/search-bar/index",
+    "wux-cell-group": "../../dist/cell-group/index",
+    "wux-cell": "../../dist/cell/index",
+    "wux-tabs": "../../dist/tabs/index",
+    "wux-tab": "../../dist/tab/index",
+    "wux-badge": "../../dist/badge/index",
+    "wux-row": "../../dist/row/index",
+    "wux-col": "../../dist/col/index",
+    "but": "../../components/button/button",
+    "wux-icon": "../../dist/icon/index",
+    "wux-button": "../../dist/button/index",
+    "wux-dialog": "../../dist/dialog/index"
+  }
+}

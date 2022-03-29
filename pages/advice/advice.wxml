@@ -1,0 +1,26 @@
+<wux-toast id="wux-toast" mask="false" />
+<view class="label">
+</view>
+<view id="textarea">
+  <wux-cell-group title="填写信息">
+    <wux-cell hover-class="none">
+      <wux-textarea hasCount rows="3" cursorSpacing="80" placeholder="我怎么了" bind:change="messageInput" />
+    </wux-cell>
+  </wux-cell-group>
+</view>
+<view id="input">
+  <radio-group class="radioGroup center" bindchange="contactTypeSelect" >
+    <radio value="手机号" checked="true">手机号</radio>
+    <radio value="邮箱">邮箱</radio>
+    <radio value="QQ">QQ</radio>
+    <radio value="微信">微信</radio>
+  </radio-group>
+  <wu-cell-group wux-class="group">
+    <wux-cell hover-class="none">
+      <wux-input label="联系方式：" bind:change="contactInput" />
+    </wux-cell>
+  </wu-cell-group>
+</view>
+<view id="button">
+  <wux-button block type="balanced" bind:click="submit">完成</wux-button>
+</view>

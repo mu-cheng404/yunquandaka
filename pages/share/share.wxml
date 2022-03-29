@@ -1,0 +1,6 @@
+<view class="page Bgcolor1">
+  <view><canvas  id="canvas" type="2d"
+      style="width: {{canvas_width}}px;height: {{canvas_height}}px;"></canvas>
+  </view>
+  <button type="primary" bindtap="canvasToTempFilePath" size="">保存</button>
+</view>

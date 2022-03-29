@@ -1,0 +1,247 @@
+#header {
+  width: 750rpx;
+  height: 340rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+#name {
+  width: 750rpx;
+  height: 100rpx;
+  position: relative;
+}
+
+#namePart1 {
+  width: 500rpx;
+  line-height: 80rpx;
+  padding: 0 0 0 30rpx;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+#namePart2 {
+  font-size: small;
+  margin-left: 30rpx;
+  position: absolute;
+  top: 130rpx;
+  right: 22rpx;
+}
+
+#option {
+  width: 40rpx;
+  height: 40rpx;
+}
+#shareButton{
+  width: 60rpx;
+  height: 60rpx;
+  position: absolute;
+  top: 10rpx;
+  right: 20rpx;
+  padding: 0;
+  border-radius: 50%;
+
+}
+#share {
+  width: 30px;
+  height: 30px;
+}
+
+#avatar {
+  width: 300rpx;
+  height: 70rpx;
+  display: flex;
+  padding: 20rpx 0 0 40rpx;
+}
+
+#avatarText {
+  padding-top: 5rpx;
+  margin-left: 30rpx;
+}
+
+.image {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  margin-right: -20rpx;
+}
+
+#stateBox {
+  width: 750rpx;
+  height: 100rpx;
+}
+
+#state {
+  width: 670rpx;
+  height: 100rpx;
+  margin: 0 20rpx 0 20rpx;
+  padding: 20rpx;
+  border-radius: 20rpx;
+  background-color: #ffffff25;
+  color: white;
+  font-size: large;
+}
+
+.first {
+  width: 750rpx;
+  height: 150px;
+  position: relative;
+  background-image: url(https://cn.bing.com/images/search?q=%E5%9B%BE%E7%89%87&FORM=IQFRBA&id=FAD1F40CD98810BC384B79F9306DA63BB2291830);
+
+}
+
+
+
+
+
+
+
+
+
+.second {
+  border-top-left-radius: 50rpx;
+  border-top-right-radius: 50rpx;
+  padding-top: 50rpx;
+  width: 750rpx;
+}
+
+
+.divide {
+  width: 750rpx;
+  height: 50rpx;
+}
+
+.hint {
+  width: 750rpx;
+  height: 500rpx;
+}
+
+.accordion {
+  width: 750rpx;
+}
+
+.swipeGroup {
+  width: 710rpx;
+}
+
+#targetBox {
+  width: 750rpx;
+  overflow: hidden;
+}
+
+#targetContentBox {
+  width: 700rpx;
+  height: 100rpx;
+  display: flex;
+  border-radius: 20rpx;
+  position: relative;
+}
+
+#targetIcon {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  margin: 20rpx;
+}
+
+#targetName {
+  width: 300rpx;
+  height: 60rpx;
+}
+
+#name1 {
+  margin-top: 30rpx;
+  font-size: medium;
+}
+
+#name2 {
+  color: #7A7A7A;
+  font-size: small;
+}
+
+#targetClock {
+  position: absolute;
+  left: 480rpx;
+  top: 30rpx;
+}
+
+#targetOver {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+
+}
+
+#record {}
+
+#recordBox {}
+
+#recordText {}
+
+#recordAvatarList {}
+
+#recordButton {}
+
+#cicleBox,
+#progress {
+  width: 710rpx;
+  margin: 20rpx;
+  display: flex;
+  align-items: center;
+}
+
+#progress {
+  margin-bottom: 50rpx;
+}
+
+#cicleText {}
+
+#cicleText,
+#progressText {
+  font-size: medium;
+  margin-left: 20rpx;
+  width: 380rpx;
+  margin-right: 50rpx;
+
+}
+
+.wuxProgress {
+  width: 220rpx;
+}
+
+#hintMessageOfTarget {
+  width: 710rpx;
+  height: 50rpx;
+  padding: 10rpx;
+  padding-left: 30rpx;
+}
+
+#switchBox {
+  width: 750rpx;
+  height: 60rpx;
+  position: relative;
+  display: flex;
+}
+#switchText{
+  margin-left: 20rpx;
+  /* width: 300rpx; */
+  line-height: 60rpx;
+  padding: 0 20rpx 0rpx 20rpx;
+  border-radius: 20rpx;
+}
+#switchTarget{
+  width: 60rpx;
+  height: 60rpx;
+  position: absolute;
+  right: 20rpx;
+}
+
+
+.divider{
+  width: 710rpx;
+  margin: 20rpx;
+}

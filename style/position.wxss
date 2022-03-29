@@ -1,0 +1,23 @@
+/* 右上角浮动定位 */
+.rightTopFloat {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+/* 按钮统一布局 */
+.button{
+  background-color: #A5DEE4;
+}
+/* 浮动布局 */
+.flex{
+  display: flex;
+}
+/* 水平和垂直居中 */
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.displayNone{
+  display: none;
+}

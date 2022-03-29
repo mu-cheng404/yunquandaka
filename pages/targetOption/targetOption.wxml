@@ -1,0 +1,14 @@
+<wux-cell-group title="选项">
+  <wux-cell title="基本信息" is-link bindtap="adjust"></wux-cell>
+  <block wx:if="{{adjust}}">
+    <wux-cell hover-class="none">
+      <wux-input bind:change="onChangeOfNameInput" label="名称" value="{{valueOfName}}" controlled="true"></wux-input>
+    </wux-cell>
+    <wux-cell hover-class="none">
+      <wux-input bind:change="onChangeOfStateInput" label="说明" value="{{valueOfState}}" controlled="true"></wux-input>
+    </wux-cell>
+    <button bindtap="submit" disabled="{{flag}}" class="button white">修改</button>
+
+  </block>
+  <wux-cell title="删除该目标" is-link bindtap="deleteTarget"></wux-cell>
+</wux-cell-group>
