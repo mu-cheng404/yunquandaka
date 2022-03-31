@@ -18,7 +18,8 @@
     "pages/targetOption/targetOption",
     "pages/view/view",
     "pages/authorize/authorize",
-    "pages/loading/loading"
+    "pages/loading/loading",
+    "pages/admin/admin"
   ],
   "window": {
     "backgroundTextStyle": "light",

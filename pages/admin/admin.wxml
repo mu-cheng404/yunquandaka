@@ -1,0 +1,33 @@
+<wux-tabs controlled current="{{index}}" bindchange="tapChange">
+  <wux-tab key="0" title="管理成员"></wux-tab>
+  <wux-tab key="1" title="管理小队"></wux-tab>
+  <wux-tab key="2" title="管理目标"></wux-tab>
+  <wux-tab key="3" title="查看日志"></wux-tab>
+</wux-tabs>
+<wux-swipe-action-group wx:if="{{index==0}}">
+  <block wx:for="{{userList}}" wx:key="key">
+    <wux-swipe-action autoClose right="{{ right }}" bind:click="onClick">
+      <wux-cell thumb="{{item.avatarUrl}}" title="{{item.nickName}}"></wux-cell>
+    </wux-swipe-action>
+  </block>
+</wux-swipe-action-group>
+
+<wux-swipe-action-group wx:if="{{index==1}}">
+  <block wx:for="{{groupList}}" wx:key="key">
+    <wux-swipe-action autoClose right="{{ right }}" bind:click="onClick">
+      <wux-cell title="{{item.name}}"></wux-cell>
+    </wux-swipe-action>
+  </block>
+</wux-swipe-action-group>
+
+<wux-swipe-action-group wx:if="{{index==2}}">
+  <block wx:for="{{targetList}}" wx:key="key">
+    <wux-swipe-action autoClose right="{{ right }}" bind:click="onClick">
+      <wux-cell title="{{item.name}}"></wux-cell>
+    </wux-swipe-action>
+  </block>
+</wux-swipe-action-group>
+
+<block wx:if="{{index==3}}">
+  日志
+</block>

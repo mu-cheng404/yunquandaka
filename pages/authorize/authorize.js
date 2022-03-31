@@ -2,6 +2,7 @@ const utils = require("../../utils/util")
 import {
   $wuxDialog
 } from '../../dist/index'
+const globalData = getApp().globalData
 Page({
   getInfo: async function () {
     let openid, userInfo, sql
@@ -17,9 +18,14 @@ Page({
         }).then(res => {
           openid = res.result.openid
         })
-        sql = `insert into user values(${utils.randomsForSixDigit()},'${openid}','${userInfo.nickName}','${userInfo.avatarUrl}')`
+        let id = utils.randomsForSixDigit()
+        sql = `insert into user values(${id},'${openid}','${userInfo.nickName}','${userInfo.avatarUrl}')`
+        this.setData({
+          user_id: id,
+        })
         utils.executeSQL(sql)
         console.log("用户完成信息授权")
+        this.setGlobalData()
         wx.navigateBack({
           delta: 1,
         })
@@ -37,16 +43,24 @@ Page({
       title: '订阅',
       content: '为了良好的使用体验，请您授权以下权限，并勾选“不在提醒”',
       async onConfirm(e) {
-        let query = await that.queryAccess()
-        // console.log(query)
-        while (!query) {
-          that.getSub()
-          query = await that.queryAccess()
-        }
-        console.log("用户已经完成订阅授权")
-        wx.navigateBack({
-          delta: 1,
+        await wx.requestSubscribeMessage({
+          tmplIds: ["XfpLvF_QtFsXoKcVz7sgMovDkTTW8wHhOa5mbwdiTTs",
+            "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI",
+            "V1M7ZJ09GIic3WyzkpRNU3XuXHaM-ORxs59YDGcPeSI"
+          ],
+        }).then(async (res) => {
+          console.log("查询用户权限结果", res)
+          
+          let query = await that.queryAccess()
+          if (!query) {
+            that.getSub()
+          }
+          console.log("用户已经完成订阅授权")
+          wx.navigateBack({
+            delta: 1,
+          })
         })
+
       }
     })
   },
@@ -64,10 +78,14 @@ Page({
         }).then(res => {
           openid = res.result.openid
         })
-        sql = `insert into user values(${utils.randomsForSixDigit()},'${openid}','${userInfo.nickName}','${userInfo.avatarUrl}')`
+        let id = utils.randomsForSixDigit()
+        sql = `insert into user values(${id},'${openid}','${userInfo.nickName}','${userInfo.avatarUrl}')`
+        this.setData({
+          user_id: id
+        })
         utils.executeSQL(sql)
         console.log("用户完成信息授权")
-
+        this.setGlobalData()
         this.getSub()
       },
       fail: (res) => {
@@ -80,6 +98,7 @@ Page({
     await wx.getSetting({
       withSubscriptions: true,
     }).then((res) => {
+      console.log("用户的情况", res)
       list = res.subscriptionsSetting.itemSettings
       refer = {
         "XfpLvF_QtFsXoKcVz7sgMovDkTTW8wHhOa5mbwdiTTs": "accept",
@@ -91,7 +110,8 @@ Page({
   },
   data: {
     loginFlag: "",
-    subscribeFlag: ""
+    subscribeFlag: "",
+    user_id: ""
   },
   onLoad: async function (event) {
     let {
@@ -114,39 +134,9 @@ Page({
     } else { //用户登录了也订阅了
       console.log("用户授权信息 订阅")
     }
-    //没有授权就跳转到授权页面
-
-
-    // let sql1 //查询用户是否存在
-    // let sql2 //插入数据
-    // let user_id
-
-    // await wx.cloud.callFunction({
-    //   name: "getOpenID",
-    // }).then((res) => {
-    //   let [id, openid, username, avatar] = [utils.randomsForSixDigit(), res.result.openid, "微信用户", "https://profile.csdnimg.cn/3/3/2/1_qq_42618566"]
-    //   user_id = id;
-
-    //   sql1 = `select id,nickName from user where openid='${openid}'`
-
-    //   sql2 = `insert into user values(${id},'${openid}','${username}','${avatar}')`
-    // })
-
-    // let result = await utils.executeSQL(sql1) //查询数据库中是否已存在信息
-    // result = result && JSON.parse(result)
-    // if (result.length == 0) { //不存在
-    //   //提示用户登录
-    //   wx.showToast({
-    //     title: 'title',
-    //   })
-    //   await utils.executeSQL(sql2) //插入一条
-    //   console.log("是新用户，已经为其创建一条初始记录，id="+user_id)
-    // } else { //存在
-    //   user_id = result[0].id
-    //   console.log("该用户已经登陆过 id="+user_id)
-    // }
-
-    // this.globalData.user_id = user_id;
-    // this.globalData.hasUserInfo = result[0].nickName != "微信用户"
   },
+  setGlobalData: function (params) {
+    globalData.user_id = this.data.user_id
+    globalData.hasUserInfo = true
+  }
 })

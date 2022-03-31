@@ -167,7 +167,7 @@ Page({
   },
   onCancel(e) {
     this.setData({
-      isFocus: fasle
+      isFocus: false
     })
 
   },

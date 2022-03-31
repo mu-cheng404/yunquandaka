@@ -27,7 +27,7 @@
         {
           "name": "群组flock",
           "pathName": "pages/flock/flock",
-          "query": "id=332718",
+          "query": "id=395453",
           "launchMode": "default",
           "scene": null
         },
@@ -114,6 +114,13 @@
         {
           "name": "加载loading",
           "pathName": "pages/loading/loading",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "后台管理",
+          "pathName": "pages/admin/admin",
           "query": "",
           "scene": null,
           "launchMode": "default"

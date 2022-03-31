@@ -16,5 +16,5 @@
     <wux-cell title="开启免打扰" is-link extra="{{ displayValue1 }}"></wux-cell>
   </wux-picker>
   <wux-cell title="分享小队" is-link url="../share/share"></wux-cell>
-  <wux-cell title="删除小队" is-link bindtap="deleteGroup"></wux-cell>
+  <wux-cell title="退出小队" is-link bindtap="deleteGroup"></wux-cell>
 </wux-cell-group>

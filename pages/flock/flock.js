@@ -7,15 +7,22 @@ Page({
 
   toView: function () {
     wx.navigateTo({
-      url: '../view/view?id='+this.data.list[this.data.targetIndex].id,
+      url: '../view/view?id=' + this.data.list[this.data.targetIndex].id,
     })
   },
   targetTap: function (e) {
-    let index = e.currentTarget.id
-    let id = this.data.list[index].id
-    wx.navigateTo({
-      url: '../record/record?id=' + id,
-    })
+    if (!this.data.isJoined) {
+      wx.showToast({
+        title: '点击右上角加入小队',
+        icon: "error"
+      })
+    } else {
+      let index = e.currentTarget.id
+      let id = this.data.list[index].id
+      wx.navigateTo({
+        url: '../record/record?id=' + id,
+      })
+    }
   },
   getSettingOftarget: async function (index) {
     if (this.data.list.length != 0) {
@@ -95,8 +102,8 @@ Page({
         percent: "",
         text: ""
       },
-    }]
-
+    }],
+    isJoined: false
   },
   /**
    * 获取头像
@@ -157,11 +164,13 @@ Page({
   switchTarget: async function (e) {
     let id = e.detail.value
     console.log(this.data.targetInfo[id])
-    if(this.data.targetInfo[id]==undefined){
-      await this.getRecordList(id); 
-      await this.getSettingOftarget(id) 
+    if (this.data.targetInfo[id] == undefined) {
+      await this.getRecordList(id);
+      await this.getSettingOftarget(id)
     }
-    this.setData({targetIndex:id})
+    this.setData({
+      targetIndex: id
+    })
 
   },
   onClick(e) {
@@ -185,6 +194,35 @@ Page({
    */
   onLoad: async function (options) {
     V.flock_id = options.id; //获取随页面传递而来的flock_id
+    let openid = await wx.cloud.callFunction({
+      name: "getOpenID"
+    })
+    openid = openid.result.openid
+    let sql = `select id from user where openid='${openid}'`
+    let result = await utils.executeSQL(sql)
+    if (result == "[]") { //结果为空，说明该用户是新用户
+      wx.navigateTo({
+        url: '../authorize/authorize',
+      })
+    } else { //不是新用户
+      result = result && JSON.parse(result)
+      console.log("----------------------", result, typeof (result), result == "[]")
+      globalData.user_id = result[0].id
+      let sql1 = `select id from joining where user_id = ${result[0].id} and flock_id=${V.flock_id}`
+      let result2 = await utils.executeSQL(sql1)
+      console.log("----------------------", result2, typeof (result2), result2 == "[]")
+      if (result2 == "[]") { //查询结果为空，用户没有加入这个小队
+        this.setData({
+          isJoined: false
+        })
+      } else {
+        result2 = result2 && JSON.parse(result2)
+        this.setData({
+          isJoined: true
+        })
+      }
+    }
+
   },
   /**
    * 生命周期函数--监听页面显示
@@ -210,12 +248,38 @@ Page({
       await this.getSettingOftarget(0) //获取第一个target的数据
     }
   },
-  onShareAppMessage:function(res){
-    if(res.from =="button"){
+  onShareAppMessage: function (res) {
+    if (res.from == "button") {
       console.log(res.target)
     }
     return {
-      title:"快来加入我的小组",
+      title: "快来加入我的小组",
     }
-  }
+  },
+  joinTap: async function () {
+    wx.showModal({
+      cancelColor: 'cancelColor',
+      text: '再确认一下',
+      content: "再确认一下",
+      success: async res => {
+        console.log(res)
+        if (res.confirm) { //用户点击确认
+          await this.datahandle() //数据添加到数据库
+          wx.showToast({ //加入成功
+            title: '加入成功',
+          })
+          this.setData({
+            isJoined: true
+          })
+        } else {
+
+        }
+      }
+    })
+  },
+  datahandle: async function () {
+    let user_id = globalData.user_id
+    let sql = `insert into joining(user_id,flock_id) values(${user_id},${this.data.flock.id})`
+    await utils.executeSQL(sql)
+  },
 })

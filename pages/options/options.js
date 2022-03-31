@@ -6,7 +6,7 @@ Page({
   deleteGroup: function (params) {
     //提醒用户
     wx.showModal({
-      content: "确定删除该小队？",
+      content: "确定退出该小队？",
       cancelColor: 'cancelColor',
       cancelText: "确定",
       confirmText: "手滑了",
@@ -14,9 +14,7 @@ Page({
       success: async (res) => {
         if (!res.confirm) { //用户点击确定
           let sql1 = `delete from joining where flock_id=${V.flock_id}`
-          let sql = `delete from flock where id=${V.flock_id}`
           await utils.executeSQL(sql1)
-          await utils.executeSQL(sql)
           //返回主页面
           wx.switchTab({
             url: '../home/home',

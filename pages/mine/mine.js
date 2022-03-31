@@ -49,7 +49,7 @@ Page({
    */
   onLoad: async function (options) {
 
-    if (globalData.hasUserInfo) {
+    if (globalData.user_id!="") {
       let sql = `select * from user where id = ${globalData.user_id}`
 
       let result = await utils.executeSQL(sql)
@@ -61,7 +61,11 @@ Page({
     }
 
   },
-
+  toAdmin:function(){
+    wx.navigateTo({
+      url: '../admin/admin',
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

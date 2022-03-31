@@ -7,7 +7,12 @@
       </view>
       <view id="namePart2" class="white">ID:{{flock.id}}
       </view>
-      <button open-type="share" id="shareButton" class="bgTheme_color"><image id="share" src="../../images/share.png" bindtap="onShareAppMessage"></image></button>
+      <block wx:if="{{isJoined}}">
+        <button open-type="share" id="shareButton" class="bgTheme_color"><image id="share" src="../../images/share.png" bindtap="onShareAppMessage"></image></button>
+      </block>
+      <block wx:else="{{isJoined}}">
+        <button id="shareButton" class="bgTheme_color" bindtap="joinTap">加入</button>
+      </block>
     </view>
     <view id="avatar">
       <block wx:for="{{avatarList}}" wx:key="key">
@@ -25,7 +30,7 @@
 
   <view class="second bgwhite ">
     <wux-accordion-group title="" default-current="{{ ['0'] }}" wux-class="accordion" has>
-      <wux-accordion title="我们正在" content="">
+      <wux-accordion title="点击下方目标条打卡" content="">
         <block wx:if="{{list.length==0}}">
           <view id="hintMessageOfTarget" class="sub_color">点击下方添加去创建努力的目标吧！</view>
         </block>

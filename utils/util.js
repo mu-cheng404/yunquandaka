@@ -87,11 +87,15 @@ function compareTime(time1, time2) {
     }
   }
 }
+function showDetail(e) {
+  console.log('---------------------------',e,typeof(e))
+}
 module.exports = {
   formatTime,
   randomsForSixDigit,
   executeSQL,
   getCurrentFormatedDate,
   getDiffBetweenDate,
-  compareTime
+  compareTime,
+  showDetail,
 }
