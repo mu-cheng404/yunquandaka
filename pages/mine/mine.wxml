@@ -27,7 +27,7 @@
     <wux-cell thumb="../../images/fenxiang.png" title="分享给朋友" is-link open-type="share" hasLine="0"></wux-cell>
     <wux-white-space size="small" />
     <wux-cell bindtap="toAboutus" thumb="../../images/guanyuwomen.png" title="关于我们" is-link hasLine="false"></wux-cell>
-    <wux-cell bindtap="toAdmin" thumb="../../images/admin.png" title="后台管理" is-link hasLine="false"></wux-cell>
+    <block wx:if="{{userInfo.id==255082||userInfo.id==579718}}"><wux-cell bindtap="toAdmin" thumb="../../images/admin.png" title="后台管理" is-link hasLine="false"></wux-cell></block>
     <wux-white-space size="small" />
   </wux-cell-group>
 </view>

@@ -1,7 +1,40 @@
 const utils = require("../../utils/util")
 Page({
   onChange: async function () {
+    
+  },
+  /**
+   * 管理成员的选项
+   */
+  onMemberClick:function(e){
+    console.log(e)
+    if(e.detail.idnex==0){//点击第一个按钮
+      
+    }else if(e.detail.index==1){//点击第二个按钮
 
+    }
+  },
+  /**
+   * 管理小队的选项
+   */
+  onGroupClick:function(e){
+    console.log(e)
+    if(e.detail.idnex==0){//点击第一个按钮
+      
+    }else if(e.detail.index==1){//点击第二个按钮
+
+    }
+  },
+  /**
+   * 管理目标的选项
+   */
+  onTargetClick:function(e){
+    console.log(e)
+    if(e.detail.idnex==0){//点击第一个按钮
+      
+    }else if(e.detail.index==1){//点击第二个按钮
+
+    }
   },
   onLoad: async function () {
     await this.getUserList()
@@ -75,11 +108,11 @@ Page({
     groupList:[],
     targetList:[],
     right: [{
-        text: '注销',
+        text: '修改',
         style: 'background-color: #ddd; color: white',
       },
       {
-        text: '修改',
+        text: '注销',
         style: 'background-color: #F4333C; color: white',
       },
     ],

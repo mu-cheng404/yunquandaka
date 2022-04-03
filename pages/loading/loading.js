@@ -12,7 +12,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    await this.init()
+    
   },
 
   /**
@@ -25,8 +25,8 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    
+  onShow: async function () {
+    await this.init()
   },
   init: async function () {
     let loginFlag = 1,
@@ -59,7 +59,7 @@ Page({
     } else if (loginFlag && subscribeFlag) {
       await this.getUserId()
       console.log("用户已经授权信息 订阅 id=" + globalData.user_id)
-      wx.switchTab({
+      wx.switchTab({  
         url: '../home/home',
       })
     } else {

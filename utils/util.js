@@ -8,6 +8,11 @@ const formatTime = date => {
 
   return `${[year, month, day].map(formatNumber).join('-')} ${[hour, minute, second].map(formatNumber).join(':')}`
 }
+/**
+ * 获取当前格式日期
+ * para null
+ * return 2022-04-03
+ */
 const getCurrentFormatedDate = n => {
   let date = new Date()
   const year = date.getFullYear()

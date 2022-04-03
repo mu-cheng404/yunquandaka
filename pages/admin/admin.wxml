@@ -6,7 +6,7 @@
 </wux-tabs>
 <wux-swipe-action-group wx:if="{{index==0}}">
   <block wx:for="{{userList}}" wx:key="key">
-    <wux-swipe-action autoClose right="{{ right }}" bind:click="onClick">
+    <wux-swipe-action autoClose right="{{ right }}" bind:click="onMemberClick">
       <wux-cell thumb="{{item.avatarUrl}}" title="{{item.nickName}}"></wux-cell>
     </wux-swipe-action>
   </block>
@@ -14,7 +14,7 @@
 
 <wux-swipe-action-group wx:if="{{index==1}}">
   <block wx:for="{{groupList}}" wx:key="key">
-    <wux-swipe-action autoClose right="{{ right }}" bind:click="onClick">
+    <wux-swipe-action autoClose right="{{ right }}" bind:click="onGroupClick">
       <wux-cell title="{{item.name}}"></wux-cell>
     </wux-swipe-action>
   </block>
@@ -22,7 +22,7 @@
 
 <wux-swipe-action-group wx:if="{{index==2}}">
   <block wx:for="{{targetList}}" wx:key="key">
-    <wux-swipe-action autoClose right="{{ right }}" bind:click="onClick">
+    <wux-swipe-action autoClose right="{{ right }}" bind:click="onTargetClick">
       <wux-cell title="{{item.name}}"></wux-cell>
     </wux-swipe-action>
   </block>

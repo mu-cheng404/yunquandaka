@@ -28,9 +28,6 @@ exports.main = async (event, context) => {
       "miniprogramState": 'developer'
     })
     return {
-      // openid: openid,
-      // result: result,
-      // templateId:templateId
     }
   } catch (err) {
     return {

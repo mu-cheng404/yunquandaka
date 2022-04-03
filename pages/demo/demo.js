@@ -66,6 +66,17 @@ Page({
       console.log(res)
     })
   },
+  dailyCheck:async function(){
+    let date = utils.getCurrentFormatedDate()
+    console.log(date)
+    //选择每个任务
+    let sql = `update task set isEnd=1 where end<'${date}' and isEnd=0`;
+    await wx.cloud.callFunction({name:"mysql",data:{sql:sql}}).then(res=>{
+      console.log(res)
+    })
+  //end与当前时间相比较
+    //如果end<当前时间，则标记isend为1
+  },
   /**
    * 生命周期函数--监听页面加载
    */
