@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "首页",
   "navigationBarBackgroundColor": "#A5DEE4",
+  "navigationBarTextStyle": "white",
   "usingComponents": {
     "wux-search-bar": "../../dist/search-bar/index",
     "wux-cell-group": "../../dist/cell-group/index",

@@ -1,0 +1,81 @@
+
+.head{
+  width: 746rpx;
+  height: 396rpx;
+  border-top: 5rpx white solid;
+}
+.headUp{
+  width: 750rpx;
+  height: 180rpx;
+  display: flex;
+  border-bottom: 2rpx solid white;
+
+}
+.headUpLeft{
+  width: 448rpx;
+  height: 180rpx;
+  border-right: 2rpx solid white;
+  padding:50rpx 0 0 50rpx;
+}
+.headUpRight{
+  width: 300rpx;
+  height: 180rpx;
+  display: flex;
+}
+
+.headUpRightLeft{
+  flex-direction: column;
+  width: 98rpx;
+  height: 180rpx;
+  border-right: 2rpx solid white;
+}
+.headUpRightCenter{
+  flex-direction: column;
+
+  width: 98rpx;
+  height: 180rpx;
+  border-right: 2rpx solid white;
+  
+}
+.headUpRightRight{
+  flex-direction: column;
+
+  width: 100rpx;
+  height: 180rpx;
+}
+
+.headDown{
+  width: 750rpx;
+  height: 220rpx;
+}
+.headDownLeft{
+  width: 448rpx;
+  height: 220rpx;
+  border-right: 2rpx solid white;
+  flex-direction: column;
+  padding-top: 50rpx;
+}
+.progress{
+  width: 400rpx;
+  display: block;
+  margin-left: 20rpx;
+}
+
+.headDownRight{
+  width: 300rpx;
+  height: 170rpx;
+  flex-direction: column;
+}
+.circle{
+  width: 170rpx;
+  height: 170rpx;
+}
+.body{
+  width: 750rpx;
+  border-top-right-radius: 30rpx;
+  border-top-left-radius: 30rpx;
+  margin-top: -20rpx;
+  padding-top: 70rpx;
+  background-color: rgb(240, 240, 240);
+  position: relative;
+}

@@ -78,16 +78,41 @@ Page({
   /**
    * 页面加载
    */
-  onLoad: async function (options) {
-  },
+  onLoad: async function (options) {},
   /**
    * 页面显示
    */
   onShow: async function () {
-    await this.showLoading()
-    await this.getGroupList();
-    await this.getTargetList();
-    await this.hideLoading();
+    if (await this.init()) {
+      await this.showLoading()
+      await this.getGroupList();
+      await this.getTargetList();
+      await this.hideLoading();
+    }
+  },
+  /**
+   * （程序）初始化
+   * 1. 检查数据库是否有信息 打上标记
+   * return 是否有信息
+   */
+  init: async function () {
+    // 获取openid
+    let openid = await (await wx.cloud.callFunction({
+      name: "getOpenID"
+    })).result.openid
+    // let openid = '124124'
+    let sql = `select id from user where openid='${openid}'`
+    let result = await utils.executeSQL(sql)
+    utils.showDetail(result)
+    if (result == '[]') { //指没有信息
+      globalData.hasUserInfo = false
+      return false
+    } else { //有信息
+      result = result && JSON.parse(result)
+      globalData.hasUserInfo = true
+      globalData.user_id = result[0].id
+      return true
+    }
   },
   showLoading: async function () {
     await wx.showLoading({
@@ -191,7 +216,7 @@ Page({
    */
   getTargetList: async function () {
     //获取所有与我有关的目标
-    let sql = ` select t.id,t.name as task_name,t.cycle,t.clock,0 as over,f.name as flock_name from task as t,joining as j ,flock as f where t.flock_id = j.flock_id and t.flock_id = f.id and j.user_id = ${globalData.user_id}`
+    let sql = ` select t.id,t.name as task_name,t.cycle,t.clock,0 as over,f.name as flock_name,t.type,t.form,t.creator from task as t,joining as j ,flock as f where t.flock_id = j.flock_id and t.flock_id = f.id and j.user_id = ${globalData.user_id}`
     let result = await utils.executeSQL(sql)
     result = result && JSON.parse(result)
     console.log("result", result)

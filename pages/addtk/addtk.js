@@ -5,14 +5,20 @@ import {
 let V = {
   flock_id: "",
 }
+const globalData = getApp().globalData
 Page({
   submit: async function () {
+    let sql1 = `select nickName from user where id=${globalData.user_id}`
+    let result1 = await util.executeSQL(sql1)
+    result1 = result1 && JSON.parse(result1)
 
-    let [id, name, state,defaultText, flock_id, cycle, weekday, clock, start, end] = [util.randomsForSixDigit(), this.data.taskName, this.data.state,this.data.defaultText, V.flock_id, this.data.cycle, this.data.weekday, this.data.clock, this.data.start, this.data.end]
+    let [id, name, state,creator,type,form,defaultText, flock_id, cycle, weekday, clock, start, end] = [util.randomsForSixDigit(), this.data.taskName, this.data.state,this,data.type,result1[0].nickName,this.data.form,this.data.defaultText, V.flock_id, this.data.cycle, this.data.weekday, this.data.clock, this.data.start, this.data.end]
 
-    let sql = `insert into task values(${id},'${name}','${state}','${defaultText}',${flock_id},'${cycle}','${weekday}','${clock}','${start}','${end}',0)`;
+    let sql = `insert into task values(${id},'${name}','${state}','${creator}','${type}',${form}','${defaultText}',${flock_id},'${cycle}','${weekday}','${clock}','${start}','${end}',0)`;
 
+    // console.log(sql)
     let result = await util.executeSQL(sql)
+
 
     wx.navigateBack({
       delta: 1,
@@ -31,6 +37,18 @@ Page({
   defaultTextInput:function (e) {
     this.setData({
       defaultText: e.detail.value
+    })
+  },
+  typePickerChange:async function(e){
+    let index = e.detail.value
+    this.setData({
+      type: this.data.typeArray[index]
+    })
+  },
+  formPickerChange:async function(e){
+    let index = e.detail.value
+    this.setData({
+      form: this.data.formArray[index]
     })
   },
   cyclePickerChange: async function (e) {
@@ -81,12 +99,16 @@ Page({
     taskName: "",
     state: "",
     defaultText:"",
+    type:"",
+    form:"",
     cycle: "",
     weekday: "",
     clock: "",
     start: "",
     end: "",
     currentDate: "",
+    typeArray:['学习','生活','锻炼'],
+    formArray:['图片','文字','图片+文字','快捷'],
     weekdayArray: ['周一', '周二', '周三', '周四', '周五', '周六', '周天'],
     cycleArray: ['每天', '每周'],
     clockArray: ["00:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]

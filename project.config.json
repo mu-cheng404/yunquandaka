@@ -43,7 +43,7 @@
     "ignoreUploadUnusedFiles": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.23.2",
+  "libVersion": "2.23.4",
   "appid": "wx45bae271b32f65d6",
   "projectname": "%E5%85%83%E6%A0%96",
   "debugOptions": {

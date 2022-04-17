@@ -1,19 +1,21 @@
 <view id="page" class="bgTheme_color">
   <!-- 头部 -->
   <view id="header">
-    <view id="name">
-      <view id="namePart1" class="white">{{flock.name}}
-        <image id="option" src="../../images/option.png" bindtap="toOption"></image>
-      </view>
-      <view id="namePart2" class="white">ID:{{flock.id}}
-      </view>
-      <block wx:if="{{isJoined}}">
-        <button open-type="share" id="shareButton" class="bgTheme_color"><image id="share" src="../../images/share.png" bindtap="onShareAppMessage"></image></button>
-      </block>
-      <block wx:else="{{isJoined}}">
-        <button id="shareButton" class="bgTheme_color" bindtap="joinTap">加入</button>
-      </block>
+    <view id="namePart1" class="white">{{flock.name}}|初出茅庐
+      <text style="color: #959ba3;font-size: small;" bindtap="toOption">编辑</text>
     </view>
+    <view id="namePart2" class="white">ID:{{flock.id}}
+    </view>
+    <block wx:if="{{isJoined}}">
+      <button open-type="share" id="shareButton" class="bgTheme_color">
+        <image style="width: 50rpx;height: 50rpx;" src="../../images/分享.png"></image>
+      </button>
+    </block>
+    <block wx:else="{{isJoined}}">
+      <button id="shareButton" class="bgTheme_color" bindtap="joinTap">
+        <image style="width: 50rpx;height: 50rpx;" src="../../images/加入.png"></image>
+      </button>
+    </block>
     <view id="avatar">
       <block wx:for="{{avatarList}}" wx:key="key">
         <view style="z-index: {{100-index}};">
@@ -23,12 +25,37 @@
       <view id="avatarText" class="white">{{avatarList.length}}人</view>
     </view>
     <view id="stateBox">
-      <view id="state">{{flock.state==""?"这个小队很懒，没有说明":flock.state}}</view>
+      <view id="state">
+        {{flock.state==""?"这个小队很懒，没有说明":flock.state}}
+      </view>
     </view>
   </view>
 
+  <view class="second">
+    <view class=" center newTarget" style="font-size: large;  color: #848C96;" bindtap="newTask" hover-class="newTargetHover">
+    <image style="width: 50rpx;height: 50rpx; margin-right: 20rpx;" src="../../images/new.png"></image>
+    添加一个新任务
+    </view>
+    <view style="font-size: medium; padding: 40rpx;">当前计划</view>
+    <block wx:for="{{list}}" wx:key="key">
+      <view class="targetBox" id="{{index}}" bindtap="toTask">
+        <view class="targetIcon center">
+          <image src="../../images/{{item.type}}.png"></image>
+        </view>
+        <view class="targetName">
+          <view class="{{isOver?'name1_over':'name1'}}">{{item.name}}<text></text></view>
+          <block wx:if="{{!isOver}}">
+            <view class="name2"><text>{{item.cycle}}</text> ·由 <text>{{item.creator}}</text> 创建·<text>{{item.form}}打卡</text></view>
+          </block>
+        </view>
+        <block wx:if="{{!isOver}}">
+          <image src="../../images/arrow1.png" class="arrow"></image>
+        </block>
+      </view>
+    </block>
+  </view>
 
-  <view class="second bgwhite ">
+  <view class="second empty bgwhite ">
     <wux-accordion-group title="" default-current="{{ ['0'] }}" wux-class="accordion" has>
       <wux-accordion title="点击下方目标条打卡" content="">
         <block wx:if="{{list.length==0}}">
@@ -49,15 +76,15 @@
         <wux-cell thumb="../../images/new.png" title="添加" extra="" bindtap="newTask"></wux-cell>
       </wux-accordion>
     </wux-accordion-group>
-    <wux-divider  wux-class="divider" showText="{{false}}"/>
+    <wux-divider wux-class="divider" showText="{{false}}" />
     <!-- 进度条进度环 -->
     <block wx:if="{{list.length!=0}}">
       <picker mode="selector" disabled="{{list.length==0}}" range="{{list}}" range-key="name" bindchange="switchTarget">
-      <view id="switchBox">
-        <view id="switchText" class="bgTheme_color white ">{{list[targetIndex].name}}</view>
-        <image id="switchTarget" src="../../images/switch.png"></image>
-      </view>
-    </picker>
+        <view id="switchBox">
+          <view id="switchText" class="bgTheme_color white ">{{list[targetIndex].name}}</view>
+          <image id="switchTarget" src="../../images/switch.png"></image>
+        </view>
+      </picker>
       <view id="progress">
         <view id="progressText">{{targetInfo[targetIndex].progress.text}}小队完成度 {{targetInfo[targetIndex].progress.percent}}%</view>
         <wux-progress bar-style="background-color: #A5DEE4" strokeWidth="20" shape="round" percent="{{targetInfo[targetIndex].progress.percent}} " wux-class="wuxProgress" />

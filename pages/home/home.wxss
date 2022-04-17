@@ -10,8 +10,6 @@
   width: 750rpx;
   height: 80rpx;
   padding: 20rpx;
-  border-bottom-left-radius:20rpx ;
-  border-bottom-right-radius:20rpx ;
 }
 
 .serachBarInner {
@@ -52,18 +50,23 @@
 
 #groupBox {}
 
-#groupSwiper,
-.swiper {
+#groupSwiper {
   width: 750rpx;
-  height: 463rpx;
+  height: 400rpx;
   border-radius: 20rpx;
   /* background-color: aqua; */
 }
 
+.swiper {
+  width: 750rpx;
+  height: 400rpx;
+  border-radius: 20rpx;
+  padding-top: 50rpx;
+}
+
 #groupContentBox {
-  width: 710rpx;
-  height: 463rpx;
-  margin: 20rpx;
+  width: 400rpx;
+  height: 300rpx;
   flex-direction: column;
   position: relative;
   border-radius: 20rpx;
@@ -129,7 +132,7 @@
 }
 
 #targetClock {
-  position:absolute;
+  position: absolute;
   left: 480rpx;
   top: 30rpx;
 }
@@ -151,25 +154,55 @@
   border-radius: 0 20rpx 20rpx 0;
 }
 
-#listItem {
-  width: 100%;
-  height: 50rpx;
-  margin-bottom: 20px;
-  background-color: white;
-  padding: 20px;
+.header {
+  height: 70rpx;
+  width: 750rpx;
   display: flex;
-  flex-direction: row;
 }
 
-#id {}
-
-#name {
-  margin-left: 40rpx;
+.header_id {
+  color: white;
+  font-size: medium;
 }
 
-#goto {
-  position: absolute;
-  right: 10rpx;
+.header_name {
+  color: white;
+  font-size: medium;
+}
+
+.header_operate {
+  color: white;
+  font-size: medium;
+}
+
+.item {
+  width: 750rpx;
+  height: 100rpx;
+  display: flex;
+  background-color: white;
+  margin-bottom: 5rpx;
+}
+
+.item_id {
+  width: 160rpx;
+  height: 50rpx;
+  color: #848C96;
+  background-color: #F4F5F7;
+  border-radius: 10rpx;
+  border: 1rpx #F4F5F7 solid;
+  font-size: medium;
+}
+
+.item_name {
+  
+}
+
+.item_operate {
+  width: 100rpx;
+  height: 50rpx;
+  background-color: #A5DEE4;
+  color: white;
+  border-radius: 10rpx;
 }
 
 #leftSwitch,
@@ -206,17 +239,89 @@
   font-size: larger;
 }
 
-#searchButton image{
+#searchButton image {
   width: 90rpx;
   height: 90rpx;
   margin-right: 30rpx;
 }
+
 #createButton image {
   width: 100rpx;
   height: 100rpx;
   margin-right: 30rpx;
 }
-.theme_text{
+
+.theme_text {
   font-size: large;
   padding-left: 20rpx;
+}
+
+/* 新版本css */
+.targetBox {
+  width: 710rpx;
+  height: 100rpx;
+  margin: 5rpx 20rpx 5rpx 20rpx;
+  border-radius: 10rpx;
+  background-color: white;
+  display: flex;
+  position: relative;
+}
+
+.targetIcon {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.targetIcon image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.targetName {
+  width: 600rpx;
+  height: 100rpx;
+}
+
+.name1 {
+  width: inherit;
+  height: 50rpx;
+  padding: 10rpx 0 0 10rpx;
+  font-size: medium;
+}
+
+.name1 text {
+  color: #848C96;
+  font-size: small;
+  margin-left: 10rpx;
+}
+
+.name1_over {
+  width: inherit;
+  height: 100rpx;
+  padding: 0 0 0 10rpx;
+  font-size: medium;
+  color: #848C96;
+  text-decoration: line-through;
+  line-height: 100rpx;
+}
+
+.name2 {
+  width: inherit;
+  height: 50rpx;
+  padding: 0 0 0 10rpx;
+  font-size: small;
+  color: #848C96;
+}
+
+.name2 text {
+  background-color: #F4F5F7;
+
+}
+
+.arrow {
+  position: absolute;
+  width: 50rpx;
+  height: 50rpx;
+  right: 35rpx;
+  bottom: 25rpx;
 }

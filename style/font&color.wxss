@@ -171,7 +171,16 @@
 .bgTheme_color {
   background-color: #A5DEE4;
 }
+.hubuse1{
+  background-color: #E4A5DE;
+}
+.hubuse2{
+  background-color: #DEE4A5;
+}
 .button{
   background-color: #A5DEE4;
   margin: 20rpx;
+}
+.navigator_hover{
+  background-color: rgb(240,240,240);
 }

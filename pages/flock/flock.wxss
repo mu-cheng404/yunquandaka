@@ -37,11 +37,12 @@
   width: 60rpx;
   height: 60rpx;
   position: absolute;
-  top: 10rpx;
+  top: 20rpx;
   right: 20rpx;
   padding: 0;
   border-radius: 50%;
   font-size: 20rpx;
+  color: white;
 }
 #share {
   width: 30px;
@@ -83,6 +84,7 @@
   font-size: large;
 }
 
+
 .first {
   width: 750rpx;
   height: 150px;
@@ -102,8 +104,11 @@
 .second {
   border-top-left-radius: 50rpx;
   border-top-right-radius: 50rpx;
-  padding-top: 50rpx;
   width: 750rpx;
+  background-color: rgb(240, 240, 240);
+}
+.empty{
+  display: none;
 }
 
 
@@ -244,4 +249,82 @@
 .divider{
   width: 710rpx;
   margin: 20rpx;
+}
+
+.targetBox {
+  width: 710rpx;
+  height: 100rpx;
+  margin: 5rpx 20rpx 5rpx 20rpx;
+  border-radius: 10rpx;
+  background-color: white;
+  display: flex;
+  position: relative;
+}
+.newTarget{
+  width: 710rpx;
+  height: 100rpx;
+  margin: 5rpx 20rpx 5rpx 20rpx;
+  border-radius: 10rpx;
+  background-color: rgb(209, 180, 180);
+  display: flex;
+  position: fixed;
+  bottom: 80rpx;
+}
+.newTargetHover{
+  background-color: white;
+}
+.targetIcon {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.targetIcon image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.targetName {
+  width: 600rpx;
+  height: 100rpx;
+}
+
+.name1 {
+  width: inherit;
+  height: 50rpx;
+  padding: 10rpx 0 0 10rpx;
+  font-size: medium;
+}
+.name1 text{
+  color: #848C96;
+  font-size: small;
+  margin-left: 10rpx;
+}
+.name1_over {
+  width: inherit;
+  height: 100rpx;
+  padding: 0 0 0 10rpx;
+  font-size: medium;
+  color: #848C96;
+  text-decoration: line-through;
+  line-height: 100rpx;
+}
+
+.name2 {
+  width: inherit;
+  height: 50rpx;
+  padding: 0 0 0 10rpx;
+  font-size: small;
+  color: #848C96;
+}
+.name2 text {
+  background-color: #F4F5F7;
+
+}
+
+.arrow {
+  position: absolute;
+  width: 50rpx;
+  height: 50rpx;
+  right: 35rpx;
+  bottom: 25rpx;
 }

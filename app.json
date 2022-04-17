@@ -19,7 +19,12 @@
     "pages/view/view",
     "pages/authorize/authorize",
     "pages/loading/loading",
-    "pages/admin/admin"
+    "pages/admin/admin",
+    "pages/square/square",
+    "pages/demo1/demo1",
+    "pages/task/task",
+    "pages/calendar/calendar",
+    "pages/statistics/statistics"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -35,6 +40,12 @@
         "text": "主页",
         "iconPath": "images/home.png",
         "selectedIconPath": "images/home_s.png"
+      },
+      {
+        "pagePath": "pages/square/square",
+        "text": "发现",
+        "iconPath": "images/square.png",
+        "selectedIconPath": "images/square_s.png"
       },
       {
         "pagePath": "pages/mine/mine",

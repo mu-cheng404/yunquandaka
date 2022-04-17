@@ -6,7 +6,7 @@
   <view id="nickName" class="center big">
     {{userInfo.nickName}}
   </view>
-  <view bindtap="syncInfo">同步微信形象</view>
+  <view bindtap="{{hasUserInfo?'syncInfo':'getInfo'}}">{{hasUserInfo?'同步微信形象':'登录'}}</view>
   <view id="headBg" style="background-image: url({{userInfo.avatarUrl}});"></view>
 </view>
 <view id="nick" class="bigger">

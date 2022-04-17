@@ -12,6 +12,6 @@
   box-sizing: border-box;
 }
 Page{
-  background-color: #f4f4f4;
+  background-color: rgb(240, 240, 240);
   font-size:32rpx;       
 }

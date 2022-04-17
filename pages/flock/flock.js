@@ -70,6 +70,13 @@ Page({
       url: `../record/record?id=${id}`,
     })
   },
+  toTask:async function(e){
+    console.log(e)
+    let index = e.currentTarget.id
+    wx.navigateTo({
+      url: '../task/task?id='+this.data.list[index].id,
+    })
+  },
   /**
    * 页面的初始数据
    */
@@ -125,7 +132,7 @@ Page({
     await wx.cloud.callFunction({
       name: "mysql",
       data: {
-        sql: `select id,name,cycle,weekday,clock,start,end from task where flock_id=${V.flock_id}`
+        sql: `select * from task where flock_id=${V.flock_id}`
       }
     }).then((res) => {
       let result = res.result

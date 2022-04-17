@@ -4,26 +4,47 @@
 
 <!--搜索框-->
 <view id="searchBar" class=" bgTheme_color">
-  <wux-search-bar clear maxlength="8" bind:change="searchInput" bind:cancel="onCancel" bind:blur="searchBlur" bind:focus="onFocus" placeholder="输入队伍id或者用户id" wux-class="serachBarInner"></wux-search-bar>
+  <wux-search-bar clear maxlength="8" bind:change="searchInput" bind:cancel="onCancel" bind:blur="searchBlur" bind:focus="onFocus" placeholder="队伍ID或者队伍名" wux-class="serachBarInner"></wux-search-bar>
 </view>
+<!-- 显示搜索结果 -->
 <block wx:if="{{isFocus}}">
   <view id="part1">
+    <view class="header bgTheme_color white">
+      <view class="center" style="width: 200rpx;height: 70rpx;">
+        <view class="header_id center">ID</view>
+      </view>
+      <view class="center" style="width: 330rpx;height: 70rpx;">
+        <view class="header_name center">小队名</view>
+      </view>
+      <view class="center" style="width: 220rpx;height: 70rpx;">
+        <view class="header_operate center">操作</view>
+      </view>
+    </view>
     <block wx:for="{{searchResult}}" wx:key="key">
-      <view id="listItem">
-        <view id="id">{{item.id}}</view>
-        <view id="name">{{item.nickName}}</view>
-        <view id="goto">
-          <button id="{{index}}" size="mini" bindtap="gotoTap">前往</button>
+
+      <view class="item">
+        <view class="center" style="width: 200rpx;height: 100rpx;">
+          <view class="item_id center">{{item.id}}</view>
+        </view>
+        <view class="center" style="width: 330rpx;height: 100rpx;">
+          <view class="item_name center">{{item.nickName}}</view>
+        </view>
+        <view class="center" style="width: 220rpx;height: 100rpx;">
+          <view class="item_operate center" bindtap="gotoTap" style="margin-right: 10rpx;">
+            查看
+          </view>
+          <view class="item_operate center" bindtap="gotoTap">
+            申请
+          </view>
         </view>
       </view>
     </block>
   </view>
 </block>
+
 <block wx:if="{{!isFocus}}">
-
   <view id="groupSwiper" class="shadow">
-
-    <swiper class="swiper" display-multiple-items="1" current="{{swiperIndex}}">
+    <swiper class="swiper" display-multiple-items="1" current="{{swiperIndex}}" previous-margin="200rpx" next-margin="50rpx" display-multiple-items="1">
       <block wx:for="{{groupList}}" wx:key="key">
         <swiper-item>
 
@@ -35,6 +56,7 @@
                 <image src="../../images/avatar.jpg"></image>
               </view>
               <view id="groupText">{{item.name}}</view>
+
             </view>
           </view>
         </swiper-item>
@@ -49,12 +71,12 @@
       <image src="../../images/createGroup.png"></image>创建
     </view>
   </view>
-  <view id="targetBox" >
+  <view id="targetBox">
     <view id="targetLable">
       <view class="theme_text">近期目标</view>
     </view>
     <block wx:for="{{targetList}}" wx:key="key" class="bgwhite">
-      <view id="{{index}}" bindtap="targetTap">
+      <!-- <view id="{{index}}" bindtap="targetTap">
         <view id="targetContentBox" class="shadow bgwhite">
           <image src="../../images/avatar.jpg" id="targetIcon"></image>
           <view id="targetName">
@@ -69,6 +91,20 @@
             <image src="../../images/unover.png" id="targetOver"></image>
           </block>
         </view>
+      </view> -->
+      <view class="targetBox" id="{{index}}" bindtap="targetTap">
+        <view class="targetIcon center">
+          <image src="../../images/{{item.type}}.png"></image>
+        </view>
+        <view class="targetName">
+          <view class="{{isOver?'name1_over':'name1'}}">{{item.task_name}}<text>#{{item.flock_name}}</text></view>
+          <block wx:if="{{!isOver}}">
+            <view class="name2"><text>{{item.cycle}}·</text> 由 <text>{{item.creator}}</text> 创建·<text>{{item.form}}打卡</text></view>
+          </block>
+        </view>
+        <block wx:if="{{!isOver}}">
+          <image src="../../images/arrow1.png" class="arrow"></image>
+        </block>
       </view>
     </block>
   </view>

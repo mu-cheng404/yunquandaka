@@ -6,14 +6,14 @@ const utils = require("../../utils/util")
 
 Page({
   /**
-   * 同步微信形象
+   * 当用户已经登录时，同步微信形象的点击事件
    */
   syncInfo: async function (e) {
     wx.getUserProfile({
       desc: '同步微信信息',
       success: (res) => {
         let newUserInfo = res.userInfo
-        let sql =  `update user set nickName='${newUserInfo.nickName}',avatarUrl='${newUserInfo.avatarUrl}' where id = ${globalData.user_id}`
+        let sql = `update user set nickName='${newUserInfo.nickName}',avatarUrl='${newUserInfo.avatarUrl}' where id = ${globalData.user_id}`
 
         utils.executeSQL(sql)
 
@@ -21,7 +21,29 @@ Page({
       }
     })
   },
-  
+  /**
+   * 当用户还没登录时，用户授权信息点击事件
+   */
+  getInfo: async function () {
+
+    wx.getUserProfile({
+      desc: '获取用户信息',
+      success: async (res) => {
+        //获取openID
+        let userInfo = res.userInfo
+        let openid = await wx.cloud.callFunction({
+          name: "getOpenID",
+        }).result.openid
+        let sql = `insert into user values(${utils.randomsForSixDigit()},'${openid}','${userInfo.nickName}','${userInfo.avatarUrl}')`
+        console.log(sql)
+        utils.executeSQL(sql)
+        //修改flag
+        this.setData({
+          hasUserInfo: true
+        })
+      }
+    })
+  },
   toAboutus: function () {
     wx.navigateTo({
       url: '../aboutus/aboutus',
@@ -43,13 +65,16 @@ Page({
   data: {
     userInfo: {},
     buttonDisplay: "",
+    hasUserInfo: false,
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-
-    if (globalData.user_id!="") {
+    this.setData({
+      hasUserInfo: globalData.hasUserInfo
+    }) //从全局变量中获取flag
+    if (this.data.hasUserInfo) {
       let sql = `select * from user where id = ${globalData.user_id}`
 
       let result = await utils.executeSQL(sql)
@@ -61,7 +86,7 @@ Page({
     }
 
   },
-  toAdmin:function(){
+  toAdmin: function () {
     wx.navigateTo({
       url: '../admin/admin',
     })

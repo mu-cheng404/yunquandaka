@@ -14,10 +14,16 @@
   </wux-cell>
 </wux-cell-group>
 <wux-cell-group title="提醒" label="">
+  <picker bindchange="typePickerChange" value="{{type}}" range="{{typeArray}}">
+    <wux-cell title="任务类型" is-link label="" extra="{{type}}"></wux-cell>
+  </picker>
   <!-- <wux-cell title="选择成员" is-link url="../members/members"></wux-cell> -->
+  <picker bindchange="formPickerChange" value="{{form}}" range="{{formArray}}">
+    <wux-cell title="打卡形式" is-link label="" extra="{{form}}"></wux-cell>
+  </picker>
   <!-- 选择周期 -->
   <picker bindchange="cyclePickerChange" value="{{cycle}}" range="{{cycleArray}}">
-    <wux-cell title="周期" is-link label="" extra="{{cycle}}"></wux-cell>
+    <wux-cell title="打卡周期" is-link label="" extra="{{cycle}}"></wux-cell>
   </picker>
   <!-- 当周期为week时 -->
   <block wx:if="{{cycle=='每周'}}">

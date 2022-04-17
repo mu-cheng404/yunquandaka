@@ -1,0 +1,5 @@
+<scroll-view class="scroll-view_H" scroll-x="true" scroll-y="false"  style="width: 100%">
+  <view id="demo1" style="width: 500rpx;height: 500rpx;background-color: yellow;"></view>
+  <view id="demo2" style="width: 500rpx;height: 500rpx;background-color: rgb(68, 34, 129);"></view>
+  <view id="demo3" style="width: 500rpx;height: 500rpx;background-color: rgb(34, 138, 124);"></view>
+</scroll-view>

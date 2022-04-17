@@ -4,13 +4,11 @@ App({
     wx.cloud.init({
       env: "yuan-1-1gylic1ae84507a5"
     })
-    
-
   },
 
   globalData: {
     userInfo: null,
-    user_id: "",
+    user_id: 579718,
     hasUserInfo: false,
   },
  

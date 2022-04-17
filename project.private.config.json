@@ -27,7 +27,7 @@
         {
           "name": "群组flock",
           "pathName": "pages/flock/flock",
-          "query": "id=395453",
+          "query": "id=666744",
           "launchMode": "default",
           "scene": null
         },
@@ -41,7 +41,7 @@
         {
           "name": "添加任务addtk",
           "pathName": "pages/addtk/addtk",
-          "query": "flock_id=961091",
+          "query": "flock_id=350000",
           "launchMode": "default",
           "scene": null
         },
@@ -122,6 +122,20 @@
           "name": "后台管理",
           "pathName": "pages/admin/admin",
           "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "demo1",
+          "pathName": "pages/demo1/demo1",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "计划task",
+          "pathName": "pages/task/task",
+          "query": "id=671155",
           "scene": null,
           "launchMode": "default"
         }

@@ -1,7 +1,7 @@
 var test = 1;
 const utils = require("../../utils/util")
 Page({
-
+ 
   /**
    * 页面的初始数据
    */
@@ -57,25 +57,51 @@ Page({
       console.log("发送订阅消息的结果是")
       console.log(res)
     })
-    
+
   },
-  trigger:async function (){
+  trigger: async function () {
     await wx.cloud.callFunction({
       name: "trigger"
     }).then(res => {
       console.log(res)
     })
   },
-  dailyCheck:async function(){
-    let date = utils.getCurrentFormatedDate()
-    console.log(date)
-    //选择每个任务
-    let sql = `update task set isEnd=1 where end<'${date}' and isEnd=0`;
-    await wx.cloud.callFunction({name:"mysql",data:{sql:sql}}).then(res=>{
+  getCurrentFormatedDate:function(){
+    let date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    return `${[year, month, day].map(this.formatNumber).join('-')}`
+  },
+  formatNumber:function(n){
+    n = n.toString()
+    return n[1] ? n : `0${n}`
+  },
+  dailyCheck: async function () {
+    await wx.cloud.callFunction({
+      name: "dailyCheck"
+    }).then(res => {
       console.log(res)
     })
-  //end与当前时间相比较
-    //如果end<当前时间，则标记isend为1
+    // let date = this.getCurrentFormatedDate()
+    // console.log(date)
+    // //选择每个任务
+    // let sql = `update task set isEnd=1 where end<'${date}' and isEnd=0`;
+    // await wx.cloud.callFunction({
+    //   name: "mysql",
+    //   data: {
+    //     sql: sql
+    //   }
+    // }).then(async res => {
+    //   let [time,content,user] = [new Date().toLocaleString(),JSON.stringify(res.result),"task"]
+    //   let sql1 = `insert into log(time,content,user) values('${time}','${content}','${user}')`
+    //   await wx.cloud.callFunction({
+    //     name: "mysql",
+    //     data: {
+    //       sql:sql1
+    //     }
+    //   })
+    // })
   },
   /**
    * 生命周期函数--监听页面加载
