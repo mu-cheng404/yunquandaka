@@ -7,7 +7,7 @@ Page({
   data: {
 
   },
-
+  
   /**
    * 生命周期函数--监听页面加载
    */
@@ -26,7 +26,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: async function () {
-    await this.init()
+    // await this.init()
   },
   init: async function () {
     let loginFlag = 1,

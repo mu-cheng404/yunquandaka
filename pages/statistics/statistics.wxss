@@ -1,1 +1,8 @@
-/* pages/statistics/statistics.wxss */
+Page{
+  background-color: white;
+}
+.canvas {
+  width: 750rpx;
+  background-color: white;
+  padding-top: 10rpx;
+}

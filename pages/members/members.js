@@ -1,109 +1,111 @@
+const globalData = getApp().globalData
+const utils = require('../../utils/util')
+const SQL = require('../../utils/sql')
+var V = {
+  flock_id: '',
+  task_id: ''
+}
 Page({
-  add_tap: function () {
-    this.setData({
-      add_state: !this.data.add_state
-    })
-  },
-  chooseAll: function () {
-    let state = this.data.button_state;
-    let array = [];
-    if (state) {
-      array = [1, 1, 1, 1, 1]
-    }
-    this.setData({
-      value: array,
-      button_state: !state
-    })
-  },
-  onCellClick: function (e) {
-    let id = e.target.id;
-    this.setData({
-      ['value[' + id + ']']: !this.data.value[id]
-    })
-  },
   /**
    * 页面的初始数据
    */
   data: {
-    select_value: [0, 1, 0, 1, 1],
-    button_state: "1", //按钮的文字，1：全选 0：全不选
-    add_state: "0", //调整状态，1:是，0：否
-    value: [], //列表项是否选中
-    right: [{
-      text: '踢',
-      style: 'background-color: #F4333C; color: white',
-    }],
-    infoList: [{
-      url: "../../images/avatar.jpg",
-      name: "小木"
-    }, {
-      url: "../../images/avatar.jpg",
-      name: "小木"
-    }, {
-      url: "../../images/avatar.jpg",
-      name: "小木"
-    }, {
-      url: "../../images/avatar.jpg",
-      name: "小木"
-    }, {
-      url: "../../images/avatar.jpg",
-      name: "小木"
-    }]
+    list: [],
+    admin: false,
+    adminID: '',
+    active: false,
+    type: "", //成员类型 1 圈子 0 计划
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-
+  onLoad: async function (options) {
+    V.flock_id = options.flock_id
+    console.log(options.task_id)
+    this.setData({
+      type: options.task_id == ""?1:0
+    })
+    if (this.data.type == 1) {
+      await this.getAndSetFlockMemberInfo()
+    } else {
+      V.task_id = options.task_id
+      await this.getAndSetTaskMemberInfo()
+    }
+    console.log(V.flock_id, V.task_id, '---------------------')
+    await this.checkAdmin()
   },
-
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 获取圈子成员列表信息
    */
-  onReady: function () {
-
+  async getAndSetFlockMemberInfo() {
+    let list = await SQL.flock_select_member(V.flock_id)
+    list = list && JSON.parse(list)
+    this.setData({
+      list: list
+    })
   },
-
   /**
-   * 生命周期函数--监听页面显示
+   * 获取计划成员列表信息
    */
-  onShow: function () {
-
+  async getAndSetTaskMemberInfo() {
+    let list = await SQL.task_select_member(V.task_id)
+    list = list && JSON.parse(list)
+    this.setData({
+      list: list
+    })
   },
-
   /**
-   * 生命周期函数--监听页面隐藏
+   * 用户点击踢出成员
+   * @param {*} e 
    */
-  onHide: function () {
+  async kick_out(e) {
+    let index = e.currentTarget.id
+    let user = this.data.list[index]
+    let _this = this
+    wx.showModal({
+      content: "踢出后将清除ta的所有数据，请再次确认",
+      cancelColor: 'cancelColor',
+      cancelText: "手滑了",
+      success: async res => {
+        let confirm = res.confirm
+        if (confirm) {
+          if (V.task_id) {
+            await SQL.flock_quit(V.flock_id, user.id)
 
+          } else {
+            await SQL.task_quit(user_id, V.task_id)
+            await _this.getAndSetTaskMemberInfo()
+            utils.show_toast('已踢出')
+          }
+        } else [
+
+        ]
+      }
+    })
   },
-
   /**
-   * 生命周期函数--监听页面卸载
+   * 查询当前用户是否为管理员
    */
-  onUnload: function () {
-
+  async checkAdmin() {
+    let admin
+    if (this.data.type == 1) {
+      admin = await SQL.flock_select_amdin(V.flock_id)
+      admin = admin && JSON.parse(admin)
+      admin = admin[0].creater_id
+    } else {
+      admin = await SQL.task_select_amdin(V.task_id)
+      admin = admin && JSON.parse(admin)
+      admin = admin[0].creator
+    }
+    console.log(admin,'-----------------------------')
+    this.setData({
+      adminID: admin,
+      admin: admin == globalData.user_id
+    })
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  dianjiguanli() {
+    this.setData({
+      active: !this.data.active
+    })
   }
 })

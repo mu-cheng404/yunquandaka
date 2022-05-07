@@ -1,6 +1,11 @@
 {
   "usingComponents": {
-    "wux-upload": "../../dist/upload/index",
-    "wux-button": "../../dist/button/index"
-  }
+    "wux-button": "../../dist/button/index",
+    "wux-upload": "../../dist/upload/index"
+  },
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "disableScroll": false,
+  "navigationBarBackgroundColor": "#A5DEE4"
+
 }

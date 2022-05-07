@@ -1,4 +1,5 @@
 {
+  "navigationStyle":"custom",
   "usingComponents": {
     "wux-cell": "../../dist/cell/index",
     "wux-card": "../../dist/card/index",
@@ -15,7 +16,10 @@
     "wux-white-space": "../../dist/white-space/index",
     "wux-button": "../../dist/button/index",
     "wux-progress": "../../dist/progress/index",
-    "wux-divider": "../../dist/divider/index"
+    "wux-divider": "../../dist/divider/index",
+    "wux-landscape": "../../dist/landscape/index",
+    "wux-segmented-control": "../../dist/segmented-control/index",
+    "wux-date-picker": "../../dist/date-picker/index"
   },
   "navigationBarBackgroundColor": "#A5DEE4",
   "navigationBarTitleText": ""

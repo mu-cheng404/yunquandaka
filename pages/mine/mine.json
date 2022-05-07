@@ -1,11 +1,13 @@
 {
+  "navigationStyle": "custom",
   "usingComponents": {
     "wux-icon": "../../dist/icon/index",
     "wux-button": "../../dist/button/index",
     "wux-cell-group": "../../dist/cell-group/index",
     "wux-cell": "../../dist/cell/index",
-    "wux-white-space": "../../dist/white-space/index"
+    "wux-white-space": "../../dist/white-space/index",
+    "wux-badge": "../../dist/badge/index"
   },
-  "navigationBarBackgroundColor": "#A5DEE4",
-  "disableScroll": true
+  "disableScroll": true,
+  "enablePullDownRefresh": false
 }

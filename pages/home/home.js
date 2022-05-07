@@ -1,277 +1,187 @@
 const globalData = getApp().globalData
-import {
-  $wuxDialog
-} from '../../dist/index'
 const utils = require("../../utils/util")
+const message = require("../../utils/message")
 var V = {
-  loaded: "flase"
+    loaded: false
 }
 Page({
-  searchBlur: function (params) {
-    this.setData({
-      isFocus: false
-    })
-  },
-  /**
-   * 点击目标
-   */
-  searchInput: async function (e) {
-    let value = e.detail.value
-    if (value.length >= 1) {
-
-      let sql = `select id,nickName,1 as flag from user where id like '${value}%' or nickName like '${value}%' union select id,name,2 as flag from flock where id like '${value}%' or name like '${value}%'; `
-
-      let result = await utils.executeSQL(sql)
-      result = result && JSON.parse(result)
-
-      console.log(result)
-      this.setData({
-        searchResult: result,
-      })
-    }
-
-
-  },
-  gotoTap: function (e) {
-    let index = e.target.id
-    let id = this.data.searchResult[index].id
-    let flag = this.data.searchResult[index].flag
-    let url
-    if (flag == 1) { //用户
-      url = "../"
-    } else if (flag == 2) {
-      url = `../flock/flock?id="${id}"`
-    }
-    wx.navigateTo({
-      url: url,
-    })
-  },
-  naviToFlock: function () {
-    wx.navigateTo({
-      url: '../flock/flock',
-    })
-  },
-  //获取搜索框焦点
-  onSearch: function () {
-    this.setData({
-      isFocus: true
-    })
-  },
-  // 跳转到初始化页面
-  creatGroup: function () {
-    wx.navigateTo({
-      url: '../init/init',
-    })
-  },
-  /**
-   * 页面数据
-   */
-  data: {
-    searchResult: {},
-    value: "",
-    current: 'tab1',
-    groupList: {},
-    targetList: [],
-    isFocus: false,
-    swiperIndex: "1",
-  },
-  /**
-   * 页面加载
-   */
-  onLoad: async function (options) {},
-  /**
-   * 页面显示
-   */
-  onShow: async function () {
-    if (await this.init()) {
-      await this.showLoading()
-      await this.getGroupList();
-      await this.getTargetList();
-      await this.hideLoading();
-    }
-  },
-  /**
-   * （程序）初始化
-   * 1. 检查数据库是否有信息 打上标记
-   * return 是否有信息
-   */
-  init: async function () {
-    // 获取openid
-    let openid = await (await wx.cloud.callFunction({
-      name: "getOpenID"
-    })).result.openid
-    // let openid = '124124'
-    let sql = `select id from user where openid='${openid}'`
-    let result = await utils.executeSQL(sql)
-    utils.showDetail(result)
-    if (result == '[]') { //指没有信息
-      globalData.hasUserInfo = false
-      return false
-    } else { //有信息
-      result = result && JSON.parse(result)
-      globalData.hasUserInfo = true
-      globalData.user_id = result[0].id
-      return true
-    }
-  },
-  showLoading: async function () {
-    await wx.showLoading({
-      title: '冲刺中···',
-      mask: true
-    }).then((res) => {
-      console.log(res)
-    })
-  },
-  hideLoading: async function () {
-    await wx.hideLoading()
-  },
-  myevent: function () {
-    console.log("我被调用了")
-  },
-
-  // 标签页相关
-  onChange(e) {
-    console.log('onChange', e)
-    this.setData({
-      current: e.detail.key,
-    })
-  },
-  onTabsChange(e) {
-    console.log('onTabsChange', e)
-    const {
-      key
-    } = e.detail
-    const index = this.data.tabs.map((n) => n.key).indexOf(key)
-
-    this.setData({
-      key,
-      index,
-    })
-  },
-  onSwiperChange(e) {
-    console.log('onSwiperChange', e)
-    const {
-      current: index,
-      source
-    } = e.detail
-    const {
-      key
-    } = this.data.tabs[index]
-
-    if (!!source) {
-      this.setData({
-        key,
-        index,
-      })
-    }
-  },
-  // 与搜索框有关
-  onChange(e) {
-    console.log('onChange', e)
-    this.setData({
-      value: e.detail.value,
-    })
-  },
-  onFocus(e) {
-    console.log('onFocus', e)
-    this.setData({
-      isFocus: true
-    })
-  },
-  onBlur(e) {
-    console.log('onBlur', e)
-  },
-  onConfirm(e) {
-    console.log('onConfirm', e)
-  },
-  onClear(e) {
-    console.log('onClear', e)
-    this.setData({
-      value: '',
-    })
-  },
-  onCancel(e) {
-    this.setData({
-      isFocus: false
-    })
-
-  },
-  /**
-   * 获取团队信息
-   */
-  getGroupList: async function () {
-    let sql = `select id,name from flock where id in ( select flock_id from joining where user_id = ${globalData.user_id})`
-    console.log(sql)
-    let result = await utils.executeSQL(sql)
-    result = result && JSON.parse(result)
-
-    console.log(result)
-    this.setData({
-      groupList: result
-    })
-
-  },
-  /**
-   * 获取目标清单
-   */
-  getTargetList: async function () {
-    //获取所有与我有关的目标
-    let sql = ` select t.id,t.name as task_name,t.cycle,t.clock,0 as over,f.name as flock_name,t.type,t.form,t.creator from task as t,joining as j ,flock as f where t.flock_id = j.flock_id and t.flock_id = f.id and j.user_id = ${globalData.user_id}`
-    let result = await utils.executeSQL(sql)
-    result = result && JSON.parse(result)
-    console.log("result", result)
-    //生成id组
-    let idArray = []
-    for (let i = 0; i < result.length; i++) {
-      idArray[i] = result[i].id
-    }
-    console.log(idArray)
-    //找到今日打过卡的目标id
-    let myDate = utils.getCurrentFormatedDate()
-    console.log(myDate)
-    let sql2 = `select t.id,1 as over from task as t,punch as p,record as r where p.user_id = ${globalData.user_id} and p.record_id = r.id and r.date='${myDate}' and r.task_id = t.id and t.id in (${idArray})`
-    let result2 = await utils.executeSQL(sql2)
-    result2 = result && JSON.parse(result2)
-    console.log("result2", result2)
-
-    //处理数据 标记完成或者未完成
-    for (let i = 0; i < result.length; i++) {
-      for (let j = 0; j < result2.length; j++) {
-        if (result[i].id == result2[j].id) {
-          result[i].over = 1
-          break;
+    /**
+     * 页面数据
+     */
+    data: {
+        searchResult: {},
+        value: "",
+        current: 'tab1',
+        groupList: [],
+        targetList: [],
+        isFocus: false,
+        swiperIndex: "1",
+        login: '', //用户登录状态
+        button1: [{ text: "新建" }],
+        button2: [{ text: "去收藏" }]
+    },
+    /**
+     * 页面加载
+     */
+    onLoad: async function(options) {},
+    /**
+     * 页面显示
+     */
+    onShow: async function() {
+        let login = await utils.verifyLogin()
+        // let login = 1 //跳过检查
+        this.setData({
+            login: login
+        })
+        if (login) {
+            await this.showLoading()
+            await this.getGroupList();
+            await this.getTargetList();
+            await this.hideLoading();
         } else {
-          result[i].over = 0
+            wx.navigateTo({
+                url: '../authorize/authorize',
+            })
         }
-        console.log(result[i].over)
-      }
-    }
+    },
+    /**
+     * 用户点击去收藏
+     */
+    toCollect() {
+        //检查是否有圈子
+        if (this.data.groupList.length == 0) {
+            utils.show_toast('加入圈子后才可收藏哦', 'forbidden')
+        } else {
+            wx.navigateTo({
+                url: `../flock/flock?id=${this.data.groupList[0].id}`
+            })
+        }
+    },
+    /**
+     * （程序）初始化
+     * 1. 检查数据库是否有信息 打上标记
+     * return 是否有信息
+     */
+    init: async function() {
+        // 获取openid
+        let openid = await (await wx.cloud.callFunction({
+            name: "getOpenID"
+        })).result.openid
 
-    this.setData({
-      targetList: result
-    })
-  },
-  /**
-   * 点击团队列表
-   */
-  groupTap: function (e) {
-    let index = e.currentTarget.id
-    console.log(e)
-    let flock_id = this.data.groupList[index].id
-    console.log(flock_id)
-    wx.navigateTo({
-      url: `../flock/flock?id=${flock_id}`,
-    })
-  },
-  /**
-   * 点击目标列表
-   */
-  targetTap: function (e) {
-    let index = e.currentTarget.id
-    console.log(e)
-    let id = this.data.targetList[index].id
-    wx.navigateTo({
-      url: `../record/record?id=${id}`,
-    })
-  }
+        let sql = `select id from user where openid='${openid}'`
+        let result = await utils.executeSQL(sql)
+        utils.showDetail(result)
+        if (result == '[]') { //指没有信息
+            globalData.hasUserInfo = false
+            return false
+        } else { //有信息
+            result = result && JSON.parse(result)
+            globalData.hasUserInfo = true
+            globalData.user_id = result[0].id
+            return true
+        }
+    },
+    /**
+     * 加载提示
+     */
+    showLoading: async function() {
+        await wx.showLoading({
+            title: '加载中···',
+            mask: true
+        }).then((res) => {
+            console.log(res)
+        })
+    },
+    hideLoading: async function() {
+        await wx.hideLoading()
+    },
+    /**
+     * 获取团队信息
+     */
+    getGroupList: async function() {
+        let sql = `select *,(select count(*) from joining where flock_id = flock.id) as num_of_member from flock where id in ( select flock_id from joining where user_id = ${globalData.user_id})`
+        let result = await utils.executeSQL(sql)
+        result = result && JSON.parse(result)
+
+        this.setData({
+            groupList: result
+        })
+
+    },
+    /**
+     * 获取目标清单
+     */
+    getTargetList: async function() {
+        let myDate = utils.getCurrentFormatedDate()
+        console.log(myDate)
+        let sql = `select task.id,task.name,task.cycle,task.type,task.form,(select nickName from user where task.creator = user.id) as creator,flock.name as flock_name,exists(select punch.id from punch,record where record.date='${myDate}' and record.task_id = task.id and record.id = punch.record_id and punch.user_id = ${globalData.user_id}) as over from task,flock,joining where joining.user_id = ${globalData.user_id} and joining.flock_id = flock.id and flock.id = task.flock_id and exists(select id from collect where task_id = task.id and user_id = ${globalData.user_id}) order by over `
+
+        let result = await utils.executeSQL(sql)
+        result = result && JSON.parse(result)
+        console.log("result", result)
+
+        this.setData({
+            targetList: result
+        })
+    },
+    searchBlur: function(params) {
+        this.setData({
+            isFocus: false
+        })
+    },
+    /**
+     * 搜索框
+     */
+    searchInput: async function(e) {
+        let value = e.detail.value
+        if (value.length >= 1) {
+            let sql = `select id,name,creater_id,exists(select id from joining where flock_id = flock.id and user_id = ${globalData.user_id}) as joined from flock where id like '${value}%' or name like '${value}%';`
+
+            let result = await utils.executeSQL(sql)
+            result = result && JSON.parse(result)
+
+            this.setData({
+                searchResult: result,
+            })
+        }
+    },
+    //搜索框内容发生改变
+    onChange(e) {
+        console.log('onChange', e)
+        this.setData({
+            value: e.detail.value,
+        })
+    },
+    //搜索框聚焦
+    onFocus(e) {
+        this.setData({
+            isFocus: true
+        })
+    },
+    onCancel(e) {
+        console.log(e)
+        this.setData({
+            isFocus: false,
+        })
+    },
+    /**
+     * 点击申请
+     */
+    toJoin: async function(e) {
+        //发送通知
+        let target = this.data.searchResult[e.currentTarget.id]
+        await message.send_apply_message(globalData.user_id, target.creater_id, target.id)
+
+        wx.showToast({
+            title: '已申请',
+            icon: "success"
+        })
+
+    },
+    //获取搜索框焦点
+    onSearch: function() {
+        this.setData({
+            isFocus: true
+        })
+    },
 })

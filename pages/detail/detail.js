@@ -1,66 +1,208 @@
-// pages/detail/detail.js
+const globalData = getApp().globalData
+const utils = require("../../utils/util")
+const message = require("../../utils/message")
+const SQL = require("../../utils/sql")
+var V = {
+  id: ""
+}
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
+    info: {}, //用户基本信息
+    exp: {}, //基本信息
+    remarkList: [],
+    value: "", //实时输入的评论 
+    own: false,
+  },
+  async onLoad(options) {
+    V.id = options.id
+
+    let info = await this.getUserProfile()
+    this.setData({
+      info: info
+    })
+    let exp = await this.getExperInfo()
+    this.setData({
+      exp: exp[0],
+      own: exp[0].writter_id == globalData.user_id
+    })
+
+    await this.getRemarkList()
 
   },
-
   /**
-   * 生命周期函数--监听页面加载
+   * 用户点击预览图片
    */
-  onLoad: function (options) {
-
+  previewImage(){
+    console.log("预览图片")
+    wx.previewImage({
+      urls: [this.data.exp.url],
+      current:this.data.exp.url
+    })
   },
-
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 用户点击分享
    */
-  onReady: function () {
-
+  share(){
+    utils.show_toast("请点击右上角分享",'text')
   },
-
   /**
-   * 生命周期函数--监听页面显示
+   * 用户删除评论
    */
-  onShow: function () {
+  async delete_remark(e){
+    let index = e.currentTarget.id
+    let remark = this.data.remarkList[index]
+    wx.showModal({
+      content: "确定删除",
+      cancelColor: 'cancelColor',
+      success: async res => {
+        let confirm = res.confirm
+        if (confirm) {
+          await SQL.remark_delete(remark.id)
+          utils.show_toast("删除成功")
+          await this.getRemarkList()
+        } else {
 
+        }
+      }
+
+    })
   },
-
   /**
-   * 生命周期函数--监听页面隐藏
+   * 用户点击删除帖子
    */
-  onHide: function () {
+  async delete_exp() {
+    wx.showModal({
+      content: "确定删除",
+      cancelColor: 'cancelColor',
+      success: async res => {
+        let confirm = res.confirm
+        if (confirm) {
+          await SQL.experience_delete(this.data.exp.id)
+          utils.show_toast("删除成功")
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 1,
+            })
+          }, 1000);
+        } else {
 
+        }
+      }
+    })
   },
-
   /**
-   * 生命周期函数--监听页面卸载
+   * 获取个人基本信息
    */
-  onUnload: function () {
-
+  async getUserProfile() {
+    let sql = `select avatarUrl from user where id = ${globalData.user_id}`
+    let res = await utils.executeSQL(sql)
+    res = res && JSON.parse(res)
+    return res[0]
   },
-
   /**
-   * 页面相关事件处理函数--监听用户下拉动作
+   * 获取心得基础信息
    */
-  onPullDownRefresh: function () {
-
+  async getExperInfo() {
+    let sql = `select e.id,e.content,e.time,e.writter_id,e.url,user.nickName as writter_name,user.avatarUrl as writter_url,(select count(*) from liking where exper_id = e.id and type = 1) as num_of_like , (select count(*) from remark where exper_id = e.id) as num_of_remark ,exists (select id from liking where user_id =${globalData.user_id} and exper_id = e.id and type = 1) as isLike from experience as e,user where e.id = ${V.id} and user.id = e.writter_id order by e.time desc`
+    let res = await utils.executeSQL(sql)
+    res = res && JSON.parse(res)
+    return res
   },
-
   /**
-   * 页面上拉触底事件的处理函数
+   * 获取评论列表
    */
-  onReachBottom: function () {
-
+  async getRemarkList() {
+    let res = await SQL.remark_select(V.id,globalData.user_id)
+    res = res && JSON.parse(res)
+    this.setData({remarkList:res})
   },
-
+  async exp_like(e) {
+    let exper = this.data.exp
+    //修改页面值
+    this.setData({
+      ['exp.isLike']: 1,
+      ['exp.num_of_like']: exper.num_of_like + 1,
+    })
+    //修改数据库
+    let sql = `insert into liking(exper_id,user_id,time,type) values( ${exper.id},${globalData.user_id},'${utils.formatTime(new Date())}',1)`
+    await utils.executeSQL(sql)
+    //生成点赞通知
+    await message.send_like_message(globalData.user_id, exper.writter_id, exper.id)
+  },
+  async exp_cancelLike(e) {
+    let exper = this.data.exp
+    //修改页面值
+    this.setData({
+      ['exp.isLike']: 0,
+      ['exp.num_of_like']: exper.num_of_like - 1,
+    })
+    //修改数据库
+    let sql = `delete from liking where user_id = ${globalData.user_id} and exper_id = ${exper.id}`
+    await utils.executeSQL(sql)
+  },
+  async remark_like(e) {
+    console.log(e)
+    let index = e.currentTarget.id
+    let remark = this.data.remarkList[index]
+    //修改页面值
+    this.setData({
+      ['remarkList[' + index + '].isLike']: 1,
+      ['remarkList[' + index + '].num_of_like']: remark.num_of_like + 1,
+    })
+    //修改数据库
+    let sql = `insert into liking(exper_id,remark_id,user_id,time,type) values(${this.data.exp.id}, ${remark.id},${globalData.user_id},'${utils.formatTime(new Date())}',0)`
+    await utils.executeSQL(sql)
+    //生成点赞通知
+    await message.send_like_message(globalData.user_id, remark.user_id, this.data.exp.id)
+  },
+  async remark_cancelLike(e) {
+    console.log(e)
+    let index = e.currentTarget.id
+    let remark = this.data.remarkList[index]
+    //修改页面值
+    this.setData({
+      ['remarkList[' + index + '].isLike']: 0,
+      ['remarkList[' + index + '].num_of_like']: remark.num_of_like - 1,
+    })
+    //修改数据库
+    let sql = `delete from liking where user_id = ${globalData.user_id} and remark_id = ${remark.id}`
+    await utils.executeSQL(sql)
+  },
   /**
-   * 用户点击右上角分享
+   * 用户输入评论
    */
-  onShareAppMessage: function () {
+  async remark_input(e) {
+    let value = e.detail.value
+    this.setData({
+      value: value
+    })
+  },
+  /**
+   * 提交评论
+   */
+  async commit_remark() {
+    wx.showLoading({
+      title: '数据上传中',
+      remark: true
+    })
+    //插入评论信息
+    let [user_id, exper_id, time, content] = [globalData.user_id, this.data.exp.id, utils.formatTime(new Date()), this.data.value]
+    await SQL.remark_insert(user_id, exper_id, time, content);
+    //页面刷新数据
+    await this.getRemarkList()
+
+    this.setData({
+      ['exp.num_of_remark']: this.data.exp.num_of_like + 1
+    })
+    //生成通知
+    await message.send_remark_message(globalData.user_id, this.data.exp.writter_id, this.data.exp.id)
+    //提示信息
+    wx.hideLoading({
+      success: (res) => {
+        utils.show_toast('评论成功')
+      },
+    })
+
 
   }
 })

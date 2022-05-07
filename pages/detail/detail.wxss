@@ -1,1 +1,7 @@
-/* pages/detail/detail.wxss */
+.remark{
+  height: 100rpx;
+}
+.cell{
+  width: 550rpx;
+  height: 100rpx;
+}

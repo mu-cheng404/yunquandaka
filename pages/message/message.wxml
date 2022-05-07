@@ -1,0 +1,21 @@
+<wux-toast id="wux-toast"></wux-toast>
+<block wx:for="{{messageList}}" wx:key="">
+  <view style="width:710rpx;margin:20rpx 20rpx 20rpx 20rpx">
+    <view style="width: 710rpx;height: 30rpx;color: #848C96; font-size: small;margin-bottom: 20rpx;" class="center">{{item.time}}</view>
+    <view style="width:710rpx;background-color: white;border-radius: 20rpx;">
+      <wux-badge dot="{{!item.hasRead}}">
+
+        <view style="width: 690rpx;height: 80rpx; border-bottom: 1rpx dashed #A5DEE4; line-height: 80rpx;display: flex; align-items: center;">
+          <icon class="iconfont icon-xiaoxi color_subject icon-medium" style="margin-left: 20rpx;"></icon> 系统给你发来一条消息
+        </view>
+      </wux-badge>
+      <view id="{{index}}" style="width: 670rpx;padding: 20rpx;line-height: 60rpx;" bindtap="access">
+        <rich-text nodes="{{item.content}}">
+        </rich-text>
+      </view>
+    </view>
+  </view>
+</block>
+<view wx:if="{{messageList.length==0}}"style="width: 750rpx;height: 80vh;">
+  <wux-prompt title="暂无消息"  visible="1" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无消息.png"/>
+</view>

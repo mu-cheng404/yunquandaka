@@ -70,13 +70,12 @@
 
 #stateBox {
   width: 750rpx;
-  height: 100rpx;
+  height: 150rpx;
 }
 
 #state {
-  width: 670rpx;
+  width: 710rpx;
   height: 100rpx;
-  margin: 0 20rpx 0 20rpx;
   padding: 20rpx;
   border-radius: 20rpx;
   background-color: #ffffff25;
@@ -92,19 +91,11 @@
   background-image: url(https://cn.bing.com/images/search?q=%E5%9B%BE%E7%89%87&FORM=IQFRBA&id=FAD1F40CD98810BC384B79F9306DA63BB2291830);
 
 }
-
-
-
-
-
-
-
-
-
 .second {
   border-top-left-radius: 50rpx;
   border-top-right-radius: 50rpx;
   width: 750rpx;
+  height: 100vh;
   background-color: rgb(240, 240, 240);
 }
 .empty{
@@ -265,7 +256,7 @@
   height: 100rpx;
   margin: 5rpx 20rpx 5rpx 20rpx;
   border-radius: 10rpx;
-  background-color: rgb(209, 180, 180);
+  background-color: #E4E4E4;
   display: flex;
   position: fixed;
   bottom: 80rpx;
@@ -327,4 +318,11 @@
   height: 50rpx;
   right: 35rpx;
   bottom: 25rpx;
+}
+.collect {
+  position: absolute;
+  width: 100rpx;
+  height: 100rpx;
+  right: 0rpx;
+  bottom: 0rpx;
 }

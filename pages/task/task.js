@@ -23,7 +23,7 @@ Page({
    * output:record 对象数组
    */
   getRecordList: async function (id) {
-    let sql = `select u.nickName,u.avatarUrl,r.content,r.date,r.time,r.url from record as r,punch as p,user as u where r.task_id = ${id} and r.id = p.record_id and p.user_id = u.id`
+    let sql = `select u.nickName,u.avatarUrl,r.content,r.date,r.time,r.url from record as r,punch as p,user as u where r.task_id = ${id} and r.id = p.record_id and p.user_id = u.id order by r.date desc,r.time desc`
     let result = await util.executeSQL(sql)
     result = result && JSON.parse(result)
     return result
@@ -73,7 +73,22 @@ Page({
       rest_of_day: rest_of_day
     }
   },
+  /**
+   * 时间选择器
+   */
+  selectDate:function(e){
+    console.log(e.detail.value)
+    this.setData({
+      select_date:e.detail.value,
+      show_select_date:e.detail.value.slice(5,10)
+    })
+
+  },
   data: {
+    select_date:"",
+    show_select_date:"",
+    currentDate:"",
+    visible:'',
     id: "",
     target: {
       percent_of_bar: '',
@@ -84,7 +99,10 @@ Page({
   },
   onLoad: async function (options) {
     V.task_id = options.id
+    let date = new Date()
+    let currentDate = util.formatTime(date).slice(0, 10)
     this.setData({
+      select_date: currentDate,
       id: V.task_id
     })
   },
@@ -95,7 +113,9 @@ Page({
     this.setData({
       target: targetInfo
     })
-
+    wx.setNavigationBarTitle({
+      title: this.data.target.name,
+    })
     let recordList = await this.getRecordList(V.task_id)
     this.setData({
       recordList: recordList
@@ -112,5 +132,16 @@ Page({
       'target.percent_of_circle': percent_of_circle,
       'target.rest_of_day': rest_of_day
     })
-  }
+  },
+  onOpen:function() {
+    console.log("sad")
+    this.setData({
+      visible: true,
+    })
+  },
+  onClose() {
+    this.setData({
+      visible: false,
+    })
+  },
 })

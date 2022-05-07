@@ -1,61 +1,86 @@
+<navigation></navigation>
+
 <view class="head bgTheme_color">
   <view class="headUp ">
     <view class="headUpLeft">
-      <text style="font-size: x-large; color: white;">{{target.name}}</text>
-      <text style="font-size: medium; color: rgb(120, 137, 151);">编辑</text>
+      <view class="center" style="width: 448rpx; font-size: large; color: white; margin-top: 20rpx;">{{target.name}}
+        <navigator url="../targetOption/targetOption?id={{target.id}}">
+          <text style="font-size: small; color: rgb(120, 137, 151);">[编辑]</text>
+        </navigator>
+      </view>
+      <view style="width: 448rpx;padding: 20rpx;color: rgb(120, 137, 151);">{{target.state}}</view>
+      <block wx:if="{{target.state.length<12}}">
+        <view bindtap="onOpen" class="center" style="width: 448rpx;font-size: small;color: yellow;">[展开]</view>
+        <wux-landscape visible="{{ visible }}" bind:close="onClose">
+          <slot>
+            <view style="width: 500rpx;width: 500rpx;padding: 20rpx;">{{target.state}}</view>
+          </slot>
+        </wux-landscape>
+      </block>
     </view>
     <view class="headUpRight">
       <view class="headUpRightLeft center">
-
         <navigator url="../calendar/calendar?id={{id}}" hover-class="navigator_hover">
-          <image style="width: 60rpx;height: 60rpx;" src="../../images/日历31.png" bindtap=""></image>
-          <view style="font-size: medium;color: white;">日历</view>
+          <icon class="iconfont icon-rili icon-large color_white"></icon>
         </navigator>
       </view>
-      <view class="headUpRightCenter center">
+      <view class="headUpRightCenter center color_white">
 
         <navigator url="../statistics/statistics?id={{id}}" hover-class="navigator_hover">
-          <image style="width: 60rpx;height: 60rpx;" src="../../images/统计.png" bindtap=""></image>
-          <view style="font-size: medium;color: white;">统计</view>
+          <icon class="iconfont icon-icon_function_tongji icon icon-large color_white"></icon>
         </navigator>
       </view>
       <view class="headUpRightRight center">
-        <image style="width: 60rpx;height: 60rpx;" src="../../images/分享.png" bindtap=""></image>
-        <view style="font-size: medium;color: white;">分享</view>
+        <icon class="iconfont icon-fenxiang icon-large color_white"></icon>
       </view>
     </view>
   </view>
   <view class="headDown center">
     <view class="headDownLeft">
-      <view style="font-size: large; color: white; margin-left: 30rpx;margin-bottom: 20rpx;">打卡率{{target.percent_of_bar}}%</view>
-      <wux-progress wux-class="progress" activeColor="white" status="normal" percent="{{target.percent_of_bar}}" strokeWidth="30" />
+      <!-- <view style="font-size: large; color: white; margin-left: 30rpx;margin-bottom: 20rpx;">{{target.cycle=='每天'?'当天':'本周'}}打卡率{{target.percent_of_bar}}%</view> -->
+      <wux-progress wux-class="progress" activeColor="white" status="normal" percent="{{target.percent_of_bar}}" strokeWidth="30" show-info />
     </view>
     <view class="headDownRight center">
-      <wux-circle wux-class="circle" size="70" percent="{{target.percent_of_circle}}" color="white" backgroundColor="#A5DEE4"><text style="font-size: small;color: white;">余{{target.rest_of_day}}</text></wux-circle>
+      <wux-circle wux-class="circle" size="70" percent="{{target.percent_of_circle}}" color="white" backgroundColor="#A5DEE4"><text style="font-size: small;color: white;">余{{target.rest_of_day}}天</text></wux-circle>
 
     </view>
   </view>
 </view>
+
 <view class="body">
 
-  <image src="../../images/横线.png" style="width: 100rpx;height: 40rpx;position: absolute;left: 340rpx;top: 10rpx;"></image>
+  <view style="width: 100rpx;height: 10rpx;position: absolute;left: 340rpx;top: 10rpx;">
+    <icon class="iconfont icon-hengxian2  color_text_auxiliary" style="font-size: 10rpx;margin-top: -30rpx;"></icon>
+  </view>
 
   <text style="position: absolute; font-size: small; left: 5rpx; top: 40rpx;">{{target.name}}打卡</text>
 
-  <navigator url="../record/record?id={{id}}" hover-class="navigator_hover">
-    <text class="center" style="width: 130rpx; height:50rpx; position: absolute; right: 20rpx; top: 30rpx;font-size: small; background-color: #A5DEE4;color: white;border-radius: 20rpx;">前往打卡</text>
-  </navigator>
-  <!-- <image src="../../images/三个点.png" style="width: 30rpx; height: 30rpx; position: absolute; right: 20rpx; top: 40rpx;"></image> -->
 
+  <navigator url="../record/record?id={{id}}" hover-class="navigator_hover">
+    <view class="center" style="width: 130rpx; height:50rpx; position: absolute; right: 20rpx; top: 40rpx;font-size: small; background-color: #A5DEE4;color: white;border-radius: 20rpx;">打卡
+      <icon class="iconfont icon-daqia color_white icon-medium"></icon>
+    </view>
+
+  </navigator>
+
+ 
+  <view wx:if="{{recordList.length==''}}" style="width:750rpx;height: 500rpx;">
+    <wux-prompt visible="{{recordList.length==''}}" title="暂无打卡数据" />
+  </view>
   <block wx:for="{{recordList}}" wx:key="key">
+    <!-- <block wx:if="{{item.date==select_date}}"> -->
     <wux-white-space size="large" />
     <wux-wing-blank size="default">
       <wux-card title="{{item.nickName}}" extra="{{item.time}}" thumb="{{item.avatarUrl}}">
         <view slot="body">{{item.content}}
+          <image wx:if="{{item.url!=''}}" class="" src="{{item.url}}" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="" />
+
         </view>
+
         <view slot="footer">{{item.date}}</view>
       </wux-card>
     </wux-wing-blank>
     <wux-white-space size="small" />
+    <!-- </block> -->
   </block>
 </view>

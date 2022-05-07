@@ -32,15 +32,21 @@
   width: 200rpx;
   height: 200rpx;
 }
-.punchContent textarea {
+#textarea{
   width: 710rpx;
   height: 400rpx;
   background-color: white;
-  border-top-left-radius: 10rpx;
-  border-top-right-radius: 10rpx;
-  padding: 20rpx;
   font-size: 14px;
   line-height: 21px;
+  position: relative;
+}
+#textarea1{
+  width: 710rpx;
+  height: 250rpx;
+  background-color: white;
+  font-size: 14px;
+  line-height: 21px;
+  position: relative;
 }
 
 .displayNone {

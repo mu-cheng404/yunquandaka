@@ -1,1 +1,25 @@
 /* pages/accomplishment/accomplishment.wxss */
+.xixi
+{
+width:95%;
+height:370rpx;
+border:2rpx  solid  rgb(24, 206, 206);
+margin-top: 50rpx;
+margin-left: 17rpx;
+border-radius: 10%;
+color: rgb(48, 195, 214);
+background-color: white;
+}
+.fenlei
+{
+height: 60rpx;
+width:550rpx;
+text-align: left;
+
+
+justify-content: center;
+margin-left: 150rpx;
+
+
+
+}

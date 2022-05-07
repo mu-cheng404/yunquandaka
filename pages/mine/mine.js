@@ -1,8 +1,6 @@
-// const { userInfo } = require("os")
-
-// pages/mine/mine.js
 let globalData = getApp().globalData
 const utils = require("../../utils/util")
+const SQL = require("../../utils/sql")
 
 Page({
   /**
@@ -66,6 +64,7 @@ Page({
     userInfo: {},
     buttonDisplay: "",
     hasUserInfo: false,
+    message: []
   },
   /**
    * 生命周期函数--监听页面加载
@@ -79,12 +78,16 @@ Page({
 
       let result = await utils.executeSQL(sql)
       result = result && JSON.parse(result)
-
       this.setData({
         userInfo: result[0]
       })
     }
-
+    await this.check_message()
+  },
+  async check_message() {
+    this.setData({
+      message: await SQL.message_count_of_id_hasRead(globalData.user_id)
+    })
   },
   toAdmin: function () {
     wx.navigateTo({
@@ -101,8 +104,8 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-
+  async onShow () {
+    await this.check_message()
   },
 
   /**

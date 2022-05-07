@@ -1,6 +1,4 @@
-import {
-  $wuxToast
-} from '../../dist/index'
+const utils = require("../../utils/util")
 Page({
   messageInput: function (e) {
     let value = e.detail.value
@@ -51,6 +49,7 @@ Page({
         success: () => console.log('文本提示'),
       })
     }
+    utils.show_toast('感谢您提出宝贵的意见，我们会更加努力！！！')
   },
   /**
    * 页面的初始数据

@@ -1,2 +1,20 @@
-<!--pages/statistics/statistics.wxml-->
-<text>pages/statistics/statistics.wxml</text>
+<view style="width: 730rpx;height: 80rpx; align-items: center; padding-left: 20rpx;">
+  最近一周打卡率
+</view>
+<canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" style="height:{{height*0.4}}px;"></canvas>
+<view class="cc_label">
+  时间轴
+  <picker mode="date" bindchange="changeDate">
+    <view style="width: 60rpx;height: inherit;" class="center">
+      <image src="../../images/下拉.png" style="width: 40rpx;height: 40rpx;"></image>
+    </view>
+  </picker>
+  {{date}}
+</view>
+<wux-timeline wx:if="{{list.length}}" position="alternate">
+  <block wx:for="{{list}}" wx:key="key">
+    <wux-timeline-item content="{{item.time+' '+item.name}}" />
+  </block>
+</wux-timeline>
+<view></view>
+<wux-prompt visible="{{list.length==0}}" title="暂无数据" />

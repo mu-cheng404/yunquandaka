@@ -1,5 +1,6 @@
+<wux-toast id="wux-toast"/>
 <wux-cell-group title="选项">
-  <wux-cell title="基本信息" is-link bindtap="adjust"></wux-cell>
+  <wux-cell title="修改基本信息" is-link bindtap="adjust"></wux-cell>
   <block wx:if="{{adjust}}">
     <wux-cell hover-class="none">
       <wux-input bind:change="onChangeOfNameInput" label="名称" value="{{valueOfName}}" controlled="true"></wux-input>
@@ -10,5 +11,8 @@
     <button bindtap="submit" disabled="{{flag}}" class="button white">修改</button>
 
   </block>
-  <wux-cell title="删除该目标" is-link bindtap="deleteTarget"></wux-cell>
+  <wux-cell title="查看成员" is-link bindtap="toMember" ></wux-cell>
+  <wux-cell wx:if="{{!admin}}" title="退出计划" is-link bindtap="quitTask"></wux-cell>
+  
+  <wux-cell wx:if="{{admin}}" title="注销计划" is-link bindtap="logoutTarget"></wux-cell>
 </wux-cell-group>

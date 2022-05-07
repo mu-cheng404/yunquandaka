@@ -7,7 +7,7 @@
 }
 
 #searchBar {
-  width: 750rpx;
+  width: 710rpx;
   height: 80rpx;
   padding: 20rpx;
 }
@@ -177,10 +177,11 @@
 
 .item {
   width: 750rpx;
-  height: 100rpx;
+  height: 60rpx;
   display: flex;
   background-color: white;
   margin-bottom: 5rpx;
+  margin-bottom: 10rpx;
 }
 
 .item_id {
@@ -203,6 +204,49 @@
   background-color: #A5DEE4;
   color: white;
   border-radius: 10rpx;
+}
+.item_operate_ban {
+  width: 100rpx;
+  height: 50rpx;
+  background-color: #E4E4E4;
+  color: white;
+  border-radius: 10rpx;
+}
+
+
+.scroll-box {
+  margin-top: 20rpx;
+  width: 100%;
+  height: 390rpx;
+  display: flex;
+  white-space: nowrap;
+  background-color: white;
+  border-radius: 20rpx;
+}
+
+.scroll-item {
+  width: 270rpx;
+  height: 380rpx;
+  display: inline-block;
+  background-color: white;
+  margin: 0 0 0 30rpx;
+  border-radius: 10rpx;
+  position: relative;
+}
+
+.bg {
+  width: 100%;
+  height: 250rpx;
+  background-image: url(https://cn.bing.com/th?id=OIP.cxQemnU09Ua7BLEJfhn9VgHaEe&w=200&h=120&rs=1&qlt=80&o=6&dpr=1.25&pid=3.1);
+  background-repeat: no-repeat;
+  background-size: 1000rpx 1000rpx;
+  background-position: center;
+  filter: blur(20rpx) contrast(80%) opacity(80%) opacity(80%);
+  position: absolute;
+  left: 0rpx;
+  top: 0rpx;
+  z-index: -1;
+  vertical-align: middle;
 }
 
 #leftSwitch,
@@ -260,7 +304,7 @@
 .targetBox {
   width: 710rpx;
   height: 100rpx;
-  margin: 5rpx 20rpx 5rpx 20rpx;
+  margin: 0 20rpx 10rpx 20rpx;
   border-radius: 10rpx;
   background-color: white;
   display: flex;
@@ -318,10 +362,10 @@
 
 }
 
-.arrow {
+.collect {
   position: absolute;
-  width: 50rpx;
-  height: 50rpx;
-  right: 35rpx;
-  bottom: 25rpx;
+  width: 100rpx;
+  height: 100rpx;
+  right: 0rpx;
+  bottom: 0rpx;
 }

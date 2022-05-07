@@ -1,38 +1,44 @@
-<view class="first">
-<image id="option" src="../../images/options.png" bindtap="toOptions"></image>
-  <view class="name center headline">
-    <view class="text bgwhite center">{{info.name}}</view>
-  </view>
-  <view class="state bgwhite normal">{{info.state}}</view>
+<wux-toast id='wux-toast'></wux-toast>
+
+<view style="width: 750rpx;height: 80rpx;font-size: large;font-weight: bold;" class="center background_color_subject">
+  {{info.name}}
 </view>
-
-<radio-group bindchange="typeChange">
-  <radio value="文字" checked>文字</radio>
-  <radio value="图片">图片</radio>
-  <radio value="快捷">快捷</radio>
-</radio-group>
-<view class="punchContent bgwhite center">
-
+<view style="width: 750rpx;height: 300rpx;border-top: 1rpx solid white;" class="background_color_subject">
+  <view style="width: 670rpx;height: 220rpx;margin: 20rpx;padding: 20rpx; border-radius: 20rpx;background-color: #ffffff7e;">
+    {{info.state}}
+  </view>
+</view>
+<view style="width:750rpx;height:180rpx;" class="center">
+  <view style="margin-right: -50rpx; width: 250rpx;height: 100rpx;border-radius: 40rpx;" class="center background_color_subject_4 color_white" bindtap="pureText">纯文字</view>
+  <view style="width: 150rpx;height: 150rpx;border-radius: 50%;; z-index: 2;font-size: x-large;font-weight: bold; display: flex;" class="center background_color_subject color_subject_2" bindtap="preText">
+    <icon class="iconfont icon-dianji icon-x-large"></icon>
+  </view>
+  <view style="margin-left: -50rpx;width: 250rpx;height: 100rpx;border-radius: 40rpx;" class="center background_color_subject_4 color_white" bindtap="textAndImage">图文</view>
+</view>
+<view class="bgwhite center" style="width:710rpx;height:400rpx;padding:20rpx">
   <!-- 文字 -->
-  <block wx:if="{{type=='文字'}}">
+  <block wx:if="{{type=='纯文字'}}">
     <view class="textareaBox">
-      <textarea name="content" id="" cols="30" rows="10" placeholder="请输入正文" auto-focus bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea">
+      <textarea name="content" id="textarea" cols="30" rows="10" placeholder="请输入正文" cursor-spacing="20" bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{content}}">
     </textarea>
     </view>
   </block>
   <!-- 图片 -->
-  <block wx:if="{{type=='图片'}}">
-    <block wx:if="{{fileID}}">
-      <image id="upload" src="{{fileID}}" bindtap="chooseImage"></image>
-    </block>
-    <block wx:else>
-      <image id="upload" src="../../images/new.png" bindtap="chooseImage"></image>
-    </block>
+  <block wx:if="{{type=='图文'}}">
+    <view class="textareaBox" style="position: relative;">
+      <textarea name="content" id="textarea1" cols="60" rows="10" placeholder="请输入正文" cursor-spacing="20" bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{content}}">
+    </textarea>
+      <view style="width: 600rpx;height: 150rpx;position: absolute;bottom: 0rpx;">
+        <wux-upload listType="picture-card" fileList="{{ fileList }}" controlled url="https://www.skyvow.cn/api/common/file"  max="1" count="1" bind:change="onChange" bind:success="onSuccess" bind:fail="onFail" bind:complete="onComplete" catch:preview="onPreview" bind:remove="onRemove">
+          <text>Upload</text>
+        </wux-upload>
+      </view>
+    </view>
   </block>
 
-  <block wx:if="{{type=='快捷'}}">
+  <block wx:if="{{type=='预设'}}">
     <view class="textareaBox">
-      <textarea name="content" id="" cols="30" rows="10" placeholder="请输入正文" auto-focus bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{info.defaultText}}">
+      <textarea name="content" id="textarea" cols="30" rows="10" placeholder="请输入正文" cursor-spacing="20" bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{content}}">
     </textarea>
     </view>
   </block>

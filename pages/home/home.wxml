@@ -1,10 +1,8 @@
-<!-- 提示对话框 -->
-<wux-dialog id="wux-dialog" />
-<wux-dialog id="wux-dialog--alert" />
 
-<!--搜索框-->
+<wux-toast id="wux-toast"/>
+<!-- 搜索框 -->
 <view id="searchBar" class=" bgTheme_color">
-  <wux-search-bar clear maxlength="8" bind:change="searchInput" bind:cancel="onCancel" bind:blur="searchBlur" bind:focus="onFocus" placeholder="队伍ID或者队伍名" wux-class="serachBarInner"></wux-search-bar>
+  <wux-search-bar clear maxlength="8" bind:change="searchInput" bind:cancel="onCancel" bind:focus="onFocus" placeholder="队伍ID或者队伍名" wux-class="serachBarInner" focus="{{isFocus}}"></wux-search-bar>
 </view>
 <!-- 显示搜索结果 -->
 <block wx:if="{{isFocus}}">
@@ -21,19 +19,20 @@
       </view>
     </view>
     <block wx:for="{{searchResult}}" wx:key="key">
-
       <view class="item">
-        <view class="center" style="width: 200rpx;height: 100rpx;">
+        <view class="center" style="width: 200rpx;height: 60rpx;">
           <view class="item_id center">{{item.id}}</view>
         </view>
-        <view class="center" style="width: 330rpx;height: 100rpx;">
-          <view class="item_name center">{{item.nickName}}</view>
+        <view class="center" style="width: 330rpx;height: 60rpx;">
+          <view class="item_name center">{{item.name}}</view>
         </view>
-        <view class="center" style="width: 220rpx;height: 100rpx;">
-          <view class="item_operate center" bindtap="gotoTap" style="margin-right: 10rpx;">
-            查看
-          </view>
-          <view class="item_operate center" bindtap="gotoTap">
+        <view class="center" style="width: 220rpx;height: 60rpx;">
+          <navigator url="../flock/flock?id={{item.id}}">
+            <view class="item_operate center" bindtap="gotoTap" style="margin-right: 10rpx;">
+              查看
+            </view>
+          </navigator>
+          <view id="{{index}}" class="{{item.joined?'item_operate_ban':'item_operate'}} center" bindtap="{{item.joined?'':'toJoin'}}">
             申请
           </view>
         </view>
@@ -41,71 +40,80 @@
     </block>
   </view>
 </block>
-
 <block wx:if="{{!isFocus}}">
-  <view id="groupSwiper" class="shadow">
-    <swiper class="swiper" display-multiple-items="1" current="{{swiperIndex}}" previous-margin="200rpx" next-margin="50rpx" display-multiple-items="1">
-      <block wx:for="{{groupList}}" wx:key="key">
-        <swiper-item>
-
-          <view id="{{index}}" bindtap="groupTap">
-            <view id="groupContentBox" class="bgwhite shadow center">
-              <image src="../../images/left.png" id="leftSwitch"></image>
-              <image src="../../images/right.png" id="rightSwitch"></image>
-              <view id="groupAvatar">
-                <image src="../../images/avatar.jpg"></image>
-              </view>
-              <view id="groupText">{{item.name}}</view>
-
+  <view style="width: 750rpx;height: 80rpx;display: flex;">
+    <view style="width:170rpx;height: 80rpx;"class="center">
+      我的圈子
+    </view>
+    <view style="width: 580rpx;height: 80rpx;color:white">
+      <navigator url="../init/init" style="width: 580rpx;height: 80rpx">
+        <view style="float: right;margin: 10rpx 20rpx 0rpx 0rpx;width:150rpx;height: 60rpx;;display:flex;line-height:60rpx;border-radius: 20rpx; " class="center background_color_subject">
+          新建<icon class="iconfont icon-xinjian color_white icon-medium" style="margin-left:20rpx"></icon>
+        </view>
+      </navigator>
+      
+    </view>
+  </view>
+  <!-- 横向滚动条 -->
+  <view wx:if="{{groupList.length==0}}" style="width: 750rpx;height: 390rpx;">
+    <navigator url="../init/init" style="width: 100%;height: 100%;">
+      <wux-prompt visible="1" buttons="{{button1}}" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无灵感.png" />
+    </navigator>
+  </view>
+  <scroll-view wx:if="{{groupList!=''}}" class="scroll-box" scroll-x="true">
+    <block wx:for="{{groupList}}" wx:key="key">
+      <view class="scroll-item">
+        <navigator url="../flock/flock?id={{item.id}}" style="height: 100%;width: 100%;">
+          <image style="height: 70%;width: 100%;border-top-left-radius:10rpx;border-top-right-radius: 10rpx;" src="{{item.avatarUrl}}"></image>
+          <view class="center background_color_label_background" style="height: 30%;width: 100%;display: flex;flex-direction: column;">
+            <view style="width: 250rpx;height: 50%;padding-left: 10rpx; color: #0C141E;font-size: small2;font-weight: bold;">
+              {{item.name}}
+            </view>
+            <view style="width: 100%;height: 50%; font-size: x-smaller;display: flex;align-items: center;margin:0 0 10rpx 10rpx">
+              <wux-tag color="#8BC3DD">{{item.type}}</wux-tag>
+              <wux-tag color="#85A5CF">{{item.num_of_member}}人</wux-tag>
             </view>
           </view>
-        </swiper-item>
-      </block>
-    </swiper>
-  </view>
-  <view id="option">
-    <view id="searchButton" class="shadow center" bindtap="onSearch">
-      <image src="../../images/addGroup.png"></image>加入
-    </view>
-    <view id="createButton" class="shadow center" bindtap="creatGroup">
-      <image src="../../images/createGroup.png"></image>创建
-    </view>
-  </view>
-  <view id="targetBox">
-    <view id="targetLable">
-      <view class="theme_text">近期目标</view>
-    </view>
-    <block wx:for="{{targetList}}" wx:key="key" class="bgwhite">
-      <!-- <view id="{{index}}" bindtap="targetTap">
-        <view id="targetContentBox" class="shadow bgwhite">
-          <image src="../../images/avatar.jpg" id="targetIcon"></image>
-          <view id="targetName">
-            <view id="name1">{{item.task_name}}</view>
-            <view id="name2">来自 {{item.flock_name}}</view>
-          </view>
-          <view id="targetClock">{{item.clock}}</view>
-          <block wx:if="{{item.over}}">
-            <image src="../../images/over.png" id="targetOver"></image>
-          </block>
-          <block wx:else>
-            <image src="../../images/unover.png" id="targetOver"></image>
-          </block>
-        </view>
-      </view> -->
-      <view class="targetBox" id="{{index}}" bindtap="targetTap">
-        <view class="targetIcon center">
-          <image src="../../images/{{item.type}}.png"></image>
-        </view>
-        <view class="targetName">
-          <view class="{{isOver?'name1_over':'name1'}}">{{item.task_name}}<text>#{{item.flock_name}}</text></view>
-          <block wx:if="{{!isOver}}">
-            <view class="name2"><text>{{item.cycle}}·</text> 由 <text>{{item.creator}}</text> 创建·<text>{{item.form}}打卡</text></view>
-          </block>
-        </view>
-        <block wx:if="{{!isOver}}">
-          <image src="../../images/arrow1.png" class="arrow"></image>
-        </block>
+        </navigator>
       </view>
+    </block>
+  </scroll-view>
+  <view id="targetBox">
+    <view style="width: 100%;height: 60rpx;">
+      <view style="width:200rpx;height: 60rpx;line-height: 60rpx; align-items: center;margin-left: 20rpx;">
+        已收藏
+      </view>
+    </view>
+    <view wx:if="{{targetList==''}}" style="width: 750rpx;height: 500rpx;">
+        <wux-prompt visible="1" buttons="{{groupList.length==0?'':'button2'}}" bind:click="toCollect" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无任务.png" />
+    </view>
+    <block wx:if="{{targetList!=''}}" wx:for="{{targetList}}" wx:key="key" class="bgwhite">
+      <navigator url="../task/task?id={{item.id}}">
+        <view class="targetBox" id="{{index}}">
+          <view class="targetIcon center">
+            <icon class="iconfont icon-{{item.type}} icon-large color_icon"></icon>
+          </view>
+          <view class="targetName">
+            <view class="{{item.over?'name1_over':'name1'}}">
+              {{item.name}}
+              <text>#{{item.flock_name}}</text>
+            </view>
+            <block wx:if="{{!item.over}}">
+              <view class="name2">
+                <text>{{item.cycle}}</text>
+                ·由
+                <text>{{item.creator}}</text>
+                创建·
+                <text>{{item.form}}打卡</text>
+              </view>
+            </block>
+            <!-- <image class="collect" src="../../images/{{item.over?'完成':'收藏'}}.png"></image> -->
+            <view class="collect center">
+              <icon class="iconfont {{item.over?'icon-wancheng':'icon-weiwancheng'}} color_icon icon-large"></icon>
+            </view>
+          </view>
+        </view>
+      </navigator>
     </block>
   </view>
 </block>

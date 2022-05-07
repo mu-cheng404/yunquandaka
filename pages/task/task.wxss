@@ -2,7 +2,6 @@
 .head{
   width: 746rpx;
   height: 396rpx;
-  border-top: 5rpx white solid;
 }
 .headUp{
   width: 750rpx;
@@ -15,7 +14,6 @@
   width: 448rpx;
   height: 180rpx;
   border-right: 2rpx solid white;
-  padding:50rpx 0 0 50rpx;
 }
 .headUpRight{
   width: 300rpx;

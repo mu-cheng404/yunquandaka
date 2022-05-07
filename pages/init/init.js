@@ -1,34 +1,41 @@
 const util = require('../../utils/util')
+const SQL = require('../../utils/sql')
 const isTel = (value) => !/^1[34578]\d{9}$/.test(value)
-const DB = wx.cloud.database()
-const _flock = DB.collection("flock") //打卡表
 const app = getApp()
 Page({
   navi_to_flock: async function () {
-    let [name, state, id] = [this.data.valueOfName, this.data.valueOfState, util.randomsForSixDigit()]
+    let [id,creater_id,name,state,avatarUrl,type ] = [util.randomsForSixDigit(),app.globalData.user_id,this.data.valueOfName, this.data.valueOfState,'https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c', this.data.type ]
     //判空
-    if (name != "" && state != "")  {
-      let sql1 = `insert into flock values(${id},'${name}','${state}')`
-      await util.executeSQL(sql1)
-      let user_id = app.globalData.user_id
-      let sql2 = `insert into joining(user_id,flock_id) values(${user_id},${id})`
-      await util.executeSQL(sql2)
+    if (name == "" || state == "" || type == "") {
+      util.show_toast('还未输入数据', 'fobidden')
+      return
+    }
+    await SQL.flock_insert(id,creater_id,name,state,avatarUrl,type)
+    util.show_toast("创建成功,即将前往圈子主页")
+    setTimeout(() => {
       wx.navigateTo({
         url: '../flock/flock?id=' + id,
       })
-    }else{
-      wx.showToast({
-        title: '还未输入信息',
-        icon:"none"
-      })
-    }
+    }, 1000);
+
   },
+  /**
+   * 选择类别
+   */
+  typeChange: function (e) {
+    this.setData({
+      type: this.data.typeArray[e.detail.value]
+    })
+  },
+
   /**
    * 页面的初始数据
    */
   data: {
     valueOfName: "",
     valueOfState: "",
+    type: "",
+    typeArray: ['班级', '宿舍', '伙伴', '社团', '组织']
   },
 
   // 输入框

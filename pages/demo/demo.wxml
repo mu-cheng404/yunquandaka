@@ -2,3 +2,4 @@
 <button bindtap="sendMessage">发送通知</button>
 <button bindtap="trigger">触发器</button>
 <button bindtap="dailyCheck">每日检查</button>
+<icon class="iconfont icon-shoucang"></icon>

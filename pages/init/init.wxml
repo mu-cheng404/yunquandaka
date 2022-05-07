@@ -1,9 +1,15 @@
+<wux-toast id="wux-toast"></wux-toast>
 <wux-cell-group title="输入信息">
   <wux-cell hover-class="none">
-    <wux-input bind:change="onChangeOfNameInput" label="组名"></wux-input>
+    <wux-input bind:change="onChangeOfNameInput" label="圈子名称"></wux-input>
   </wux-cell>
   <wux-cell hover-class="none">
-    <wux-input bind:change="onChangeOfStateInput"label="说明"></wux-input>
+    <wux-input bind:change="onChangeOfStateInput" label="描述"></wux-input>
   </wux-cell>
+  <picker mode="selector" range="{{typeArray}}" value="{{type}}" bindchange="typeChange">
+    <wux-cell title="类别" is-link extra="{{type||'待选'}}"></wux-cell>
+  </picker>
+
 </wux-cell-group>
+
 <button bindtap="navi_to_flock" class="button white">创建</button>

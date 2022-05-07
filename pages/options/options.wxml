@@ -1,20 +1,22 @@
+<wux-toast id='wux-toast'></wux-toast>
 <wux-cell-group title="选项">
-  <wux-cell title="基本信息" is-link bindtap="adjust"></wux-cell>
+  <wux-cell wx:if="{{admin}}" title="基本信息" is-link bindtap="adjust"></wux-cell>
   <block wx:if="{{adjust}}">
     <wux-cell hover-class="none">
-      <wux-input bind:change="onChangeOfNameInput" label="组名" value="{{valueOfName}}" controlled="true"></wux-input>
+      <wux-input bind:change="onChangeOfNameInput" label="名称" value="{{valueOfName}}" controlled="true"></wux-input>
     </wux-cell>
     <wux-cell hover-class="none">
-      <wux-input bind:change="onChangeOfStateInput" label="说明" value="{{valueOfState}}" controlled="true"></wux-input>
+      <wux-input bind:change="onChangeOfStateInput" label="描述" value="{{valueOfState}}" controlled="true"></wux-input>
     </wux-cell>
 
     <button bindtap="submit" disabled="{{flag}}" class="button white">修改</button>
 
   </block>
-  <wux-cell title="管理成员" is-link url="../members/members"></wux-cell>
-  <wux-picker options="{{ options }}" value="{{ value1 }}" cascade cols="1" data-index="1" bind:confirm="onConfirm" bind:valueChange="onValueChange">
+  <wux-cell title="成员列表" is-link url="../members/members?flock_id={{info.id}}&task_id="></wux-cell>
+  <!-- <wux-picker options="{{ options }}" value="{{ value1 }}" cascade cols="1" data-index="1" bind:confirm="onConfirm" bind:valueChange="onValueChange">
     <wux-cell title="开启免打扰" is-link extra="{{ displayValue1 }}"></wux-cell>
-  </wux-picker>
-  <wux-cell title="分享小队" is-link url="../share/share"></wux-cell>
-  <wux-cell title="退出小队" is-link bindtap="deleteGroup"></wux-cell>
+  </wux-picker> -->
+  <!-- <wux-cell title="分享小队" is-link url="../share/share"></wux-cell> -->
+  <wux-cell wx:if="{{!admin}}" title="退出圈子" is-link bindtap="quitFlock"></wux-cell>
+  <wux-cell wx:if="{{admin}}" title="注销圈子" is-link bindtap="logoutFlock"></wux-cell>
 </wux-cell-group>

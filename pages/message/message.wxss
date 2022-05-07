@@ -1,0 +1,13 @@
+.deepen {
+  background-color: #F4F5F7;
+  padding: 8rpx;
+  color: #848C96;
+}
+
+.click {
+  background-color: #A5DEE4;
+  padding: 2rpx 10rpx;
+  margin-left: 10rpx;
+  color: white;
+  border-radius: 5rpx;
+}

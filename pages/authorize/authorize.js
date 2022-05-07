@@ -4,6 +4,31 @@ import {
 } from '../../dist/index'
 const globalData = getApp().globalData
 Page({
+  data: {
+    loginFlag: "",
+    subscribeFlag: "",
+    user_id: ""
+  },
+  /**
+   * 用户点击游客访问
+   */
+  vistor: function(){
+    //拒绝登录信息加入缓存
+     wx.setStorageSync('refuse', true)
+    wx.navigateBack({
+      delta: 1,
+    })
+  },
+  /**
+   * 修改全局变量
+   */
+  setGlobalData: function (params) {
+    globalData.user_id = this.data.user_id
+    globalData.hasUserInfo = true
+  },
+  /**
+   * 用户授权
+   */
   getInfo: async function () {
     let openid, userInfo, sql
     //弹窗获取用户信息
@@ -108,35 +133,30 @@ Page({
     })
     return JSON.stringify(refer) == JSON.stringify(list)
   },
-  data: {
-    loginFlag: "",
-    subscribeFlag: "",
-    user_id: ""
+  onLoad:async function(){
+
   },
-  onLoad: async function (event) {
-    let {
-      loginFlag,
-      subscribeFlag
-    } = event
-    this.setData({
-      loginFlag: loginFlag,
-      subscribeFlag: subscribeFlag
-    })
-    if (loginFlag != 1 && subscribeFlag == 1) { //用户没有登录但是订阅了
-      console.log("用户没有授权信息 但是授权订阅")
+  // onLoad: async function (event) {
+  //   let {
+  //     loginFlag,
+  //     subscribeFlag
+  //   } = event
+  //   this.setData({
+  //     loginFlag: loginFlag,
+  //     subscribeFlag: subscribeFlag
+  //   })
+  //   if (loginFlag != 1 && subscribeFlag == 1) { //用户没有登录但是订阅了
+  //     console.log("用户没有授权信息 但是授权订阅")
 
-    } else if (loginFlag != 1 && subscribeFlag != 1) { //用户没有登录也没有订阅
-      console.log("用户没有授权信息 订阅")
+  //   } else if (loginFlag != 1 && subscribeFlag != 1) { //用户没有登录也没有订阅
+  //     console.log("用户没有授权信息 订阅")
 
-    } else if (loginFlag == 1 && subscribeFlag != 1) { //用户登录了但是没有订阅
-      console.log("用户授权信息 没有授权订阅")
+  //   } else if (loginFlag == 1 && subscribeFlag != 1) { //用户登录了但是没有订阅
+  //     console.log("用户授权信息 没有授权订阅")
 
-    } else { //用户登录了也订阅了
-      console.log("用户授权信息 订阅")
-    }
-  },
-  setGlobalData: function (params) {
-    globalData.user_id = this.data.user_id
-    globalData.hasUserInfo = true
-  }
+  //   } else { //用户登录了也订阅了
+  //     console.log("用户授权信息 订阅")
+  //   }
+  // },
+  
 })

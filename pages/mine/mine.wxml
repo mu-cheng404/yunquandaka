@@ -1,3 +1,4 @@
+<navigation></navigation>
 
 <view id="head" class="center">
   <view id="avatar">
@@ -9,25 +10,27 @@
   <view bindtap="{{hasUserInfo?'syncInfo':'getInfo'}}">{{hasUserInfo?'同步微信形象':'登录'}}</view>
   <view id="headBg" style="background-image: url({{userInfo.avatarUrl}});"></view>
 </view>
-<view id="nick" class="bigger">
-  <view id="nickLeft" class="center " bindtap="toAccomplishment">
-    <image src="../../images/chengjiu.png"></image> 成就
-  </view>
-  <view id="nickRight" class="center">
-    <image src="../../images/qita.png"></image> 更多
-  </view>
+<view id="nick" class="bigger  center">
+  测试版 V1.0.2
 </view>
 <view id="body">
   <wux-cell-group wux-class="group">
-    <wux-cell hasLine thumb="../../images/kefuzhongxin.png" title="客服中心" is-link open-type="contact" bind:contact="onContact">
+    <navigator url="../accomplishment/accomplishment">
+      <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/记录.png" title="计划记录" is-link hasLine="false"></wux-cell>
+    </navigator>
+    <wux-cell hasLine thumb="http://ccreblog.cn/wp-content/uploads/2022/05/客服-客服中心.png" title="客服中心" is-link open-type="contact" bind:contact="onContact">
     </wux-cell>
     <wux-white-space size="small" />
-    <wux-cell bindtap="toAdvice" thumb="../../images/yijianfankui.png" title="意见反馈" is-link hasLine="false"></wux-cell>
+    <navigator url="../advice/advice">
+      <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/意见反馈.png" title="意见反馈" is-link hasLine="false"></wux-cell>
+    </navigator>
     <wux-white-space size="small" />
-    <wux-cell thumb="../../images/fenxiang.png" title="分享给朋友" is-link open-type="share" hasLine="0"></wux-cell>
+    <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/分享给朋友.png" title="分享给朋友" is-link open-type="share" hasLine="0"></wux-cell>
     <wux-white-space size="small" />
-    <wux-cell bindtap="toAboutus" thumb="../../images/guanyuwomen.png" title="关于我们" is-link hasLine="false"></wux-cell>
-    <block wx:if="{{userInfo.id==255082||userInfo.id==579718}}"><wux-cell bindtap="toAdmin" thumb="../../images/admin.png" title="后台管理" is-link hasLine="false"></wux-cell></block>
+    <navigator url="../aboutus/aboutus">
+      <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/关于我们.png" title="关于我们" is-link hasLine="false"></wux-cell>
+    </navigator>
     <wux-white-space size="small" />
+
   </wux-cell-group>
 </view>

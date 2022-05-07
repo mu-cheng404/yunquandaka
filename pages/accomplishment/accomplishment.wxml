@@ -1,2 +1,22 @@
-<!--pages/accomplishment/accomplishment.wxml-->
-<text>pages/accomplishment/accomplishment.wxml</text>
+<view class="xixi" wx:for="{{list}}" wx:for-item="item" wx:for-index="index" wx:key="task_id" wx:if="{{list.length>=1}}">
+  <view style="height: 100rpx;width: 100rpx; float: left;margin-top: 30rpx;margin-left: 20rpx;border:2rpx  solid rgb(140, 225, 226) ; border-radius: 15%;" class="center">
+  <icon class="iconfont icon-{{item.type}} icon_large " style="font-size:80rpx;"></icon>
+  </view>
+  <view style="margin-top: 30rpx;">
+    <view class="fenlei"><text>{{item.task_name}}</text><text style="margin-left: 70rpx;">#{{item.flock_name}}</text></view>
+
+    <view class="fenlei">from <text style="margin-left: 20rpx;margin-right: 20rpx;color: rgb(2, 2, 10);">{{item.start}}</text> to <text style="margin-left: 20rpx; color: rgb(3, 3, 22);">{{item.end}}</text> </view>
+
+    <view class="fenlei" style="font-style: italic; font-weight: 600;">实打卡天数<text style="color: rgb(2, 2, 8);margin-left: 10rpx;margin-right: 10rpx;">{{item.sum}}</text>天</view>
+    <view class="fenlei" style="font-style: italic;font-weight: 600;">打卡率:<text style="color: rgb(6, 6, 15); margin-left: 10rpx;margin-right: 10rpx;">{{item.rate}}</text>%</view>
+  </view>
+  <view style="width: 680rpx;height: 50rpx;margin-top: 10rpx;margin-left: 20rpx;  ">自我感觉:
+    <wux-rater slot="footer" allow-half star="☻" allow-clear default-value="{{ 2 }}" bind:change="rate_change" />
+  </view>
+</view>
+<view style="margin-left:10%;margin-top: 45%;width: 100%;height: 250rpx;" wx:if="{{list.length==0}}">
+  <view style="width: 30%;height: 50%;margin-left: 25%;">
+    <image src="../../images/页面为空 .png" style="width: 100%;height: 100%;"></image>
+  </view>
+  <text style="font-style: italic; font-weight: 600;color: rgba(59, 62, 65, 0.219);">你还没有任何成就哦,快去打卡加入队伍吧 ! </text>
+</view>
