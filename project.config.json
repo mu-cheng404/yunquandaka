@@ -1,8 +1,9 @@
 {
   "cloudfunctionRoot": "cloud/",
-  "description": "项目配置文件",
+  "description": "项目配置文件，详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
   "packOptions": {
-    "ignore": []
+    "ignore": [],
+    "include": []
   },
   "setting": {
     "urlCheck": true,
@@ -40,22 +41,14 @@
     "minifyWXML": true,
     "showES6CompileOption": false,
     "useCompilerPlugins": false,
-    "ignoreUploadUnusedFiles": true
+    "ignoreUploadUnusedFiles": true,
+    "useStaticServer": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.23.4",
+  "libVersion": "2.24.1",
   "appid": "wx45bae271b32f65d6",
   "projectname": "%E5%85%83%E6%A0%96",
-  "debugOptions": {
-    "hidedInDevtools": []
-  },
-  "scripts": {},
-  "staticServerOptions": {
-    "baseURL": "",
-    "servePath": ""
-  },
-  "isGameTourist": false,
-  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {
     "search": {
       "list": []
@@ -75,5 +68,9 @@
     "miniprogram": {
       "list": []
     }
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
   }
 }

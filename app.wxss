@@ -1,6 +1,7 @@
 @import "/style/font&color.wxss";
 @import "/style/position.wxss";
 @import "/style/size.wxss";
+@import"/style/iconfont.wxss";
 
 .container {
   height: 100%;
@@ -11,7 +12,24 @@
   padding: 200rpx 0;
   box-sizing: border-box;
 }
-Page{
-  background-color: rgb(240, 240, 240);
-  font-size:32rpx;       
+
+Page {
+  background-color: rgb(242, 242, 242);
+  font-size: 32rpx;
+}
+
+
+
+.icon-x-large {
+  font-size: 80rpx
+}
+.icon-large {
+  font-size: 50rpx
+}
+
+.icon-medium {
+  font-size: 40rpx;
+}
+.icon-small{
+  font-size: 30rpx;
 }

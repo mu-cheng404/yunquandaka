@@ -1,8 +1,8 @@
 <view class="swiper">
-  <swiper class="swiper" autoplay interval="3000" circular indicator-dots indicator-color="white">
+  <swiper class="swiper" autoplay interval="3000" circular indicator-dots="{{false}}" indicator-color="white" >
     <block wx:for="{{swiper}}">
       <swiper-item class="swiper-item">
-        <image src="{{item}}"></image>
+        <image src="{{item.url}}"></image>
       </swiper-item>
     </block>
   </swiper>

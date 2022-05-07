@@ -29,7 +29,8 @@ exports.main = async (event, context) => {
     我的意见：
             ${data.message}
     我的${data.contactType}是：
-            ${data.contact}`
+            ${data.contact}
+    `
   };
 
   let res = await transporter.sendMail(mail);

@@ -3,15 +3,13 @@ Page {
 }
 
 .swiper {
-  width: 710rpx;
+  width: 750rpx;
   height: 300rpx;
-  margin: 20rpx;
 }
 
 .swiper-item {
   width: 100%;
   height: 100%;
-  border-radius: 20px;
 }
 
 .swiper-item image {

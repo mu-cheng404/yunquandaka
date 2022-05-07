@@ -4,20 +4,29 @@
   top: 20px;
   right: 20px;
 }
-/* 按钮统一布局 */
-.button{
-  background-color: #A5DEE4;
-}
+
+
+
 /* 浮动布局 */
-.flex{
+.flex {
   display: flex;
 }
+
 /* 水平和垂直居中 */
-.center{
+.center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.displayNone{
+
+.displayNone {
   display: none;
+}
+
+.cc_label {
+  width: 730rpx;
+  height: 80rpx;
+  padding-left: 20rpx;
+  display: flex;
+  align-items: center;
 }

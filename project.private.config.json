@@ -1,15 +1,6 @@
 {
   "setting": {},
   "condition": {
-    "plugin": {
-      "list": []
-    },
-    "game": {
-      "list": []
-    },
-    "gamePlugin": {
-      "list": []
-    },
     "miniprogram": {
       "list": [
         {
@@ -27,41 +18,43 @@
         {
           "name": "群组flock",
           "pathName": "pages/flock/flock",
-          "query": "id=666744",
+          "query": "id=282947",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "记录record",
           "pathName": "pages/record/record",
-          "query": "id=699424",
+          "query": "id=283928",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "添加任务addtk",
           "pathName": "pages/addtk/addtk",
-          "query": "flock_id=350000",
+          "query": "id=282947",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "详情detail",
           "pathName": "pages/detail/detail",
-          "query": "",
+          "query": "id=239572",
+          "launchMode": "default",
           "scene": null
         },
         {
           "name": "选项options",
           "pathName": "pages/options/options",
-          "query": "flock_id=961091",
+          "query": "id=961091",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "成员members",
           "pathName": "pages/members/members",
-          "query": "",
+          "query": "flock_id=449748&task_id=283928",
+          "launchMode": "default",
           "scene": null
         },
         {
@@ -99,7 +92,7 @@
         },
         {
           "name": "",
-          "pathName": "pages/targetOption/targetOption",
+          "pathName": "计划选项",
           "query": "id=699424",
           "launchMode": "default",
           "scene": null
@@ -135,11 +128,69 @@
         {
           "name": "计划task",
           "pathName": "pages/task/task",
-          "query": "id=671155",
-          "scene": null,
-          "launchMode": "default"
+          "query": "id=283928",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "计划选项 taskOptions",
+          "pathName": "pages/targetOption/targetOption",
+          "query": "id=283928",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "授权",
+          "pathName": "pages/authorize/authorize",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "消息",
+          "pathName": "pages/message/message",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "广场",
+          "pathName": "pages/square/square",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "成就",
+          "pathName": "pages/accomplishment/accomplishment",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "详情",
+          "pathName": "pages/detail/detail",
+          "query": "id=239572",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "统计",
+          "pathName": "pages/statistics/statistics",
+          "query": "id=831922",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "编写心得",
+          "pathName": "pages/experience/experience",
+          "query": "id=371651",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }
-  }
+  },
+  "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
+  "projectname": "云圈打卡"
 }

@@ -34,8 +34,11 @@ Page({
     onLoad: async function (options) {
         V.flock_id = options.id
         //检查是否是管理员
+        let res = await SQL.flock_select_amdin(V.flock_id)
+        res = res && JSON.parse(res)
+        let creater_id = res[0].creater_id
         this.setData({
-            admin: SQL.flock_select_amdin(V.flock_id) == globalData.user_id,
+            admin: creater_id == globalData.user_id,
         })
 
         let sql = `select * from flock where id=${V.flock_id}`

@@ -24,12 +24,14 @@
     "pages/demo1/demo1",
     "pages/task/task",
     "pages/calendar/calendar",
-    "pages/statistics/statistics"
+    "pages/statistics/statistics",
+    "pages/message/message",
+    "pages/experience/experience"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "元栖",
+    "navigationBarTitleText": "云圈打卡",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -59,8 +61,11 @@
   "usingComponents": {
     "wux-spin": "dist/spin/index",
     "wux-toast": "dist/toast/index",
-    "wux-icon": "dist/icon/index",
-    "wux-button": "dist/button/index",
-    "wux-dialog": "dist/dialog/index"
+    "wux-dialog": "dist/dialog/index",
+    "wux-tag": "dist/tag/index",
+    "wux-prompt": "dist/prompt/index",
+    "wux-badge": "dist/badge/index",
+    "navigation": "components/navigation/navigation",
+    "wux-refresher": "dist/refresher/index"
   }
 }

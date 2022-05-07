@@ -13,12 +13,7 @@ Page({
 
   data: {
     orders: true,
-    swiper: [
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fci.xiaohongshu.com%2Fa43105c3-0ffd-42f8-9f84-2182daf52a93%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fci.xiaohongshu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652872300&t=a264de1b62ac25eabb447dc0053a5a6b ',
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202107%2F20%2F20210720183147_f0810.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652872300&t=c637f7107f9981054227caff03366a71',
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202106%2F05%2F20210605105613_86a05.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652872300&t=b05cb13edcd6bb82d2186bfb9f90bea4',
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fww1.sinaimg.cn%2Fmw690%2Fb3c3ecf7ly1gnhjmi2gnij21jk2bckjl.jpg&refer=http%3A%2F%2Fwww.sina.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652872300&t=4c7cbca0f6b94d96869f3b4a0ed0fdf1'
-    ],
+    swiper: [],
     rList: [], //排行榜数据
     reList: [], //推荐小队数据
     eList: [], //心得数据
@@ -29,6 +24,12 @@ Page({
     refresh: false,
   },
   onLoad: async function () {
+    //获取海报链接
+    let list = await SQL.poter_select()
+    list = list && JSON.parse(list)
+    this.setData({
+      swiper:list
+    })
     console.log(globalData.tabBarHeight, '------------------------')
     //获取屏幕高度
     this.setData({

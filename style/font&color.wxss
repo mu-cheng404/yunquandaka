@@ -178,9 +178,90 @@
   background-color: #DEE4A5;
 }
 .button{
-  background-color: #A5DEE4;
+  background-color: #324B4E;
   margin: 20rpx;
 }
 .navigator_hover{
   background-color: rgb(240,240,240);
 }
+
+/* 背景色渐变 */
+.background_color_liner_gradient_1{
+  background: linear-gradient(#A5DEE4, #93E9E0, #92F3CE,#A6F9B2); 
+}
+.background_color_liner_gradient_2{
+  background: linear-gradient(#A5DEE4,#8BC3DD, #85A5CF);
+}
+/* 基础颜色 */
+/* 主题色 */
+.color_subject{
+  color: #A5DEE4;
+}
+.color_subject_2{
+  color: #324B4E;
+}
+.color_subject_3{
+  color: #94B0B3;
+}
+.color_subject_4{
+  color: #C8C2E5;
+}
+/* 大背景色 */
+.color_background{
+  color: #f4f4f4;
+}
+/* 文字背景色 */
+.color_label_background{
+  color: #F4F5F7;
+}
+/* 白色 */
+.color_white{
+  color: white;
+}
+/* 文本辅助色 */
+.color_text_auxiliary{
+  color: #848C96;
+}
+/* 按钮颜色 */
+.color_button{
+  color: #C8C2E5;
+}
+/* 标签颜色 */
+.color_label{
+  color: #C8C2E5;
+}
+/* 图标颜色 */
+.color_icon{
+  color: #A5DEE4;
+}
+
+/* 背景 */
+.background_color_subject{
+  background-color: #A5DEE4;
+}
+.background_color_subject_2{
+  background-color: #324B4E;
+}
+.background_color_subject_3{
+  background-color: #94B0B3;
+}
+.background_color_subject_4{
+  background-color: #C8C2E5;
+}
+.background_color_background{
+  background-color: #f4f4f4;
+}
+.background_color_label_background{
+  background-color: #F4F5F7;
+}
+.background_color_white{
+  background-color: white;
+}
+.background_color_button{
+  background-color: #A5DEE4;
+}
+
+
+
+
+

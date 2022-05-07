@@ -1,0 +1,25 @@
+<view class="custom_nav" style="height:{{navbarHeight}}px;">
+  <view class="custom_nav_box" style="height:{{navbarHeight}}px;">
+    <view class="custom_nav_bar" style="top:{{statusBarHeight}}px; height:{{cusnavH}}px;">
+      <view class="custom_nav_icon" wx:if="{{!navbarData.has_search}}" style="height:{{navbarBtn.height - 2}}px; top:{{navbarBtn.top}}px; left:{{navbarBtn.right}}px; border-radius: {{navbarBtn.height / 2}}px">
+        <navigator open-type="navigateBack" delta="1">
+          <view class="goback" style="height:{{navbarBtn.height - 10}}px;width:{{navbarBtn.height - 10}}px;">
+          </view>
+        </navigator>
+        <navigator open-type="switchTab" url="/pages/home/home">
+          <view class="home" style="height:{{navbarBtn.height -10 }}px;width:{{navbarBtn.height - 10}}px;">
+          </view>
+        </navigator>
+        <navigator url="/pages/message/message">
+          <wux-badge wx:if="{{num>=0}}" dot="{{ false }}" count="{{num}}" show-zero="{{ true }}">
+            <view class="message" style="height:{{navbarBtn.height -10 }}px;width:{{navbarBtn.height - 10}}px;">
+            </view>
+          </wux-badge>
+          <view wx:if="{{num==0}}" class="message" style="height:{{navbarBtn.height -10 }}px;width:{{navbarBtn.height - 10}}px;">
+          </view>
+        </navigator>
+      </view>
+      <view class="nav_title" wx:if="{{!navbarData.has_search}}" style="height:{{cusnavH}}px; line-height:{{cusnavH}}px;"></view>
+    </view>
+  </view>
+</view>
