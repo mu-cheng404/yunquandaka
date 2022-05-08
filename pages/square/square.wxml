@@ -1,31 +1,32 @@
-<view class="swiper">
-  <swiper class="swiper" autoplay interval="3000" circular indicator-dots="{{false}}" indicator-color="white" >
-    <block wx:for="{{swiper}}">
-      <swiper-item class="swiper-item">
-        <image src="{{item.url}}"></image>
-      </swiper-item>
-    </block>
-  </swiper>
-</view>
-<wux-tabs controlled="true" current="{{current}}" bind:change="onTabsChange">
-  <wux-tab key="tab1" title="心得广场"></wux-tab>
-  <wux-tab key="tab2" title="推荐小队"></wux-tab>
-  <wux-tab key="tab3" title="排行榜"></wux-tab>
-</wux-tabs>
-<view wx:if="{{current=='tab2'}}" style="width: 150rpx;float: left; position: fixed;left: 0rpx;top: 440rpx; z-index: 100;">
-  <wux-tabs defaultCurrent="tab1" direction="vertical" bindchange="onTabsChange_1">
-    <wux-tab key="1" title="伙伴"></wux-tab>
-    <wux-tab key="2" title="班级"></wux-tab>
-    <wux-tab key="4" title="宿舍"></wux-tab>
-    <wux-tab key="5" title="社团"></wux-tab>
-    <wux-tab key="6" title="组织"></wux-tab>
+<view style="width: 750rpx;height: {{windowHeight*0.3}}px;">
+  <view class="swiper">
+    <swiper class="swiper" autoplay interval="3000" circular indicator-dots="{{false}}" indicator-color="white">
+      <block wx:for="{{swiper}}">
+        <swiper-item class="swiper-item">
+          <image src="{{item.url}}"></image>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <wux-tabs controlled="true" current="{{current}}" bind:change="onTabsChange">
+    <wux-tab key="tab1" title="心得"></wux-tab>
+    <wux-tab key="tab2" title="推荐小队"></wux-tab>
+    <wux-tab key="tab3" title="排行榜"></wux-tab>
   </wux-tabs>
+  <view wx:if="{{current=='tab2'}}" style="width: 150rpx;float: left; position: fixed;left: 0rpx;top: 440rpx; z-index: 100;">
+    <wux-tabs defaultCurrent="tab1" direction="vertical" bindchange="onTabsChange_1">
+      <wux-tab key="1" title="伙伴"></wux-tab>
+      <wux-tab key="2" title="班级"></wux-tab>
+      <wux-tab key="4" title="宿舍"></wux-tab>
+      <wux-tab key="5" title="社团"></wux-tab>
+      <wux-tab key="6" title="组织"></wux-tab>
+    </wux-tabs>
+  </view>
 </view>
-<scroll-view scroll-y style="height: {{screenHeight*2 -300-88}}rpx;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
+<scroll-view scroll-y style="width:750rpx;height: {{windowHeight*0.7}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
   <!-- 经验广场 -->
   <block wx:if="{{current=='tab1'}}">
     <view style="background-color:white; width:710rpx;border-radius: 20rpx;margin: 20rpx;" wx:for="{{eList}}" wx:for-item="item" wx:for-index="index" wx:key="id">
-
       <view style="width: 710rpx;height: 100rpx;display: flex;margin-top: 10rpx;">
         <view style="width: 100rpx;height: 100rpx;" class="center">
           <image src='{{item.writter_url}}' style="width:70rpx;height:70rpx;border-radius:50%;margin: 10rpx;"></image>
@@ -117,5 +118,5 @@
       </navigator>
     </block>
   </block>
-  <view style="width: 750rpx;height: {{tabBarHeight}}rpx;"></view>
+  <!-- <view style="width: 750rpx;height: {{tabBarHeight}}rpx;scroll-snap-align: none;"></view> -->
 </scroll-view>

@@ -11,7 +11,7 @@
           </view>
         </navigator>
         <navigator url="/pages/message/message">
-          <wux-badge wx:if="{{num>=0}}" dot="{{ false }}" count="{{num}}" show-zero="{{ true }}">
+          <wux-badge wx:if="{{num>0}}" dot="{{ false }}" count="{{num}}" show-zero="{{ true }}">
             <view class="message" style="height:{{navbarBtn.height -10 }}px;width:{{navbarBtn.height - 10}}px;">
             </view>
           </wux-badge>

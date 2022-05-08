@@ -1,6 +1,6 @@
 #header {
   width: 750rpx;
-  height: 340rpx;
+  height: 85%;
   display: flex;
   flex-direction: column;
 }
@@ -70,7 +70,7 @@
 
 #stateBox {
   width: 750rpx;
-  height: 150rpx;
+  height: 160rpx;
 }
 
 #state {
@@ -91,13 +91,7 @@
   background-image: url(https://cn.bing.com/images/search?q=%E5%9B%BE%E7%89%87&FORM=IQFRBA&id=FAD1F40CD98810BC384B79F9306DA63BB2291830);
 
 }
-.second {
-  border-top-left-radius: 50rpx;
-  border-top-right-radius: 50rpx;
-  width: 750rpx;
-  height: 100vh;
-  background-color: rgb(240, 240, 240);
-}
+
 .empty{
   display: none;
 }
@@ -256,7 +250,6 @@
   height: 100rpx;
   margin: 5rpx 20rpx 5rpx 20rpx;
   border-radius: 10rpx;
-  background-color: #E4E4E4;
   display: flex;
   position: fixed;
   bottom: 80rpx;

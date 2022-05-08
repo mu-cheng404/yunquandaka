@@ -19,7 +19,7 @@
   <picker bindchange="typePickerChange" value="{{type}}" range="{{typeArray}}">
     <wux-cell title="任务类型" is-link label="" extra="{{type}}"></wux-cell>
   </picker>
-  <wux-cell title="选择成员" is-link url="../members/members"></wux-cell>
+  <wux-cell title="选择成员" is-link url="../selectMember/selectMember?id={{flock_id}}" extra="{{list.length}}人"></wux-cell>
   <picker bindchange="formPickerChange" value="{{form}}" range="{{formArray}}">
     <wux-cell title="建议形式" is-link label="" extra="{{form}}"></wux-cell>
   </picker>

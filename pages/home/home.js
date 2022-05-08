@@ -34,10 +34,8 @@ Page({
             login: login
         })
         if (login) {
-            await this.showLoading()
             await this.getGroupList();
             await this.getTargetList();
-            await this.hideLoading();
         } else {
             wx.navigateTo({
                 url: '../authorize/authorize',
@@ -80,20 +78,6 @@ Page({
             globalData.user_id = result[0].id
             return true
         }
-    },
-    /**
-     * 加载提示
-     */
-    showLoading: async function() {
-        await wx.showLoading({
-            title: '加载中···',
-            mask: true
-        }).then((res) => {
-            console.log(res)
-        })
-    },
-    hideLoading: async function() {
-        await wx.hideLoading()
     },
     /**
      * 获取团队信息

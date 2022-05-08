@@ -45,28 +45,128 @@ Page({
     sliderOffset: 0,
     sliderLeft: 0,
     buttons: [{
-      text: '点击申请'
+      text: '申请'
     }],
+    refresh: false,//下拉刷新
+  },
+  /**
+   * 生命周期函数
+   */
+  onLoad: async function (options) {
+    V.flock_id = options.id; //获取随页面传递而来的flock_id
+    // let login = await utils.verifyLogin()
+    let login = 1
+    //获取屏幕
+    this.setData({
+      pixelRatio: globalData.systeminfo.pixelRatio,
+      windowHeight: globalData.systeminfo.windowHeight,
+      windowWidth: globalData.systeminfo.windowWidth,
+      tabBarHeight: globalData.tabBarHeight
+    })
+    if (login) {
+      //查询是否是成员
+      let flag = await SQL.flock_check_member(V.flock_id, globalData.user_id)
+      this.setData({
+        isJoined: flag
+      })
+    } else {
+      wx.navigateTo({
+        url: '../authorize/authorize',
+      })
+    }
+  },
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: async function () {
+    let result = await SQL.flock_select_by_id(V.flock_id)
+    result = result && JSON.parse(result)
+    if (result.length == 0) {
+      utils.show_toast("圈子不存在", 'forbidden')
+    } else {
+      this.setData({
+        flock: result[0]
+      })
+      let flag = this.data.isJoined
+      if (flag == 1) {
+        await this.getTaskList(); //获取target列表
+        await this.getAvatarList(); //获取头像列表
+      }
+    }
+  },
+   /**
+   * 下拉刷新被触发
+   * @param {*} e 
+   */
+  async refresh() {
+    this.setData({
+      refresh: true
+    })
+    console.log("refresh")
+    await this.getTaskList()
+    this.setData({
+      refresh: false
+    })
+  },
+  /**
+   * 下拉刷新被复位
+   */
+  async restore() {
+    console.log("restore")
+  },
+  /**
+   * 下拉刷新被终止
+   */
+  async abort() {
+    console.log("abort")
   },
   /**
    * 用户点击登录
    */
   async apply_to_join() {
-    wx.showModal({
-      content: "确认给圈子发送加入申请",
-      cancelColor: 'cancelColor',
-      cancelText: "手滑了",
-      success: async res => {
-        let confirm = res.confirm
-        if (confirm) {
-          let [user_id, receiver_id, flock_id] = [globalData.user_id, this.data.flock.creater_id, this.data.flock.id]
-          await message.send_apply_message(user_id, receiver_id, flock_id)
 
-          utils.showToast("已发送申请，等待管理员处理")
-        }
+    //检查是否申请过
+    let flock = this.data.flock
+    let [sender_id, receiver_id, flock_id, task_id] = [globalData.user_id, flock.creater_id, flock.id, ""]
+    let res = await SQL.message_check_hasSend_and_state(sender_id, receiver_id, flock_id, task_id)
+    if (res) { //已经发送过通知了
+      if (res == "未处理") {
+        utils.show_toast("已经发送申请，管理员正在处理中", 'forbidden')
+        return
+      } else if (res == "拒绝") {
+        console.log("拒绝拒绝")
+        wx.showModal({
+          content: "管理员拒绝了你的申请，是否重新发送申请",
+          cancelText: '取消',
+          confirmText: "再次发送",
+          success: async res => {
+            let confirm = res.confirm
+            if (confirm) {
+              //获取message_id
+              let message_id = await SQL.message_select_id(sender_id, receiver_id, flock_id, task_id)
+              //删除旧消息
+              await SQL.message_delete_by_id(message_id)
+              //发送新消息
+              await message.send_apply_message(sender_id, receiver_id, flock_id)
+              utils.showToast("已发送申请，等待管理员处理")
+            } else {}
+          }
+        })
       }
-    })
-
+    } else { //第一次发送
+      wx.showModal({
+        content: "确认给圈子发送加入申请",
+        cancelText: "下次吧",
+        success: async res => {
+          let confirm = res.confirm
+          if (confirm) {
+            let [user_id, receiver_id, flock_id] = [globalData.user_id, this.data.flock.creater_id, this.data.flock.id]
+            await message.send_apply_message(user_id, receiver_id, flock_id)
+            utils.showToast("已发送申请，等待管理员处理")
+          }
+        }
+      })
+    }
 
   },
   /**
@@ -167,7 +267,6 @@ Page({
     if (flag == 1) { //用户已收藏
       wx.showModal({
         content: "是否取消收藏，取消后在主页将不可见",
-        cancelColor: 'cancelColor',
         success: res => {
           if (res.confirm) { //用户点击确定
             let sql = `delete from collect where task_id = ${task.id} and user_id = ${globalData.user_id}`
@@ -274,21 +373,6 @@ Page({
     }
   },
   /**
-   * 查询用户加入某个小队
-   * I : 用户ID、小队ID
-   * p ：查询joining表
-   * O ：已经加入1；
-   */
-  hasJoined: async function (user_id, flock_id) {
-    let sql = `select id from joining where user_id = ${user_id} and flock_id=${flock_id}`
-    let result = await utils.executeSQL(sql)
-    if (result == '[]') {
-      return 0
-    } else {
-      return 1
-    }
-  },
-  /**
    * 检查是否已经申请过
    */
   async check_message() {
@@ -296,66 +380,6 @@ Page({
     let res = await utils.executeSQL(sql)
     res = res && JSON.parse(res)
     console.log(res)
-  },
-  /**
-   * 检查是否是新用户，以及是否是访客
-   */
-  init: async function () {
-    let {
-      hasUser,
-      result
-    } = await this.hasUserInfo()
-    if (!hasUser) { //用户是新用户
-      wx.navigateTo({
-        url: '../authorize/authorize',
-      })
-    } else { //不是新用户
-      result = result && JSON.parse(result)
-      globalData.user_id = result[0].id
-
-      let hasJoin = await this.hasJoined(result[0].id, V.flock_id)
-      if (!hasJoin) { //查询结果为空，用户没有加入这个小队
-        let apply = await this.check_message()
-        console.log(apply)
-        this.setData({
-          isJoined: false
-        })
-      } else {
-        this.setData({
-          isJoined: true
-        })
-      }
-    }
-  },
-  /**
-   * 生命周期函数--检查用户是否登录以及是访客还是成员
-   */
-  onLoad: async function (options) {
-    V.flock_id = options.id; //获取随页面传递而来的flock_id
-  },
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: async function () {
-    wx.showLoading({
-      title: '数据加载中',
-      mask:true
-    })
-    await this.init()
-    let result = await SQL.flock_select_by_id(V.flock_id)
-    result = result && JSON.parse(result)
-    if (result.length == 0) {
-      utils.show_toast("圈子不存在", 'forbidden')
-    } else {
-      this.setData({
-        flock: result[0]
-      })
-      await this.getTaskList(); //获取target列表
-      await this.getAvatarList(); //获取头像列表
-    }
-    wx.hideLoading({
-      success: (res) => {},
-    })
   },
   onShareAppMessage: function (res) {
     if (res.from == "button") {
@@ -367,7 +391,6 @@ Page({
   },
   joinTap: async function () {
     wx.showModal({
-      cancelColor: 'cancelColor',
       text: '再确认一下',
       content: "再确认一下",
       success: async res => {
@@ -389,7 +412,6 @@ Page({
   applyToJoin: async function () {
     wx.showModal({
       content: "再次确认",
-      cancelColor: 'cancelColor',
       success: async res => {
         if (res.confirm) {
           let user_id = globalData.user_id

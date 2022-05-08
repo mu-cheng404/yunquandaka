@@ -10,18 +10,19 @@ App({
     globalData: {
         userInfo: null,
         user_id: '',
-        // user_id:119612,//测试
-        hasUserInfo: false,
-        systeminfo:"",//系统信息
-        tabBarHeight:0,//tab栏高度
+        // user_id: 133382, //测试
+        // hasUserInfo: false,
+        systeminfo: "", //系统信息
+        tabBarHeight: 0, //tab栏高度
     },
     getSystemInfo() {
         let that = this
         this.globalData.headerBtnPosi = wx.getMenuButtonBoundingClientRect()
         wx.getSystemInfo({ // iphonex底部适配
             success: res => {
+                console.log(res)
                 that.globalData.systeminfo = res
-                that.globalData.tabBarHeight = ( res.screenHeight - res.windowHeight - res.statusBarHeight ) * res.pixelRatio
+                that.globalData.tabBarHeight = (res.screenHeight - res.windowHeight - res.statusBarHeight) * res.pixelRatio
             }
         })
     },

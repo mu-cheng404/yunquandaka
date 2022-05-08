@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "wux-checkbox-group": "../../dist/checkbox-group/index",
+    "wux-checkbox": "../../dist/checkbox/index"
+  }
+}

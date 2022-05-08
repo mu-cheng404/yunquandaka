@@ -1,4 +1,5 @@
 {
+    "disableScroll": true,
     "navigationBarTitleText": "",
     "navigationBarBackgroundColor": "#A5DEE4",
     "navigationStyle":"custom",

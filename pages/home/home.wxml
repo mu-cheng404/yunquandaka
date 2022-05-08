@@ -15,7 +15,7 @@
         <view class="header_name center">小队名</view>
       </view>
       <view class="center" style="width: 220rpx;height: 70rpx;">
-        <view class="header_operate center">操作</view>
+        <view class="header_operate center">查看</view>
       </view>
     </view>
     <block wx:for="{{searchResult}}" wx:key="key">
@@ -32,9 +32,6 @@
               查看
             </view>
           </navigator>
-          <view id="{{index}}" class="{{item.joined?'item_operate_ban':'item_operate'}} center" bindtap="{{item.joined?'':'toJoin'}}">
-            申请
-          </view>
         </view>
       </view>
     </block>

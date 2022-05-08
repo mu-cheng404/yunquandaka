@@ -25,36 +25,51 @@ Page({
     end: "",
     tag: "",
     currentDate: "",
-    typeArray: ['学习', '日常', '运动', '活动' ],
+    typeArray: ['学习', '日常', '运动', '活动'],
     formArray: ['图片', '文字', '图片+文字'],
     weekdayArray: ['周一', '周二', '周三', '周四', '周五', '周六', '周天'],
     cycleArray: ['每天', '每周'],
-    clockArray: ["00:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+    clockArray: ["00:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
+    list: [],
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
     V.flock_id = options.id
     let date = new Date()
     let currentDate = util.formatTime(date).slice(0, 10)
     this.setData({
+      flock_id: V.flock_id,
       currentDate: currentDate
     })
-    this.tipOpen()
+    //检查缓存
+    let list = await wx.getStorage({
+      key: "list"
+    })
+    console.log(list.data)
+
+    this.setData({
+      list: list.data
+    })
+    // this.tipOpen()
   },
   /**
    * 创建
    */
   submit: async function () {
-    
     let [id, name, state, creator, type, form, defaultText, flock_id, cycle, weekday, clock, start, end] = [util.randomsForSixDigit(), this.data.taskName, this.data.state, globalData.user_id, this.data.type, this.data.form, this.data.defaultText, V.flock_id, this.data.cycle, this.data.weekday, this.data.clock, this.data.start, this.data.end]
     await SQL.task_insert(id, name, state, creator, type, form, defaultText, flock_id, cycle, weekday, clock, start, end)
+    //发送邀请
+
+
+
+    
     util.show_toast('创建成功!将前往计划主页')
 
     setTimeout(() => {
       wx.redirectTo({
-        url: '../task/task?id='+id,
+        url: '../task/task?id=' + id,
       })
     }, 1000);
   },

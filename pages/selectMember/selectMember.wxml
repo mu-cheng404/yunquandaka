@@ -1,0 +1,11 @@
+<form wx:if="{{list.length!=0}}" bindsubmit="formSubmit">
+  <wux-checkbox-group name="a" value="{{value}}" title="选择成员发送邀请" bind:change="onChange1">
+    <block wx:for="{{list}}" wx:key="key">
+      <wux-checkbox color="balanced" title="{{item.nickName}}" value="{{index}}" extra="已选" />
+    </block>
+  </wux-checkbox-group>
+  <button class="button" form-type="submit">完成</button>
+</form>
+<view wx:if="{{list.length==0}}" style="width: 750rpx;height: 100vh;">
+  <wux-prompt visible="{{list.length==0}}" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无联系方式.png" text="圈子很冷清"></wux-prompt>
+</view>

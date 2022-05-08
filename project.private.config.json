@@ -1,5 +1,7 @@
 {
-  "setting": {},
+  "setting": {
+    "compileHotReLoad": true
+  },
   "condition": {
     "miniprogram": {
       "list": [
@@ -18,7 +20,7 @@
         {
           "name": "群组flock",
           "pathName": "pages/flock/flock",
-          "query": "id=282947",
+          "query": "id=371651",
           "launchMode": "default",
           "scene": null
         },
@@ -32,7 +34,7 @@
         {
           "name": "添加任务addtk",
           "pathName": "pages/addtk/addtk",
-          "query": "id=282947",
+          "query": "id=449748",
           "launchMode": "default",
           "scene": null
         },
@@ -187,10 +189,17 @@
           "query": "id=371651",
           "launchMode": "default",
           "scene": null
+        },
+        {
+          "name": "选择成员",
+          "pathName": "pages/selectMember/selectMember",
+          "query": "id=283928",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }
   },
   "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
-  "projectname": "云圈打卡"
+  "projectname": "%E6%AF%94%E8%B5%9B%E9%A1%B9%E7%9B%AE"
 }

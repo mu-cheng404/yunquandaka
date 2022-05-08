@@ -17,7 +17,9 @@ Page({
     rList: [], //排行榜数据
     reList: [], //推荐小队数据
     eList: [], //心得数据
-    screenHeight: 750, //屏幕高度
+    windowHeight: "", //可使用窗口高度
+    windowWidth: '',
+    pixelRatio: "", //屏幕像素比
     tabBarHeight: "", //tab栏的高度
     current: "tab1", //当前的标签
     current_1: "1", //小标签栏的标签
@@ -28,12 +30,14 @@ Page({
     let list = await SQL.poter_select()
     list = list && JSON.parse(list)
     this.setData({
-      swiper:list
+      swiper: list
     })
     console.log(globalData.tabBarHeight, '------------------------')
-    //获取屏幕高度
+    //获取屏幕
     this.setData({
-      screenHeight: globalData.systeminfo.screenHeight,
+      pixelRatio: globalData.systeminfo.pixelRatio,
+      windowHeight: globalData.systeminfo.windowHeight,
+      windowWidth: globalData.systeminfo.windowWidth,
       tabBarHeight: globalData.tabBarHeight
     })
 
@@ -99,18 +103,13 @@ Page({
    * {id,wirtter_name,writter_url,time,content}
    */
   getExperienceList: async function () {
-    wx.showLoading({
-      title: '加载中',
-      mask: true
-    })
+
     let eList = await SQL.experience_select(globalData.user_id)
     eList = eList && JSON.parse(eList)
     this.setData({
       eList: eList
     })
-    wx.hideLoading({
-      success: (res) => {},
-    })
+
   },
   /**
    * 获取排行榜列表
@@ -118,37 +117,27 @@ Page({
    * {*}
    */
   getRankList: async function () {
-    wx.showLoading({
-      title: '加载中',
-      mask: true
-    })
+
     let rList = await SQL.flock_select_order_by_value() //执行
     rList = rList && JSON.parse(rList) //处理数据
     this.setData({
       rList: rList
     })
-    wx.hideLoading({
-      success: (res) => {},
-    })
+
   },
   /**
    * 获取推荐圈子列表(随机推荐)
    * @param {*} type 类型
    */
   getRecommandList: async function (type) {
-    wx.showLoading({
-      title: '加载中',
-      mask: true
-    })
+
     //找出所有的不属于自己的圈子
     let reList = await SQL.flock_select_by_type(type, globalData.user_id) //执行
     reList = reList && JSON.parse(reList) //处理数据
     this.setData({
       reList: reList
     })
-    wx.hideLoading({
-      success: (res) => {},
-    })
+
   },
   async like(e) {
     console.log(e)

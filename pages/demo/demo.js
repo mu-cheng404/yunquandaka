@@ -1,5 +1,6 @@
 var test = 1;
 const utils = require("../../utils/util")
+const SQL = require("../../utils/sql")
 Page({
  
   /**
@@ -7,6 +8,11 @@ Page({
    */
   data: {
     avatarList: ["../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", ]
+  },
+  execute:async function(){
+    let sql = `update message set state = '未处理'`
+    await utils.executeSQL(sql)
+    
   },
   consoleH: function (params) {
     console.log("Hello world")
