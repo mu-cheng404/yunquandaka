@@ -1,48 +1,21 @@
 <wux-toast id='wux-toast'></wux-toast>
 
-<view style="width: 750rpx;height: 80rpx;font-size: large;font-weight: bold;" class="center background_color_subject">
-  {{info.name}}
-</view>
-<view style="width: 750rpx;height: 300rpx;border-top: 1rpx solid white;" class="background_color_subject">
-  <view style="width: 670rpx;height: 220rpx;margin: 20rpx;padding: 20rpx; border-radius: 20rpx;background-color: #ffffff7e;">
-    {{info.state}}
-  </view>
-</view>
-<view style="width:750rpx;height:180rpx;" class="center">
-  <view style="margin-right: -50rpx; width: 250rpx;height: 100rpx;border-radius: 40rpx;" class="center background_color_subject_4 color_white" bindtap="pureText">纯文字</view>
-  <view style="width: 150rpx;height: 150rpx;border-radius: 50%;; z-index: 2;font-size: x-large;font-weight: bold; display: flex;" class="center background_color_subject color_subject_2" bindtap="preText">
-    <icon class="iconfont icon-dianji icon-x-large"></icon>
-  </view>
-  <view style="margin-left: -50rpx;width: 250rpx;height: 100rpx;border-radius: 40rpx;" class="center background_color_subject_4 color_white" bindtap="textAndImage">图文</view>
-</view>
-<view class="bgwhite center" style="width:710rpx;height:400rpx;padding:20rpx">
-  <!-- 文字 -->
-  <block wx:if="{{type=='纯文字'}}">
-    <view class="textareaBox">
-      <textarea name="content" id="textarea" cols="30" rows="10" placeholder="请输入正文" cursor-spacing="20" bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{content}}">
-    </textarea>
-    </view>
-  </block>
-  <!-- 图片 -->
-  <block wx:if="{{type=='图文'}}">
+<view style="width: 100%;height: 100vh;padding-top: 200rpx;" class="background_color_subject">
+  <view class="bgwhite center" style="width:630rpx;height:400rpx;padding:20rpx;margin: 40rpx;border-radius: 20rpx;">
+
     <view class="textareaBox" style="position: relative;">
       <textarea name="content" id="textarea1" cols="60" rows="10" placeholder="请输入正文" cursor-spacing="20" bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{content}}">
     </textarea>
       <view style="width: 600rpx;height: 150rpx;position: absolute;bottom: 0rpx;">
-        <wux-upload listType="picture-card" fileList="{{ fileList }}" controlled url="https://www.skyvow.cn/api/common/file"  max="1" count="1" bind:change="onChange" bind:success="onSuccess" bind:fail="onFail" bind:complete="onComplete" catch:preview="onPreview" bind:remove="onRemove">
-          <text>Upload</text>
+        <wux-upload listType="picture-card" fileList="{{ fileList }}" controlled url="https://www.skyvow.cn/api/common/file" max="1" count="1" bind:change="onChange" bind:success="onSuccess" bind:fail="onFail" bind:complete="onComplete" catch:preview="onPreview" bind:remove="onRemove">
+          <icon class="iconfont icon-icons01 color_subject_3" style="font-size: 70rpx;"></icon>
         </wux-upload>
       </view>
     </view>
-  </block>
-
-  <block wx:if="{{type=='预设'}}">
-    <view class="textareaBox">
-      <textarea name="content" id="textarea" cols="30" rows="10" placeholder="请输入正文" cursor-spacing="20" bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{content}}">
-    </textarea>
+  </view>
+  <view style="width:750rpx;height:180rpx;" class="center">
+    <view style="width: 150rpx;height: 150rpx;border-radius: 50%;; z-index: 2;font-size: x-large;font-weight: bold; display: flex;" class="center background_color_white color_subject">
+      <icon class="iconfont icon-dianji icon-x-large" bindtap="submit"></icon>
     </view>
-  </block>
-
+  </view>
 </view>
-
-<button bindtap="submit" class="button white">打卡</button>

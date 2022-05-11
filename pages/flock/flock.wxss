@@ -33,7 +33,8 @@
   width: 40rpx;
   height: 40rpx;
 }
-#shareButton{
+
+#shareButton {
   width: 60rpx;
   height: 60rpx;
   position: absolute;
@@ -44,6 +45,7 @@
   font-size: 20rpx;
   color: white;
 }
+
 #share {
   width: 30px;
   height: 30px;
@@ -62,8 +64,8 @@
 }
 
 .image {
-  width: 50rpx;
-  height: 50rpx;
+  width: 40rpx;
+  height: 40rpx;
   border-radius: 50%;
   margin-right: -20rpx;
 }
@@ -78,7 +80,7 @@
   height: 100rpx;
   padding: 20rpx;
   border-radius: 20rpx;
-  background-color: #ffffff25;
+  /* background-color: #ffffff25; */
   color: white;
   font-size: large;
 }
@@ -92,7 +94,7 @@
 
 }
 
-.empty{
+.empty {
   display: none;
 }
 
@@ -216,14 +218,16 @@
   position: relative;
   display: flex;
 }
-#switchText{
+
+#switchText {
   margin-left: 20rpx;
   /* width: 300rpx; */
   line-height: 60rpx;
   padding: 0 20rpx 0rpx 20rpx;
   border-radius: 20rpx;
 }
-#switchTarget{
+
+#switchTarget {
   width: 60rpx;
   height: 60rpx;
   position: absolute;
@@ -231,7 +235,7 @@
 }
 
 
-.divider{
+.divider {
   width: 710rpx;
   margin: 20rpx;
 }
@@ -239,27 +243,30 @@
 .targetBox {
   width: 710rpx;
   height: 100rpx;
-  margin: 5rpx 20rpx 5rpx 20rpx;
+  margin: 10rpx 20rpx 10rpx 20rpx;
   border-radius: 10rpx;
   background-color: white;
   display: flex;
   position: relative;
 }
-.newTarget{
+
+.newTarget {
   width: 710rpx;
   height: 100rpx;
   margin: 5rpx 20rpx 5rpx 20rpx;
   border-radius: 10rpx;
   display: flex;
   position: fixed;
-  bottom: 80rpx;
+  bottom: 50rpx;
 }
-.newTargetHover{
+
+.newTargetHover {
   background-color: white;
 }
+
 .targetIcon {
   width: 100rpx;
-  height: 100rpx;
+  height: 100%;
 }
 
 .targetIcon image {
@@ -269,37 +276,36 @@
 
 .targetName {
   width: 600rpx;
-  height: 100rpx;
+  height: 100%;
 }
 
 .name1 {
   width: inherit;
-  height: 50rpx;
-  padding: 10rpx 0 0 10rpx;
-  font-size: medium;
+  height: 60%;
+  display: flex;
+  align-items: flex-end;
+  padding-left: 10rpx;
+  font-size: large;
 }
-.name1 text{
-  color: #848C96;
-  font-size: small;
-  margin-left: 10rpx;
-}
+
 .name1_over {
   width: inherit;
-  height: 100rpx;
+  height: 150rpx;
   padding: 0 0 0 10rpx;
   font-size: medium;
   color: #848C96;
   text-decoration: line-through;
-  line-height: 100rpx;
+  line-height: 150rpx;
 }
 
 .name2 {
-  width: inherit;
+  width: 70%;
   height: 50rpx;
   padding: 0 0 0 10rpx;
   font-size: small;
   color: #848C96;
 }
+
 .name2 text {
   background-color: #F4F5F7;
 
@@ -312,10 +318,11 @@
   right: 35rpx;
   bottom: 25rpx;
 }
+
 .collect {
   position: absolute;
   width: 100rpx;
-  height: 100rpx;
+  height: 100%;
   right: 0rpx;
   bottom: 0rpx;
 }

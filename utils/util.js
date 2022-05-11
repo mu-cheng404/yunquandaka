@@ -38,6 +38,19 @@ function getCurrentFormatedDatebyDate(tag) {
     const day = date.getDate()
     return `${[year, month, day].map(formatNumber).join('-')}`
 }
+/**
+ * 返回距离当前日期前tag时间的日期
+ * @param {*} date 当前时间
+ * @param {*} tag 时间差
+ * @returns 
+ */
+function getYesterday(date) {
+    date = new Date(new Date(date) - (24 * 60 * 60 * 1000))
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    return `${[year, month, day].map(formatNumber).join('-')}`
+}
 const formatNumber = n => {
         n = n.toString()
         return n[1] ? n : `0${n}`
@@ -80,10 +93,7 @@ function getDiffBetweenDate(sDate1, sDate2) {
  * @param {*} sql sql语句
  */
 async function executeSQL(sql) {
-    wx.showLoading({
-        title: '加载中',
-        mask: true
-    })
+
     let result
     await wx.cloud.callFunction({
         name: "mysql",
@@ -100,9 +110,7 @@ async function executeSQL(sql) {
             console.log("\n")
         }
     })
-    wx.hideLoading({
-        success: (res) => {},
-    })
+
     return result
 
 }
@@ -157,6 +165,7 @@ async function verifyLogin() {
     if (refuse) {
         return true
     }
+
     let check = await wx.getStorageSync("user_id")
     console.log("you" + check)
     if (check) {
@@ -224,6 +233,7 @@ module.exports = {
     randomsForSixDigit,
     executeSQL,
     getCurrentFormatedDate,
+    getYesterday,
     getDiffBetweenDate,
     compareTime,
     showDetail,

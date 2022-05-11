@@ -1,3 +1,4 @@
+
 .name {
   width: 100%;
   height: 80px;
@@ -25,7 +26,7 @@
 }
 
 .textareaBox {
-  width: 710rpx;
+  width: 100%;
   height: 400rpx;
 }
 #upload{
@@ -33,7 +34,7 @@
   height: 200rpx;
 }
 #textarea{
-  width: 710rpx;
+  width: 100%;
   height: 400rpx;
   background-color: white;
   font-size: 14px;
@@ -41,7 +42,7 @@
   position: relative;
 }
 #textarea1{
-  width: 710rpx;
+  width: 100%;
   height: 250rpx;
   background-color: white;
   font-size: 14px;

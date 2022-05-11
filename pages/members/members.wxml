@@ -1,26 +1,22 @@
 <wux-toast id="wux-toast"></wux-toast>
-<view wx:if="{{admin}}" style="width: 750rpx;height: 80rpx; display: flex;position: relative;">
 
-  <view style="height: 80rpx;line-height: 80rpx;margin-left: 20rpx;">
-    所有成员</view>
-  <view style="position: absolute;right: 0rpx; margin: 20rpx 20rpx 0 0;width: 150rpx;height: 50rpx;border-radius: 10rpx;" class="background_color_subject center color_white" bindtap="dianjiguanli">管理
-    <icon class="iconfont icon-medium icon-chengyuanguanli"></icon>
-  </view>
-</view>
 <block wx:for="{{list}}" wx:key="key">
   <view style="margin:20rpx;padding-left: 20rpx;width: 690rpx;height: 80rpx;align-items: center;border-radius: 20rpx;display: flex;" class="background_color_white">
     <view style="width: 80rpx;height: 80rpx;" class="center">
       <image src="{{item.avatarUrl}}" style="width: 50rpx;height: 50rpx;border-radius: 50rpx;"></image>
     </view>
     <view style="width: 610rpx;height: 80rpx;line-height: 80rpx;align-items: center;position: relative;display: flex;">{{item.nickName}}
-      <view wx:if="{{admin&&item.id!=adminID&&active}}" style="width: 80rpx;height: 80rpx;right: 80rpx;position: absolute;" class="center">
+      <!-- <view wx:if="{{admin&&item.id!=adminID&&active}}" style="width: 80rpx;height: 80rpx;right: 80rpx;position: absolute;" class="center">
         <icon id="{{index}}" class="iconfont icon-tichu icon-medium color_subject" bindtap="kick_out"></icon>
-      </view>
+      </view> -->
       <view style="width: 80rpx;height: 80rpx;position: absolute;right: 0rpx;" class="center">
-        <icon wx:if="{{item.id!=adminID}}" id="{{index}}" class="iconfont icon-dazhaohu icon-medium color_subject" bindtap=""></icon>
+        <icon wx:if="{{admin&&item.id!=adminID&&active}}" id="{{index}}" class="iconfont icon-tichu icon-medium color_subject" bindtap="kick_out"></icon>
         <icon wx:if="{{item.id==adminID}}" id="{{index}}" class="iconfont icon-admin icon-medium color_subject"></icon>
-
       </view>
     </view>
   </view>
 </block>
+<view wx:if="{{admin}}" style="width: 750rpx;height: 80rpx; display: flex;justify-content: center;position: relative;">
+  <view style="width: 150rpx;height: 50rpx;border-radius: 10rpx;" class="background_color_subject center color_white" bindtap="dianjiguanli">管理<icon class="iconfont icon-medium icon-chengyuanguanli"></icon>
+  </view>
+</view>

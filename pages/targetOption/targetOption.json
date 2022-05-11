@@ -6,5 +6,6 @@
     "wux-actionsheet": "../../dist/actionsheet/index",
     "wux-picker": "../../dist/picker/index",
     "wux-input": "../../dist/input/index"
-  }
+  },
+  "navigationBarTitleText": ""
 }

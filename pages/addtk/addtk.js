@@ -1,5 +1,6 @@
 const util = require("../../utils/util")
 const SQL = require("../../utils/sql")
+const message = require("../../utils/message")
 const globalData = getApp().globalData
 import {
   $wuxActionSheet
@@ -36,6 +37,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    console.log("onload")
     V.flock_id = options.id
     let date = new Date()
     let currentDate = util.formatTime(date).slice(0, 10)
@@ -43,35 +45,74 @@ Page({
       flock_id: V.flock_id,
       currentDate: currentDate
     })
-    //检查缓存
-    let list = await wx.getStorage({
-      key: "list"
-    })
-    console.log(list.data)
 
-    this.setData({
-      list: list.data
-    })
     // this.tipOpen()
+  },
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: async function () {
+
+  },
+  /**
+   * 挨个儿发送消息
+   * @param {*} task_id 
+   */
+  async sendMessage(task_id) {
+    for (let i = 0; i < this.data.list.length; i++) {
+      let [sender_id, receiver_id, flock_id] = [globalData.user_id, this.data.list[i].id, V.flock_id]
+      await message.send_invitation_message(sender_id, receiver_id, flock_id, task_id)
+    }
   },
   /**
    * 创建
    */
   submit: async function () {
+    //获取数据
     let [id, name, state, creator, type, form, defaultText, flock_id, cycle, weekday, clock, start, end] = [util.randomsForSixDigit(), this.data.taskName, this.data.state, globalData.user_id, this.data.type, this.data.form, this.data.defaultText, V.flock_id, this.data.cycle, this.data.weekday, this.data.clock, this.data.start, this.data.end]
+    //判空处理
+    if (name == "") {
+      util.show_toast("名称不能为空！", "forbidden")
+      return
+    }
+    if (state == "") {
+      util.show_toast("描述不能为空！", "forbidden")
+      return
+    }
+    if (type == "") {
+      util.show_toast("请选择计划类型！", "forbidden")
+      return
+    }
+    if (form == "") {
+      util.show_toast("请选择建议打卡形式！", "forbidden")
+      return
+    }
+    if (start == "") {
+      util.show_toast("请选择计划开始时间！", "forbidden")
+      return
+    }
+    if (end == "") {
+      util.show_toast("请选择结束时间！", "forbidden")
+      return
+    }
+    if (start == end) {
+      util.show_toast("开始时间和结束时间至少相隔一天！", "forbidden")
+      return
+    }
+    //处理
+    wx.showLoading({
+      title: '提交数据中',
+    })
     await SQL.task_insert(id, name, state, creator, type, form, defaultText, flock_id, cycle, weekday, clock, start, end)
-    //发送邀请
-
-
-
-    
-    util.show_toast('创建成功!将前往计划主页')
-
-    setTimeout(() => {
-      wx.redirectTo({
-        url: '../task/task?id=' + id,
-      })
-    }, 1000);
+    wx.hideLoading({
+      success: (res) => {
+        util.show_toast("创建成功")
+      },
+    })
+    //路由
+    wx.navigateBack({
+      delta: 1,
+    })
   },
   taskInput: function (e) {
     this.setData({

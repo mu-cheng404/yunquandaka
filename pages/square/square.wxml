@@ -1,3 +1,5 @@
+<wux-toast id="wux-toast"></wux-toast>
+
 <view style="width: 750rpx;height: {{windowHeight*0.3}}px;">
   <view class="swiper">
     <swiper class="swiper" autoplay interval="3000" circular indicator-dots="{{false}}" indicator-color="white">
@@ -9,9 +11,9 @@
     </swiper>
   </view>
   <wux-tabs controlled="true" current="{{current}}" bind:change="onTabsChange">
-    <wux-tab key="tab1" title="心得"></wux-tab>
-    <wux-tab key="tab2" title="推荐小队"></wux-tab>
-    <wux-tab key="tab3" title="排行榜"></wux-tab>
+    <wux-tab key="tab1" title="云圈"></wux-tab>
+    <wux-tab key="tab2" title="推荐"></wux-tab>
+    <wux-tab key="tab3" title="排行"></wux-tab>
   </wux-tabs>
   <view wx:if="{{current=='tab2'}}" style="width: 150rpx;float: left; position: fixed;left: 0rpx;top: 440rpx; z-index: 100;">
     <wux-tabs defaultCurrent="tab1" direction="vertical" bindchange="onTabsChange_1">
@@ -23,34 +25,37 @@
     </wux-tabs>
   </view>
 </view>
+
+
 <scroll-view scroll-y style="width:750rpx;height: {{windowHeight*0.7}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
-  <!-- 经验广场 -->
+
+  <!-- 云圈 -->
   <block wx:if="{{current=='tab1'}}">
-    <view style="background-color:white; width:710rpx;border-radius: 20rpx;margin: 20rpx;" wx:for="{{eList}}" wx:for-item="item" wx:for-index="index" wx:key="id">
+
+    <view wx:if="{{rList.length!=0}}" wx:for="{{rList}}" style="background-color:white; width:710rpx;border-radius: 20rpx;margin: 20rpx;" wx:key="id">
       <view style="width: 710rpx;height: 100rpx;display: flex;margin-top: 10rpx;">
         <view style="width: 100rpx;height: 100rpx;" class="center">
-          <image src='{{item.writter_url}}' style="width:70rpx;height:70rpx;border-radius:50%;margin: 10rpx;"></image>
+          <image src='{{item.avatarUrl}}' style="width:70rpx;height:70rpx;border-radius:50%;margin: 10rpx;"></image>
         </view>
         <view style="width:500rpx;height:100rpx">
-          <view style=" width: 500rpx;height:60rpx;font-size: medium;line-height: 60rpx;">{{item.writter_name}}
+          <view style=" width: 500rpx;height:60rpx;font-size: medium;line-height: 60rpx;">{{item.nickName}}
           </view>
-          <view style="width: 500rpx;height:40rpx;font-size: small;color: #848C96;line-height:40rpx;">{{item.time}}</view>
+          <view style="width: 500rpx;height:40rpx;font-size: small;color: #848C96;line-height:40rpx;">{{item.date}} {{item.time}}</view>
         </view>
         <view class="center color_subject" style="width: 110rpx;height: 50rpx; display: flex; line-height: 100rpx; font-size: large; ">
           <icon id="{{index}}" wx:if="{{!item.isLike}}" class="iconfont icon-dianzan1 icon-large color_icon" bindtap="like"></icon>
           <icon id="{{index}}" wx:else class="iconfont icon-dianzan color_icon icon-large" bindtap="cancelLike"></icon>
-          {{item.num_of_like}}
+          {{item.like_num}}
         </view>
       </view>
       <view class="fengmian">
         <navigator url="../detail/detail?id={{item.id}}">
           <view style=" width:600rpx;margin-left:100rpx;padding: 0rpx 10rpx 10rpx 0rpx;word-break: break-all; overflow-y: auto;">{{item.content}}</view>
 
-          <image wx:if="{{item.url}}" style="width:200rpx;height:200rpx;margin-left: 100rpx;" src="{{item.url}}"></image>
+          <image wx:if="{{item.url}}" style="width:200rpx;height:200rpx;margin-left: 100rpx; border-radius: 10rpx;" src="{{item.url}}"></image>
         </navigator>
       </view>
-      <view class="color_text_auxiliary" style="width: 610rpx;height: 50rpx; margin-left: 100rpx;margin-top: 20rpx;font-size: medium;">留言{{item.num_of_remark}}></view>
-
+      <view class="color_text_auxiliary" style="width: 610rpx;height: 50rpx; margin-left: 100rpx;margin-top: 20rpx;font-size: medium;">留言{{item.remark_num}}></view>
     </view>
 
 
@@ -59,7 +64,7 @@
 
   <block wx:if="{{current=='tab2'}}" style="width: 750rpx;display: flex;">
 
-    <view wx:if="{{reList.length==0}}" style="margin-left: 150rpx;width:600rpx;height:{{screenHeight*2 -300-88}}rpx;">
+    <view wx:if="{{reList.length==0}}" style="margin-left: 150rpx;width:600rpx;height:{{windowHeight*0.7}}px;">
       <wux-prompt visible="{{reList.length==0}}" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_空白页-通用.png" text="暂无推荐" />
     </view>
     <block wx:for="{{reList}}">
@@ -87,7 +92,7 @@
   </block>
   <!-- 排行榜 -->
   <block wx:if="{{current=='tab3'}}">
-    <block wx:for="{{rList}}" wx:for-item="item" wx:for-index="index" wx:key="id">
+    <block wx:for="{{rankList}}" wx:for-item="item" wx:for-index="index" wx:key="id">
       <navigator url="../flock/flock?id={{item.id}}">
         <view style="  font-size:25rpx;background-color: aliceblue; width:95%;height:120rpx;border:2rpx solid rgb(190, 214, 214); margin-top: 20rpx;margin-left: 17rpx;border-radius: 3%;">
           <view class="touxiang2">

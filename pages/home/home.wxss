@@ -220,7 +220,6 @@
   height: 390rpx;
   display: flex;
   white-space: nowrap;
-  background-color: white;
   border-radius: 20rpx;
 }
 
@@ -228,7 +227,6 @@
   width: 270rpx;
   height: 380rpx;
   display: inline-block;
-  background-color: white;
   margin: 0 0 0 30rpx;
   border-radius: 10rpx;
   position: relative;
@@ -322,7 +320,7 @@
 }
 
 .targetName {
-  width: 600rpx;
+  width: 500rpx;
   height: 100rpx;
 }
 

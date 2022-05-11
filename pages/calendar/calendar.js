@@ -2,25 +2,41 @@ import {
   $wuxCalendar
 } from '../../dist/index'
 const utils = require("../../utils/util")
+const SQL = require("../../utils/sql")
 var V = {
   id: "",
+  uid: getApp().globalData.user_id
 }
 Page({
-  tabChange: function (e) {
-    console.log(e)
-    let index = e.detail.key
-    console.log(this.data.dateList[index])
-    if (this.data.dateList[index] == undefined) { //如果没有数据
-      this.queryDate(index)
-    }
-    this.setData({
-      current: index
-    })
-    this.openCalendar(index)
+
+  data: {
+    dateList: [],
+    continuous:0,
+    sum:0,
   },
+
+  onLoad: async function (options) {
+    wx.showLoading({
+      title: '加载中',
+      mask:true
+    })
+    V.id = options.id
+    //查询当前用户的打卡记录
+    await this.queryDate()
+    //查询连续打卡时间和累计打卡时间
+    let con = await SQL.task_query_continuous(V.id,V.uid)
+    let sum = await SQL.task_query_sum(V.id,V.uid)
+    this.setData({
+      continuous:con,
+      sum:sum
+    })
+    //打开日历
+    this.openCalendar()
+  },
+
   openCalendar: function (index) {
     $wuxCalendar().open({
-      value: this.data.dateList[index],
+      value: this.data.dateList,
       closeOnSelect: false,
       direction: "vertical",
       multiple: true,
@@ -31,49 +47,24 @@ Page({
         })
       },
     })
+    wx.hideLoading({})
   },
-  queryMember: async function () {
-    let sql = `select u.id,u.nickName,u.avatarUrl from user as u ,joining as j,task as t where j.user_id = u.id and j.flock_id = t.flock_id and t.id = ${V.id}`
+
+  /**
+   * 查询当前用户的打卡日期列表
+   */
+  queryDate: async function () {
+    let sql = `select distinct r.date from record as r where r.user_id = ${V.uid} and r.task_id=${V.id}`
     let result = await utils.executeSQL(sql)
-    result = result && JSON.parse(result)
-    console.log(result)
-
-    this.setData({
-      userList: result
-    })
-  },
-  queryDate: async function (index) {
-    let id = this.data.userList[index].id
-    let sql = `select distinct r.date from record as r,punch as p where p.user_id = ${id} and r.task_id=${V.id}`
-
-    let result = await utils.executeSQL(sql)
-
     result = result && JSON.parse(result)
     let array = []
     console.log(result)
-    let length = result==[]?0:result.length
+    let length = result == [] ? 0 : result.length
     for (let i = 0; i < length; i++) {
       array[i] = result[i].date
     }
     this.setData({
-      ['dateList[' + index + ']']: array
+      dateList: array
     })
-  },
-  data: {
-    userList: [],
-    current: '0',
-    dateList: [],
-  },
-
-  onLoad: async function (options) {
-    V.id = options.id
-    console.log(V.id)
-
-    //查询这个目标下所有成员
-    await this.queryMember()
-    //依次查询每个人的打卡日期
-    await this.queryDate(0)
-    //打开日历
-    this.openCalendar(0)
   },
 })

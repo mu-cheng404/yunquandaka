@@ -45,18 +45,36 @@ Page({
     sliderOffset: 0,
     sliderLeft: 0,
     buttons: [{
-      text: '申请'
+      text: '点击加入'
     }],
-    refresh: false,//下拉刷新
+    refresh: false, //下拉刷新
+    list: [],
   },
   /**
    * 生命周期函数
    */
   onLoad: async function (options) {
+    console.log("onload")
     V.flock_id = options.id; //获取随页面传递而来的flock_id
-    // let login = await utils.verifyLogin()
-    let login = 1
-    //获取屏幕
+  },
+  onUnload: async function (options) {
+    wx.setStorageSync('loading', 0)
+    console.log("缓存已清除")
+  },
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: async function () {
+    let flag = wx.getStorageSync("loading")
+    console.log("拿到缓存", flag)
+    if (!flag) { //没有显示过加载中 flag = 0
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
+    }
+    let login = await utils.verifyLogin()
+
     this.setData({
       pixelRatio: globalData.systeminfo.pixelRatio,
       windowHeight: globalData.systeminfo.windowHeight,
@@ -66,6 +84,7 @@ Page({
     if (login) {
       //查询是否是成员
       let flag = await SQL.flock_check_member(V.flock_id, globalData.user_id)
+      console.log("-------------------------------flag=", flag)
       this.setData({
         isJoined: flag
       })
@@ -74,11 +93,8 @@ Page({
         url: '../authorize/authorize',
       })
     }
-  },
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: async function () {
+    console.log("onshow")
+
     let result = await SQL.flock_select_by_id(V.flock_id)
     result = result && JSON.parse(result)
     if (result.length == 0) {
@@ -88,13 +104,22 @@ Page({
         flock: result[0]
       })
       let flag = this.data.isJoined
+      console.log("-------------------------------", flag, this.data.isJoined)
       if (flag == 1) {
+        console.log("-------------------------------")
         await this.getTaskList(); //获取target列表
         await this.getAvatarList(); //获取头像列表
       }
     }
+    if (!flag) { //没有显示过加载中
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      wx.setStorageSync('loading', 1) //将标志设置成1
+      console.log("将缓存设置成", 1)
+    }
   },
-   /**
+  /**
    * 下拉刷新被触发
    * @param {*} e 
    */
@@ -121,10 +146,29 @@ Page({
     console.log("abort")
   },
   /**
+   * 直接加入
+   */
+  async to_join() {
+    //处理
+    let that = this
+    wx.showLoading({
+      title: '申请中',
+      mask: true
+    })
+    //添加数据
+    let [user_id, flock_id] = [globalData.user_id, V.flock_id]
+    await SQL.joining_insert(user_id, flock_id)
+    wx.hideLoading({
+      success: async res => {},
+    })
+    utils.show_toast("加入成功")
+    //渲染页面
+    await this.onShow()
+  },
+  /**
    * 用户点击登录
    */
   async apply_to_join() {
-
     //检查是否申请过
     let flock = this.data.flock
     let [sender_id, receiver_id, flock_id, task_id] = [globalData.user_id, flock.creater_id, flock.id, ""]
@@ -170,40 +214,14 @@ Page({
 
   },
   /**
-   * 用户点击头图修改头图
+   * 用户预览头像
    */
-  updateImage: async function () {
-    var _this = this
-    wx.chooseMedia({
-      count: 1,
-      mediaType: ['image'],
-      sourceType: ['album'],
-      sizeType: ['compressed'],
-      success: async res => {
-        let temp = res.tempFiles[0].tempFilePath
-        wx.cloud.uploadFile({
-          filePath: temp,
-          cloudPath: utils.genMediaPath(`flock/${V.flock_id}`, '.png'),
-          success: async res => {
-            let fileID = res.fileID
-            console.log(fileID)
-            //修改页面值
-            _this.setData({
-              'flock.avatarUrl': fileID
-            })
-            wx.showToast({
-              title: '修改成功',
-              icon: "success"
-            })
-            //修改数据库
-            let sql = `update flock set avatarUrl = '${fileID}' where id = ${_this.data.flock.id}`
-
-            await utils.executeSQL(sql)
-          }
-        })
-      }
+  async previewImage() {
+    wx.previewImage({
+      urls: [this.data.flock.avatarUrl],
     })
   },
+
   toView: function () {
     wx.navigateTo({
       url: '../view/view?id=' + this.data.list[this.data.targetIndex].id,
@@ -312,12 +330,13 @@ Page({
    * 获取团队所有目标
    */
   getTaskList: async function () {
-    let sql = `select task.id,task.name,task.cycle,task.type,task.form,(select nickName from user where task.creator = user.id) as creator,exists (select id from collect where task_id=task.id and user_id=${globalData.user_id}) as collect from task,participate where task.flock_id = ${V.flock_id} and task.id = participate.task_id and participate.user_id = ${globalData.user_id}`
-    let result = await utils.executeSQL(sql)
-    result = result && JSON.parse(result)
-    this.setData({
-      list: result
-    })
+    let result = await SQL.task_select_by_fid_uid(V.flock_id, globalData.user_id)
+    if (result != '[]') {
+      result = result && JSON.parse(result)
+      this.setData({
+        list: result
+      })
+    }
   },
   /**
    * 切换目标

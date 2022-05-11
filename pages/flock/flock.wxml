@@ -1,36 +1,28 @@
 <navigation></navigation>
 <wux-toast id="wux-toast" />
 <view id="page">
-  <view style="width: 750rpx;height: {{windowHeight*0.4}}px">
+  <view style="width: 750rpx;height: {{windowHeight*0.33}}px">
     <!-- 头部 -->
     <view id="header" class="background_color_liner_gradient_2">
-      <view style="width: 100%;height: 320rpx;">
+      <view style="width: 100%;height: 220rpx;">
         <block wx:if="{{flock.id}}">
           <view style="width: 100%;height: 220rpx; display: flex;">
-            <image src="{{flock.avatarUrl}}" style="width: 180rpx;height: 180rpx;margin:20rpx;border-radius: 20rpx;" bindtap="updateImage"></image>
-            <view style="width: 510rpx;height: 220rpx;margin-left: 20rpx;position: relative;">
-              <view style="width:100%;height: 35%;padding-top: 10rpx;display: flex;font-size: x-large;">
+            <image src="{{flock.avatarUrl}}" mode="aspectFill" style="width: 180rpx;height: 180rpx;margin:20rpx;border-radius: 20rpx;" bindtap="previewImage"></image>
+            <view style="width: 510rpx;height: 220rpx;margin-left: 20rpx;position: relative; ">
+              <view style="width:100%;height: 35%;padding-top: 10rpx;display: flex;align-items: flex-end;font-size: x-large;">
                 {{flock.name}}
-                <navigator wx:if="{{isJoined}}" url="../options/options?id={{flock.id}}">
-                  <icon style="margin-left: 10rpx;" class="iconfont icon-bianji icon-medium color_white"></icon>
+                <navigator wx:if="{{isJoined}}" url="../options/options?id={{flock.id}}"style="position: absolute;right:20rpx;" >
+                  <view style="height:50rpx; width: 100rpx;border-radius: 10rpx;background-color: rgba(255, 255, 255, 0.5);font-size: small; display: flex;align-items: center;"class="center color_subject">设置
+                    <icon style="" class="iconfont icon-bianji icon-small color_subject"></icon>
+                  </view>
                 </navigator>
+
               </view>
               <view style="width: 100%;height: 20%; display: flex;align-items: center;position: relative;">
-                <block wx:for="{{flock.grade}}">
-                  <icon class="iconfont icon-xingji icon-medium color_white"></icon>
-                </block>
-                <view style="width: 150rpx;height: 40rpx;font-size: smaller;border-radius: 30rpx;margin-left: 20rpx;color: white;">
-                  元气值：{{flock.value}}
-                </view>
-                <block wx:if="{{isJoined}}">
-                  <button open-type="share" class="center background_color_button" style="width: 130rpx; height:50rpx; position: absolute; right: 0rpx; top: 0rpx;font-size: small; color: white;border-radius: 20rpx;padding:0;">
-                    分享
-                    <icon class="iconfont icon-fenxiang icon-small"></icon>
-                  </button>
-                </block>
+                <view style="color: white;font-size: small;">一个{{flock.type}}圈~</view>
               </view>
               <view style="width: 100%;height: 45%;display: flex;align-items: center;">
-                成员：
+
                 <block wx:for="{{avatarList}}" wx:key="key">
                   <block wx:if="{{index<=5}}">
                     <view style="z-index: {{100-index}};">
@@ -38,12 +30,15 @@
                     </view>
                   </block>
                 </block>
-                <block wx:if="{{avatarList.length>5}}">
-                  <view style="z-index: {{100-index}};">
-                    <image class="image" src="../../images/更多.png"></image>
+                <block wx:if="{{avatarList.length<5}}">
+                  <view style="z-index: {{100-index}};margin-bottom: 20rpx;width: 100rpx;" class="center">
+                    <navigator wx:if="{{avatarList.length!=0}}" url="../members/members?flock_id={{flock.id}}">
+                      <icon class="iconfont icon-more1 color_white "></icon>
+                      <icon class="iconfont icon-gengduo color_white"></icon>
+                    </navigator>
                   </view>
                 </block>
-                <view style="margin-left: 30rpx;color: white;">[{{flock.type}}]</view>
+
               </view>
             </view>
           </view>
@@ -53,40 +48,45 @@
         <view id="state">{{flock.state==""?"这个小队很懒，没有说明":flock.state}}</view>
       </view>
     </view>
-    <view style="width: 750rpx;height: 15%;" class="background_color_white">
+    <view style="width: 750rpx;height: 15%;" class="">
       <view wx:if="{{isJoined}}" style="width: 750rpx;height: 100rpx;display: flex;position: relative;">
-        <view style=" padding: 20rpx;width: 750rpx;height: 80rpx; font-size: medium;">当前计划</view>
-        <navigator url="../experience/experience?id={{flock.id}}">
-          <view class="center background_color_subject" style="width: 130rpx; height:50rpx; position: absolute; right: 20rpx;top:15rpx;font-size: small; color: white;border-radius: 20rpx;">
-            发布心得
-          </view>
-        </navigator>
+        <view style=" padding: 20rpx;width: 750rpx;height: 80rpx; font-size: medium;">当前计划<text style="font-size: small;" class="color_text_auxiliary">(点击⭐将计划放在首页)</text></view>
+        <view class="center background_color_subject" style="width: 130rpx; height:50rpx; position: absolute; right: 20rpx;top:15rpx;font-size: small; color: white;border-radius: 20rpx;">
+          <block wx:if="{{isJoined}}">
+            <button open-type="share" class="center background_color_button" style="width: 130rpx; height:50rpx; position: absolute; right: 0rpx; top: 0rpx;font-size: small; color: white;border-radius: 20rpx;padding:0;">
+              邀请
+              <icon class="iconfont icon-fenxiang icon-small"></icon>
+            </button>
+          </block>
+        </view>
       </view>
     </view>
   </view>
-
-  <scroll-view scroll-y style="width:750rpx;height: {{windowHeight*0.6}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
+  <view wx:if="{{!isJoined&&flock!=''}}" style="width: 750rpx;height: {{windowHeight*0.67}}px;">
+    <wux-prompt title="暂未加入" text="点击下方申请加入小队" visible="{{!isJoined}}" buttons="{{buttons}}" bind:click="to_join" />
+  </view>
+  <view wx:if="{{isJoined&&list.length==0}}" style="width: 750rpx;height: {{windowHeight*0.67}}px;">
+    <wux-prompt title="没有计划" text="点击下方创建吧！" visible="{{isJoined&&list}}" />
+  </view>
+  <scroll-view scroll-y style="width:750rpx;height: {{windowHeight*0.67}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
     <block wx:if="{{list.length>0}}" wx:for="{{list}}" wx:key="key">
-      <navigator url="../task/task?id={{item.id}}">
+      <navigator url="../task/task?tid={{item.id}}&fid={{item.flock_id}}">
         <view class="targetBox" id="{{index}}">
           <view class="targetIcon center">
-            <icon class="iconfont icon-{{item.type}} icon-large  color_icon"></icon>
+            <icon class="iconfont icon-{{item.type}} color_icon" style="font-size: 70rpx;"></icon>
           </view>
           <view class="targetName">
             <view class="{{isOver?'name1_over':'name1'}}">
               {{item.name}}
-              <text></text>
             </view>
             <block wx:if="{{!isOver}}">
               <view class="name2">
-                <text>{{item.cycle}}</text>
-                ·由
-                <text>{{item.creator}}</text>
-                创建·
-                <text>{{item.form}}打卡</text>
+                <block wx:if="{{!isOver}}">
+                  <view class="color_text_auxiliary" style="font-size: small;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.state}}</view>
+                </block>
               </view>
               <view class="collect center">
-                <icon id="{{index}}" class="iconfont {{!item.collect?'icon-shoucang1':'icon-shoucang'}} color_icon icon-large" catchtap="collect"></icon>
+                <icon id="{{index}}" class="iconfont {{!item.collect?'icon-shoucang1':'icon-shoucang'}} color_icon " style="font-size: 60rpx;" catchtap="collect"></icon>
               </view>
             </block>
           </view>
@@ -94,12 +94,8 @@
       </navigator>
     </block>
   </scroll-view>
-  <view wx:if="{{isJoined&&list==''}}" style="width: 750rpx;height: 500rpx;">
-    <wux-prompt title="没有计划" text="点击下方创建吧！" visible="{{isJoined&&list}}" />
-  </view>
-  <view wx:if="{{!isJoined&&flock!=''}}" style="width: 750rpx;height: 500rpx;">
-    <wux-prompt title="暂未加入" text="点击下方申请加入小队" visible="{{!isJoined}}" buttons="{{buttons}}" bind:click="apply_to_join" />
-  </view>
+  
+  
 </view>
 <navigator wx:if="{{isJoined}}" url="../addtk/addtk?id={{flock.id}}">
   <view class="newTarget background_color_liner_gradient_2" style="font-size: large;" hover-class="newTargetHover">

@@ -14,9 +14,9 @@ Page({
   data: {
     orders: true,
     swiper: [],
-    rList: [], //排行榜数据
+    rankList: [], //排行榜数据
     reList: [], //推荐小队数据
-    eList: [], //心得数据
+    rList: [], //心得数据
     windowHeight: "", //可使用窗口高度
     windowWidth: '',
     pixelRatio: "", //屏幕像素比
@@ -26,6 +26,7 @@ Page({
     refresh: false,
   },
   onLoad: async function () {
+
     //获取海报链接
     let list = await SQL.poter_select()
     list = list && JSON.parse(list)
@@ -43,9 +44,15 @@ Page({
 
   },
   onShow: async function () {
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     await this.getRankList()
-    await this.getExperienceList()
-
+    await this.getrList()
+    wx.hideLoading({
+      success: (res) => {},
+    })
   },
   /**
    * 下拉刷新被触发
@@ -58,7 +65,7 @@ Page({
     console.log("refresh")
 
     if (this.data.current == 'tab1') {
-      await this.getExperienceList()
+      await this.getrList()
     } else if (this.data.current == 'tab2') {
       await this.getRecommandList("宿舍")
     } else if (this.data.current == 'tab3') {
@@ -99,17 +106,15 @@ Page({
 
   /**
    * 获取经验列表
-   * @returns eList 对象数组（按时间排序）
+   * @returns rList 对象数组（按时间排序）
    * {id,wirtter_name,writter_url,time,content}
    */
-  getExperienceList: async function () {
-
-    let eList = await SQL.experience_select(globalData.user_id)
-    eList = eList && JSON.parse(eList)
+  getrList: async function () {
+    let rList = await SQL.record_select_all(globalData.user_id)
+    rList = rList && JSON.parse(rList)
     this.setData({
-      eList: eList
+      rList: rList
     })
-
   },
   /**
    * 获取排行榜列表
@@ -117,11 +122,10 @@ Page({
    * {*}
    */
   getRankList: async function () {
-
     let rList = await SQL.flock_select_order_by_value() //执行
     rList = rList && JSON.parse(rList) //处理数据
     this.setData({
-      rList: rList
+      rankList: rList
     })
 
   },
@@ -139,33 +143,41 @@ Page({
     })
 
   },
+  /**
+   * 给打卡点赞
+   * @param {*} e 
+   */
   async like(e) {
-    console.log(e)
+    //获取数据
     let index = e.currentTarget.id
-    let exper = this.data.eList[index]
-    //修改页面值
+    let record = this.data.rList[index]
+    //修改页面数据
     this.setData({
-      ['eList[' + index + '].isLike']: 1,
-      ['eList[' + index + '].num_of_like']: exper.num_of_like + 1,
+      ['rList[' + index + '].isLike']: 1,
+      ['rList[' + index + '].like_num']: this.data.rList[index].like_num + 1,
     })
     //修改数据库
-    let sql = `insert into liking(exper_id,user_id,time,type) values( ${exper.id},${globalData.user_id},'${utils.formatTime(new Date())}',1)`
-    await utils.executeSQL(sql)
-    //生成点赞通知
-    await message.send_like_message(globalData.user_id, exper.writter_id, exper.id)
+    await SQL.record_like(record.id, globalData.user_id)
+    //反馈
+    utils.show_toast("点赞成功！")
   },
+  /**
+   * 给打卡取消点赞
+   * @param {*} e 
+   */
   async cancelLike(e) {
-    console.log(e)
+    //获取数据
     let index = e.currentTarget.id
-    let exper = this.data.eList[index]
-    //修改页面值
+    let record = this.data.rList[index]
+    //修改页面数据
     this.setData({
-      ['eList[' + index + '].isLike']: 0,
-      ['eList[' + index + '].num_of_like']: exper.num_of_like - 1,
+      ['rList[' + index + '].isLike']: 0,
+      ['rList[' + index + '].like_num']: this.data.rList[index].like_num - 1,
     })
     //修改数据库
-    let sql = `delete from liking where user_id = ${globalData.user_id} and exper_id = ${exper.id}`
-    await utils.executeSQL(sql)
+    await SQL.record_cancel_like(record.id, globalData.user_id)
+    //反馈
+    utils.show_toast("已取消")
   },
   /**
    * 切换tab
@@ -175,7 +187,7 @@ Page({
     console.log(e)
     let key = e.detail.key
     if (key == 'tab1') {
-      await this.getExperienceList()
+      await this.getrList()
     } else if (key == "tab2") {
       await this.getRecommandList('宿舍')
     } else if (key == 'tab3') {

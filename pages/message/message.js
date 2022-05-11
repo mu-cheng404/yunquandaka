@@ -88,7 +88,17 @@ Page({
       })
     }
   },
+    /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
   async onPullDownRefresh() {
+    wx.showNavigationBarLoading()
     await this.getAndSetMessageList()
+    wx.hideNavigationBarLoading({
+      success: (res) => {},
+    })
+    wx.stopPullDownRefresh({
+      success: (res) => {},
+    })
   }
 })

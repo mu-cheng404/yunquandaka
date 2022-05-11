@@ -1,9 +1,9 @@
-const globalData = getApp().globalData
 const utils = require("../../utils/util")
 const message = require("../../utils/message")
 const SQL = require("../../utils/sql")
 var V = {
-  id: ""
+  id: "",
+  uid: getApp().globalData.user_id
 }
 Page({
   data: {
@@ -11,24 +11,29 @@ Page({
     exp: "", //基本信息
     remarkList: [],
     value: "", //实时输入的评论 
-    own: false,
+    admin: false,
   },
   async onLoad(options) {
+    //获取数据
     V.id = options.id
-    let res = await SQL.experience_select_by_id(V.id, globalData.user_id)
+    //获取基本信息
+    let res = await SQL.record_select_by_id(V.id, V.uid)
     if (res == "[]") {
       utils.show_toast("找不到帖子!", "forbidden")
     } else {
+      //加载
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
       res = res && JSON.parse(res)
-      let info = await this.getUserProfile()
       this.setData({
-        info: info
+        record: res[0],
+        admin: res[0].user_id == V.uid
       })
-      this.setData({
-        exp: res[0],
-        own: res[0].writter_id == globalData.user_id
-      })
+      await this.getUserProfile()
       await this.getRemarkList()
+      wx.hideLoading({})
     }
   },
   /**
@@ -45,7 +50,7 @@ Page({
    * 用户点击分享
    */
   share() {
-    utils.show_toast("请点击右上角分享", 'text')
+    utils.show_toast("点击右上角分享", 'text')
   },
   /**
    * 用户删除评论
@@ -58,6 +63,9 @@ Page({
       success: async res => {
         let confirm = res.confirm
         if (confirm) {
+          this.setData({
+            ['record.remark_num']: this.data.record.remark_num - 1
+          })
           await SQL.remark_delete(remark.id)
           utils.show_toast("删除成功")
           await this.getRemarkList()
@@ -94,44 +102,52 @@ Page({
    * 获取个人基本信息
    */
   async getUserProfile() {
-    let sql = `select avatarUrl from user where id = ${globalData.user_id}`
+    let sql = `select avatarUrl from user where id = ${V.uid}`
     let res = await utils.executeSQL(sql)
     res = res && JSON.parse(res)
-    return res[0]
+    this.setData({
+      info: res[0]
+    })
   },
   /**
    * 获取评论列表
    */
   async getRemarkList() {
-    let res = await SQL.remark_select(V.id, globalData.user_id)
+    let res = await SQL.remark_select(V.id, V.uid)
     res = res && JSON.parse(res)
     this.setData({
       remarkList: res
     })
   },
-  async exp_like(e) {
-    let exper = this.data.exp
+  async record_like(e) {
+    let record = this.data.record
     //修改页面值
     this.setData({
-      ['exp.isLike']: 1,
-      ['exp.num_of_like']: exper.num_of_like + 1,
+      ['record.isLike']: 1,
+      ['record.like_num']: record.like_num + 1,
     })
     //修改数据库
-    let sql = `insert into liking(exper_id,user_id,time,type) values( ${exper.id},${globalData.user_id},'${utils.formatTime(new Date())}',1)`
-    await utils.executeSQL(sql)
+    wx.showLoading({
+      title: '处理中',
+      mask: true
+    })
+    await SQL.record_like(record.id, V.uid)
     //生成点赞通知
-    await message.send_like_message(globalData.user_id, exper.writter_id, exper.id)
+    await message.send_like_message(V.uid,record.user_id, record.id)
+    wx.hideLoading({})
+    utils.show_toast("点赞成功！")
   },
-  async exp_cancelLike(e) {
-    let exper = this.data.exp
+  async record_cancelLike(e) {
+    let record = this.data.record
     //修改页面值
     this.setData({
-      ['exp.isLike']: 0,
-      ['exp.num_of_like']: exper.num_of_like - 1,
+      ['record.isLike']: 0,
+      ['record.like_num']: record.like_num - 1,
     })
     //修改数据库
-    let sql = `delete from liking where user_id = ${globalData.user_id} and exper_id = ${exper.id}`
-    await utils.executeSQL(sql)
+    await SQL.record_cancel_like(record.id, V.uid)
+    //反馈
+    utils.show_toast("已取消！")
   },
   async remark_like(e) {
     console.log(e)
@@ -140,13 +156,14 @@ Page({
     //修改页面值
     this.setData({
       ['remarkList[' + index + '].isLike']: 1,
-      ['remarkList[' + index + '].num_of_like']: remark.num_of_like + 1,
+      ['remarkList[' + index + '].like_num']: remark.like_num + 1,
     })
     //修改数据库
-    let sql = `insert into liking(exper_id,remark_id,user_id,time,type) values(${this.data.exp.id}, ${remark.id},${globalData.user_id},'${utils.formatTime(new Date())}',0)`
-    await utils.executeSQL(sql)
+    await SQL.remark_like(remark.id, V.uid)
     //生成点赞通知
-    await message.send_like_message(globalData.user_id, remark.user_id, this.data.exp.id)
+    await message.send_like_message(V.uid, remark.user_id, this.data.record.id)
+    //反馈
+    utils.show_toast("点赞成功！")
   },
   async remark_cancelLike(e) {
     console.log(e)
@@ -155,11 +172,12 @@ Page({
     //修改页面值
     this.setData({
       ['remarkList[' + index + '].isLike']: 0,
-      ['remarkList[' + index + '].num_of_like']: remark.num_of_like - 1,
+      ['remarkList[' + index + '].like_num']: remark.like_num - 1,
     })
     //修改数据库
-    let sql = `delete from liking where user_id = ${globalData.user_id} and remark_id = ${remark.id}`
-    await utils.executeSQL(sql)
+    await SQL.remark_cancel_like(remark.id, V.uid)
+    //反馈
+    utils.show_toast("已取消")
   },
   /**
    * 用户输入评论
@@ -174,18 +192,24 @@ Page({
    * 提交评论
    */
   async commit_remark() {
-    
+    //修改页面信息
+    this.setData({
+      ['record.remark_num']: this.data.record.remark_num + 1
+    })
     //插入评论信息
-    let [user_id, exper_id, time, content] = [globalData.user_id, this.data.exp.id, utils.formatTime(new Date()), this.data.value]
-    await SQL.remark_insert(user_id, exper_id, time, content);
+    let [user_id, record_id, time, content] = [V.uid, this.data.record.id, utils.formatTime(new Date()), this.data.value]
+    wx.showLoading({
+      title: '提交数据中',
+      mask: true
+    })
+    await SQL.remark_insert(user_id, record_id, time, content);
+
     //页面刷新数据
     await this.getRemarkList()
 
-    this.setData({
-      ['exp.num_of_remark']: this.data.exp.num_of_like + 1
-    })
     //生成通知
-    await message.send_remark_message(globalData.user_id, this.data.exp.writter_id, this.data.exp.id)
+    await message.send_remark_message(V.uid, this.data.record.user_id, this.data.record.id)
+    wx.hideLoading({})
     utils.show_toast('评论成功')
   }
 })

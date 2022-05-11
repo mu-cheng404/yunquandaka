@@ -3,21 +3,57 @@ const SQL = require('../../utils/sql')
 const isTel = (value) => !/^1[34578]\d{9}$/.test(value)
 const app = getApp()
 Page({
-  navi_to_flock: async function () {
-    let [id,creater_id,name,state,avatarUrl,type ] = [util.randomsForSixDigit(),app.globalData.user_id,this.data.valueOfName, this.data.valueOfState,'https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c', this.data.type ]
-    //判空
-    if (name == "" || state == "" || type == "") {
-      util.show_toast('还未输入数据', 'fobidden')
+  submit: async function () {
+    let [id,creater_id,name,state,avatarUrl,type ] = [util.randomsForSixDigit(),app.globalData.user_id,this.data.valueOfName, this.data.valueOfState,this.data.avatarUrl, this.data.type ]
+    //判空处理
+    if(name.length>8){
+      util.show_toast("名称限制在八个字以内！", 'fobidden')
+      return 
+    }
+    if (name == "") {
+      util.show_toast('名称不能为空！', 'fobidden')
       return
     }
-    await SQL.flock_insert(id,creater_id,name,state,avatarUrl,type)
-    util.show_toast("创建成功,即将前往圈子主页")
-    setTimeout(() => {
-      wx.navigateTo({
-        url: '../flock/flock?id=' + id,
+    if (state == "") {
+      util.show_toast('描述不能为空！', 'fobidden')
+      return
+    }
+    if (type == "") {
+      util.show_toast('类别不能为空！', 'fobidden')
+      return
+    }
+    //创建
+    wx.showLoading({
+      title: '创建中',
+    })
+    if(this.data.initUrl != this.data.avatarUrl){
+      await new Promise((resolve,reject)=>{
+        wx.cloud.uploadFile({
+          filePath: this.data.avatarUrl,
+          cloudPath: util.genMediaPath(`flock/${id}`, '.png'),
+          success: async res => {
+            console.log("上传成功")
+            let fileID = res.fileID
+            avatarUrl = fileID
+            resolve("成功")
+          },
+          fail:async res=>{
+            console.error
+            reject(res)
+          }
+        })
       })
-    }, 1000);
-
+    }
+    await SQL.flock_insert(id,creater_id,name,state,avatarUrl,type)
+    wx.hideLoading({
+      success: (res) => {
+        util.show_toast("成功")
+      },
+    })
+    //路由
+    wx.redirectTo({
+      url: '../flock/flock?id=' + id,
+    })
   },
   /**
    * 选择类别
@@ -32,12 +68,31 @@ Page({
    * 页面的初始数据
    */
   data: {
+    avatarUrl:"https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c",
+    initUrl:"https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c",
     valueOfName: "",
     valueOfState: "",
     type: "",
     typeArray: ['班级', '宿舍', '伙伴', '社团', '组织']
   },
-
+/**
+   * 上传图片
+   */
+  updateImage: async function () {
+    var _this = this
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['album'],
+      sizeType: ['compressed'],
+      success: async res => {
+        let temp = res.tempFiles[0].tempFilePath
+        _this.setData({
+          avatarUrl: temp,
+        })
+      }
+    })
+  },
   // 输入框
   onChangeOfNameInput(e) {
     this.setData({

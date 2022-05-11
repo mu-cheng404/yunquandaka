@@ -2,7 +2,9 @@
   "usingComponents": {
     "wux-icon": "../../dist/icon/index",
     "wux-timeline": "../../dist/timeline/index",
-    "wux-timeline-item": "../../dist/timeline-item/index"
+    "wux-timeline-item": "../../dist/timeline-item/index",
+    "wux-button": "../../dist/button/index",
+    "wux-circle": "../../dist/circle/index"
   },
   "navigationBarTitleText": ""
 }

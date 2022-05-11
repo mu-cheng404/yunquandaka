@@ -1,7 +1,13 @@
 <wux-toast id="wux-toast"></wux-toast>
 <wux-cell-group title="输入信息">
+  <view style="width: 750rpx;height: 80rpx;display: flex;position: relative;">
+      <view style="width: 120rpx;height: 100%;" class="center">头像</view>
+      <view style="position: absolute;right: 30rpx;width: 100rpx;height: 100%;" class="center">
+        <image mode="aspectFill" src="{{avatarUrl}}" style="width: 80rpx;height: 80rpx;border-radius: 50%;" bindtap="updateImage"></image>
+      </view>
+    </view>
   <wux-cell hover-class="none">
-    <wux-input bind:change="onChangeOfNameInput" label="圈子名称"></wux-input>
+    <wux-input bind:change="onChangeOfNameInput" label="名称"></wux-input>
   </wux-cell>
   <wux-cell hover-class="none">
     <wux-input bind:change="onChangeOfStateInput" label="描述"></wux-input>
@@ -12,4 +18,4 @@
 
 </wux-cell-group>
 
-<button bindtap="navi_to_flock" class="button white">创建</button>
+<button bindtap="submit" class="button white">创建</button>

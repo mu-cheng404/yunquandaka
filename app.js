@@ -6,6 +6,7 @@ App({
         })
 
         this.getSystemInfo()
+        this.setStorageList()
     },
     globalData: {
         userInfo: null,
@@ -26,5 +27,9 @@ App({
             }
         })
     },
-
+    setStorageList(){
+      wx.setStorageSync('loading', 0)
+      wx.setStorageSync('homeloading', 0)
+      wx.setStorageSync('statloading', 0)
+    }
 })

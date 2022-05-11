@@ -66,10 +66,10 @@ async function send_remark_message(user_id, receiver_id, object_id) {
 }
 /**
  * 发送打卡邀请消息
- * @param {*} sender_id 
- * @param {*} receiver_id 
- * @param {*} flock_id 
- * @param {*} task_id 
+ * @param {*} sender_id 发送人ID
+ * @param {*} receiver_id 接收人ID
+ * @param {*} flock_id 圈子ID
+ * @param {*} task_id 任务ID
  * @returns 
  */
 async function send_invitation_message(sender_id, receiver_id, flock_id, task_id) {

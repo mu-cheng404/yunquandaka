@@ -10,8 +10,8 @@
   <view bindtap="{{hasUserInfo?'syncInfo':'getInfo'}}">{{hasUserInfo?'同步微信形象':'登录'}}</view>
   <view id="headBg" style="background-image: url({{userInfo.avatarUrl}});"></view>
 </view>
-<view id="nick" class="bigger  center">
-  测试版 V1.0.2
+<view id="nick" class="bigger  center " style="color: red;">
+  测试版 V1.0.7
 </view>
 <view id="body">
   <wux-cell-group wux-class="group">

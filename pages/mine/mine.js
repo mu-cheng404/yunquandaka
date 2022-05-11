@@ -4,6 +4,32 @@ const SQL = require("../../utils/sql")
 
 Page({
   /**
+   * 页面的初始数据
+   */
+  data: {
+    userInfo: {},
+    buttonDisplay: "",
+    hasUserInfo: false,
+    message: []
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: async function (options) {
+    this.setData({
+      hasUserInfo: globalData.hasUserInfo
+    }) //从全局变量中获取flag
+    if (this.data.hasUserInfo) {
+      let sql = `select * from user where id = ${globalData.user_id}`
+      let result = await utils.executeSQL(sql)
+      result = result && JSON.parse(result)
+      this.setData({
+        userInfo: result[0]
+      })
+    }
+    await this.check_message()
+  },
+  /**
    * 当用户已经登录时，同步微信形象的点击事件
    */
   syncInfo: async function (e) {
@@ -57,33 +83,7 @@ Page({
       url: '../advice/advice',
     })
   },
-  /**
-   * 页面的初始数据
-   */
-  data: {
-    userInfo: {},
-    buttonDisplay: "",
-    hasUserInfo: false,
-    message: []
-  },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: async function (options) {
-    this.setData({
-      hasUserInfo: globalData.hasUserInfo
-    }) //从全局变量中获取flag
-    if (this.data.hasUserInfo) {
-      let sql = `select * from user where id = ${globalData.user_id}`
-
-      let result = await utils.executeSQL(sql)
-      result = result && JSON.parse(result)
-      this.setData({
-        userInfo: result[0]
-      })
-    }
-    await this.check_message()
-  },
+  
   async check_message() {
     this.setData({
       message: await SQL.message_count_of_id_hasRead(globalData.user_id)

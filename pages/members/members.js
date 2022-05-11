@@ -3,7 +3,6 @@ const utils = require('../../utils/util')
 const SQL = require('../../utils/sql')
 var V = {
   flock_id: '',
-  task_id: ''
 }
 Page({
   /**
@@ -14,24 +13,13 @@ Page({
     admin: false,
     adminID: '',
     active: false,
-    type: "", //成员类型 1 圈子 0 计划
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
     V.flock_id = options.flock_id
-    console.log(options.task_id)
-    this.setData({
-      type: options.task_id == ""?1:0
-    })
-    if (this.data.type == 1) {
-      await this.getAndSetFlockMemberInfo()
-    } else {
-      V.task_id = options.task_id
-      await this.getAndSetTaskMemberInfo()
-    }
-    console.log(V.flock_id, V.task_id, '---------------------')
+    await this.getAndSetFlockMemberInfo()
     await this.checkAdmin()
   },
   /**
@@ -44,16 +32,7 @@ Page({
       list: list
     })
   },
-  /**
-   * 获取计划成员列表信息
-   */
-  async getAndSetTaskMemberInfo() {
-    let list = await SQL.task_select_member(V.task_id)
-    list = list && JSON.parse(list)
-    this.setData({
-      list: list
-    })
-  },
+
   /**
    * 用户点击踢出成员
    * @param {*} e 
@@ -61,25 +40,27 @@ Page({
   async kick_out(e) {
     let index = e.currentTarget.id
     let user = this.data.list[index]
+    console.log(user)
     let _this = this
     wx.showModal({
-      content: "踢出后将清除ta的所有数据，请再次确认",
+      content: "点击确定踢掉ta",
       cancelColor: 'cancelColor',
       cancelText: "手滑了",
       success: async res => {
         let confirm = res.confirm
         if (confirm) {
-          if (V.task_id) {
-            await SQL.flock_quit(V.flock_id, user.id)
-
-          } else {
-            await SQL.task_quit(user_id, V.task_id)
-            await _this.getAndSetTaskMemberInfo()
-            utils.show_toast('已踢出')
-          }
-        } else [
-
-        ]
+          wx.showLoading({
+            title: '处理中',
+            mask: true
+          })
+          await SQL.flock_quit(V.flock_id, user.id)
+          await _this.getAndSetFlockMemberInfo()
+          wx.hideLoading({
+            success: (res) => {
+              utils.show_toast('已踢出')
+            },
+          })
+        } else {}
       }
     })
   },
@@ -88,16 +69,9 @@ Page({
    */
   async checkAdmin() {
     let admin
-    if (this.data.type == 1) {
-      admin = await SQL.flock_select_amdin(V.flock_id)
-      admin = admin && JSON.parse(admin)
-      admin = admin[0].creater_id
-    } else {
-      admin = await SQL.task_select_amdin(V.task_id)
-      admin = admin && JSON.parse(admin)
-      admin = admin[0].creator
-    }
-    console.log(admin,'-----------------------------')
+    admin = await SQL.flock_select_amdin(V.flock_id)
+    admin = admin && JSON.parse(admin)
+    admin = admin[0].creater_id
     this.setData({
       adminID: admin,
       admin: admin == globalData.user_id

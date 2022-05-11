@@ -41,7 +41,11 @@ Page({
      * 提交
      */
     async submit() {
-        let [id, writter_id, flock_id, time, content, url] = [utils.randomsForSixDigit(), app.globalData.user_id, V.id, utils.formatTime(new Date()), this.data.content, '']
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
+        let [id, writter_id, flock_id, time, content, url] = [utils.randomsForSixDigit(), app.globalData.user_id, '', utils.formatTime(new Date()), this.data.content, '']
 
         if (content == "") {
             utils.show_toast("还未输入内容", "forbidden")
