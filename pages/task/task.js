@@ -106,8 +106,10 @@ Page({
     //修改数据库
     await SQL.record_like(record.id, V.uid)
     //反馈
+    wx.hideLoading({})
     utils.show_toast("点赞成功！")
-    wx.hideLoading({    })
+    //生成点赞通知
+    await message.send_like_message(V.uid,record.user_id,record.flock_id,record.task_id,record.id)
   },
   /**
    * 给打卡取消点赞

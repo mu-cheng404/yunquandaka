@@ -29,6 +29,8 @@ Component({
   },
   // 微信7.0.0支持wx.getMenuButtonBoundingClientRect()获得胶囊按钮高度
   attached: async function () {
+    let pageNum = getCurrentPages().length
+    
     let statusBarHeight = app.globalData.systeminfo.statusBarHeight // 状态栏高度
     let headerPosi = app.globalData.headerBtnPosi // 胶囊位置信息
     console.log(statusBarHeight)
@@ -56,6 +58,7 @@ Component({
       navbarBtn: btnPosi,
       cusnavH: cusnavH,
       searchW: searchW,
+      pageNum:pageNum
     })
   },
   pageLifetimes: {

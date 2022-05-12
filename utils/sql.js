@@ -232,6 +232,24 @@ async function remark_cancel_like(rid, uid) {
     return 0
 }
 /**
+ * 查询消息是否存在，如果消息存在返回id如果不存在返回0
+ * @param {*} sender_id 
+ * @param {*} receiver_id 
+ * @param {*} flock_id 
+ * @param {*} task_id 
+ * @param {*} record_id 
+ */
+async function message_exists_id(sender_id, receiver_id, flock_id, task_id, record_id) {
+    let sql = `select id from message where sender_id = ${sender_id} and receiver_id = ${receiver_id} and flock_id = ${flock_id} and task_id = ${task_id} and url = '../detail/detail?id=${record_id}'`
+    let res = await utils.executeSQL(sql)
+    if (res == "[]") {
+        return 0
+    } else {
+        res = res && JSON.parse(res)
+        return res[0].id
+    }
+}
+/**
  * 查找该用户所有消息
  * @param {*} user_id 用户ID
  */
@@ -323,6 +341,19 @@ async function message_check_hasSend_and_state(sender_id, receiver_id, flock_id,
         return res[0].state
     }
     return res
+}
+/**
+ * 更新消息的日期，设置成未读
+ * @param {*} message_id 消息
+ * @param {*} newTime 新时间
+ * @param {*} hasRead 已读或者未读
+ * @param {*} type 类型
+ * @returns 
+ */
+async function message_update_date_hasRead_by_id_type(message_id, newTime, hasRead, type) {
+    let sql = `update message set time = '${newTime}', hasRead = ${hasRead} where id = ${message_id}`
+    await utils.executeSQL(sql)
+    return true
 }
 /**
  * 新增计划
@@ -670,6 +701,16 @@ async function record_cancel_like(rid, uid) {
     return true
 }
 /**
+ * 删除记录
+ * @param {*} rid 记录Id
+ * @returns 
+ */
+async function record_delete(rid) {
+    let sql = `delete from record where id = ${rid}`
+    await utils.executeSQL(sql)
+    return true
+}
+/**
  * 获取当前帖子下所有评论，包含点赞
  * @param {*} record_id 帖子ID
  * @param {*} user_id 当前用户ID
@@ -711,6 +752,7 @@ module.exports = {
     flock_check_member,
     flock_delete,
     flock_select_by_type,
+    message_exists_id,
     message_select_by_id,
     message_select_id,
     message_count_of_id_hasRead,
@@ -719,7 +761,7 @@ module.exports = {
     message_read,
     message_update_state,
     message_check_hasSend_and_state,
-
+    message_update_date_hasRead_by_id_type,
     user_select_by_id,
     task_select_by_fid_uid,
     task_select_by_uid_and_over,
@@ -751,6 +793,7 @@ module.exports = {
     record_insert,
     record_like,
     record_cancel_like,
+    record_delete,
     remark_select,
     remark_delete,
     remark_insert,

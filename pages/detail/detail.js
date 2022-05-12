@@ -3,7 +3,7 @@ const message = require("../../utils/message")
 const SQL = require("../../utils/sql")
 var V = {
   id: "",
-  uid: getApp().globalData.user_id
+  uid:"",
 }
 Page({
   data: {
@@ -16,6 +16,7 @@ Page({
   async onLoad(options) {
     //获取数据
     V.id = options.id
+    V.uid = getApp().globalData.user_id
     //获取基本信息
     let res = await SQL.record_select_by_id(V.id, V.uid)
     if (res == "[]") {
@@ -79,13 +80,13 @@ Page({
   /**
    * 用户点击删除帖子
    */
-  async delete_exp() {
+  async delete_record() {
     wx.showModal({
       content: "确定删除",
       success: async res => {
         let confirm = res.confirm
         if (confirm) {
-          await SQL.experience_delete(this.data.exp.id)
+          await SQL.record_delete(this.data.record.id)
           utils.show_toast("删除成功")
           setTimeout(() => {
             wx.navigateBack({
@@ -133,9 +134,10 @@ Page({
     })
     await SQL.record_like(record.id, V.uid)
     //生成点赞通知
-    await message.send_like_message(V.uid,record.user_id, record.id)
     wx.hideLoading({})
     utils.show_toast("点赞成功！")
+    //生成点赞通知
+    await message.send_like_message(V.uid, this.data.record.user_id,this.data.record.flock_id,this.data.record.task_id, this.data.record.id)
   },
   async record_cancelLike(e) {
     let record = this.data.record
@@ -160,10 +162,10 @@ Page({
     })
     //修改数据库
     await SQL.remark_like(remark.id, V.uid)
-    //生成点赞通知
-    await message.send_like_message(V.uid, remark.user_id, this.data.record.id)
     //反馈
     utils.show_toast("点赞成功！")
+    //生成点赞通知
+    await message.send_like_message(V.uid, remark.user_id,this.data.record.flock_id,this.data.record.task_id, this.data.record.id)
   },
   async remark_cancelLike(e) {
     console.log(e)
@@ -208,7 +210,7 @@ Page({
     await this.getRemarkList()
 
     //生成通知
-    await message.send_remark_message(V.uid, this.data.record.user_id, this.data.record.id)
+    await message.send_remark_message(V.uid, this.data.record.user_id,this.data.record.flock_id,this.data.record.task_id, this.data.record.id)
     wx.hideLoading({})
     utils.show_toast('评论成功')
   }

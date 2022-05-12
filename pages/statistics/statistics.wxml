@@ -6,25 +6,26 @@
   <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" style="height:{{height*0.4}}px;"></canvas>
 </view>
 <!-- 进度环 -->
-<view style="width:750rpx;height: 500rpx;flex-direction: column;" class="center">
+<view style="width:750rpx;height: 400rpx;flex-direction: column;" class="center">
   <view style="width: 200rpx;height: 80rpx;display: flex;align-items: center;" class="center">当前进度</view>
   <wux-circle percent="{{percent}}" color="#33cd5f">{{rest<=0?'已结束':'还剩'+rest+'天'}}</wux-circle>
 </view>
 <!-- 时间轴 -->
 <view class=" center" style="width:750rpx;height:200rpx;display:flex;flex-direction: column; align-items:center">
-  打卡时间轴
   <picker mode="date" bindchange="changeDate">
-    <view style="width: 60rpx;height: inherit;" class="center">
-      <image src="../../images/下拉.png" style="width: 40rpx;height: 40rpx;"></image>
+    <view style="padding: 0 20rpx;height: inherit; background-color: rgba(255, 255, 255, 0.5);" class="center">
+      打卡时间轴<icon class="iconfont icon-xiala icon-small color_subject" style="margin-left: 10rpx;margin-bottom: 15rpx;"></icon>
     </view>
   </picker>
-  {{date}}
+  <text style="font-size: small;padding: 0 10rpx;" class="background_color_label_background">当前{{date}}</text>
 </view>
-<view style="width: 750rpx;padding-bottom: 50rpx;">
+<view wx:if="{{list.length>0}}" style="width: 750rpx;padding-bottom: 50rpx;">
   <wux-timeline wx:if="{{list.length}}" position="alternate">
     <block wx:for="{{list}}" wx:key="key">
       <wux-timeline-item content="{{item.time+' '+item.name}}完成！" />
     </block>
   </wux-timeline>
 </view>
-<wux-prompt visible="{{list.length==0}}" title="暂无数据" />
+<view style="width: 750rpx;height: 300rpx;">
+  <wux-prompt visible="{{list.length==0}}" title="暂无数据" />
+</view>

@@ -11,8 +11,8 @@ Page({
     avatarList: ["../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", ]
   },
   execute:async function(){
-    let sql = `delete from message where type = 1 or type = 2`
-    await utils.executeSQL(sql)
+    let pageNum = getCurrentPages()
+    console.log(pageNum,typeof(pageNum))
 
   },
   consoleH: function (params) {

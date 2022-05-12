@@ -42,7 +42,7 @@
     <view style="width: 710rpx;margin: 20rpx;background-color: white;border-radius: 30rpx;">
       <view style="width: 710rpx;height: 80rpx; display: flex;">
         <view style="width: 80rpx;height:80rpx;" class="center">
-          <image style="width: 50rpx;height: 50rpx;" src="{{item.avatarUrl}}"></image>
+          <image style="width: 50rpx;height: 50rpx; border-radius: 20rpx;" src="{{item.avatarUrl}}"></image>
         </view>
         <view style="width: 520rpx;height: 80rpx; border-radius: 50rpx;">
           <view style="width: 520rpx;height: 50rpx;line-height: 50rpx; font-size: small;">{{item.nickName}}</view>

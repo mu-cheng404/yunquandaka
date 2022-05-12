@@ -148,6 +148,10 @@ Page({
    * @param {*} e 
    */
   async like(e) {
+    wx.showLoading({
+      title: '加载中',
+      mask:true,
+    })
     //获取数据
     let index = e.currentTarget.id
     let record = this.data.rList[index]
@@ -160,12 +164,20 @@ Page({
     await SQL.record_like(record.id, globalData.user_id)
     //反馈
     utils.show_toast("点赞成功！")
+    //生成点赞通知
+    wx.hideLoading({
+    })
+    await message.send_like_message(globalData.user_id,record.user_id,record.flock_id,record.task_id,record.id)
   },
   /**
    * 给打卡取消点赞
    * @param {*} e 
    */
   async cancelLike(e) {
+    wx.showLoading({
+      title: '处理中',
+      mask:true
+    })
     //获取数据
     let index = e.currentTarget.id
     let record = this.data.rList[index]
@@ -178,6 +190,9 @@ Page({
     await SQL.record_cancel_like(record.id, globalData.user_id)
     //反馈
     utils.show_toast("已取消")
+    wx.hideLoading({
+      success: (res) => {},
+    })
   },
   /**
    * 切换tab
