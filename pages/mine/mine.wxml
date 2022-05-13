@@ -11,7 +11,7 @@
   <view id="headBg" style="background-image: url({{userInfo.avatarUrl}});"></view>
 </view>
 <view id="nick" class="bigger  center " style="color: red;">
-  测试版 V1.0.8
+  测试版 V1.0.9
 </view>
 <view id="body">
   <wux-cell-group wux-class="group">

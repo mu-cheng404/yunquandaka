@@ -300,6 +300,8 @@ Page({
         }
       })
     } else { //用户未收藏
+      
+
       //数据库添加收藏记录
       let sql = `insert into collect(task_id,user_id) values(${task.id},${globalData.user_id})`
       utils.executeSQL(sql)

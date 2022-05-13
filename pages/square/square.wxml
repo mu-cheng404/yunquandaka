@@ -54,7 +54,7 @@
 
             <image wx:if="{{item.url}}" style="width:200rpx;height:200rpx;margin-left: 100rpx; border-radius: 10rpx;" src="{{item.url}}"></image>
           </view>
-          <view class="color_text_auxiliary" style="width: 610rpx;height: 50rpx; margin-left: 100rpx;margin-top: 20rpx;font-size: medium;">留言{{item.remark_num}}></view>
+          <view class="color_text_auxiliary" style="width: 610rpx;height: 50rpx; margin-left: 100rpx;margin-top: 20rpx;font-size: medium;">留言{{item.remark_num}} ></view>
         </view>
       </navigator>
 
@@ -110,13 +110,13 @@
             <text wx:for="{{item.grade - 0}}" wx:key="unique">★</text>
           </view>
           <view wx:if="{{index+1==1}}" style="width:50rpx;height: 70rpx;text-align: left;margin-top: 40rpx;margin-left: 650rpx; color: rgb(101, 137, 172);" class="center">
-            <image src="../../images/金牌.png" style="width: 50rpx;height: 50rpx;"></image>
+            <image src="http://ccreblog.cn/wp-content/uploads/2022/05/金牌.png" style="width: 50rpx;height: 50rpx;"></image>
           </view>
           <view wx:if="{{index+1==2}}" style="width:50rpx;height: 70rpx;text-align: left;margin-top: 40rpx;margin-left: 650rpx; color: rgb(101, 137, 172);" class="center">
-            <image src="../../images/银牌.png" style="width: 100%;height: 60%;"></image>
+            <image src="http://ccreblog.cn/wp-content/uploads/2022/05/银牌.png" style="width: 100%;height: 60%;"></image>
           </view>
           <view wx:if="{{index+1==3}}" style="width:50rpx;height: 70rpx;text-align: left;margin-top: 40rpx;margin-left: 650rpx; color: rgb(101, 137, 172);" class="center">
-            <image src="../../images/铜牌.png" style="width: 100%;height: 60%;"></image>
+            <image src="http://ccreblog.cn/wp-content/uploads/2022/05/铜牌.png" style="width: 100%;height: 60%;"></image>
           </view>
           <view style="width:50rpx;height: 70rpx;text-align: left;margin-top: 40rpx;margin-left: 670rpx; color: rgb(101, 137, 172);" wx:if="{{index+1!=1&&index+1!=2&&index+1!=3}}">
             {{index+1}}

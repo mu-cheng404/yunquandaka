@@ -213,5 +213,9 @@ Page({
     await message.send_remark_message(V.uid, this.data.record.user_id,this.data.record.flock_id,this.data.record.task_id, this.data.record.id)
     wx.hideLoading({})
     utils.show_toast('评论成功')
+    //将评论内容清除
+    wx.setData({
+      value:''
+    })
   }
 })

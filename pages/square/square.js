@@ -44,15 +44,30 @@ Page({
 
   },
   onShow: async function () {
-    wx.showLoading({
-      title: '加载中',
-      mask: true
-    })
+     //获取缓存，检测是否加载过
+     let flag = wx.getStorageSync("squareloading")
+     console.log(flag)
+     if (flag == 0) {
+       wx.showLoading({
+         title: '加载中',
+         mask: true
+       })
+     }
     await this.getRankList()
     await this.getrList()
-    wx.hideLoading({
-      success: (res) => {},
-    })
+    //取消加载
+    //将缓存设置为1
+    if (flag == 0) {
+      wx.hideLoading({
+        success: (res) => {
+          wx.setStorageSync('squareloading', 1)
+        },
+      })
+    }
+  },
+  
+  onUnload(){
+    wx.setStorageSync('squareloading', 0)
   },
   /**
    * 下拉刷新被触发

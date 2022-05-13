@@ -38,11 +38,11 @@
 </block>
 <block wx:if="{{!isFocus}}">
   <view style="width: 750rpx;height: 80rpx;display: flex;">
-    <view style="width:170rpx;height: 80rpx;" class="center">
+    <view style="width:300rpx;height: 80rpx; display: flex;align-items: center;padding-left: 20rpx;" >
       我的圈子
     </view>
-    <view style="width: 580rpx;height: 80rpx;color:white">
-      <navigator url="../init/init" style="width: 580rpx;height: 80rpx">
+    <view style="width: 450rpx;height: 80rpx;color:white">
+      <navigator url="../init/init" style="width: 450rpx;height: 80rpx">
         <view style="float: right;margin: 10rpx 20rpx 0rpx 0rpx;width:150rpx;height: 60rpx;;display:flex;line-height:60rpx;border-radius: 20rpx; " class="center background_color_subject">
           新建<icon class="iconfont icon-xinjian color_white icon-medium" style="margin-left:20rpx"></icon>
         </view>
@@ -76,8 +76,8 @@
   </scroll-view>
   <view id="targetBox">
     <view style="width: 100%;height: 60rpx;">
-      <view style="width:200rpx;height: 60rpx;line-height: 60rpx; align-items: center;margin-left: 20rpx;">
-        收藏计划
+      <view style="width:300rpx;height: 60rpx;line-height: 60rpx; align-items: center;margin-left: 20rpx;">
+        收藏计划<text class="color_text_auxiliary">（{{targetList.length}}）</text>
       </view>
     </view>
     <view wx:if="{{targetList==''}}" style="width: 750rpx;height: 500rpx;">

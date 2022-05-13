@@ -64,7 +64,7 @@
   </view>
   <view style="width:750rpx;height:150rpx;position: fixed;bottom: 0rpx;display: flex;background-color: white;">
     <wux-cell hover-class="none">
-      <wux-input placeholder="再不评论就来不及了" bind:change="remark_input" wux-class="cell">
+      <wux-input placeholder="再不评论就来不及了" bind:change="remark_input"bind:confirm="commit_remark" wux-class="cell" clear>
         <image style="width: 20px; height: 20px; margin-right: 5px;border-radius: 50%;" src="{{info.avatarUrl}}" />
       </wux-input>
     </wux-cell>
