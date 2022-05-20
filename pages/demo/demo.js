@@ -11,9 +11,8 @@ Page({
     avatarList: ["../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", ]
   },
   execute:async function(){
-    let pageNum = getCurrentPages()
-    console.log(pageNum,typeof(pageNum))
-
+    let sql = `delete from flock where creater_id = 579718`
+    await utils.executeSQL(sql)
   },
   consoleH: function (params) {
     console.log("Hello world")

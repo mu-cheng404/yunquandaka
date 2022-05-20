@@ -11,6 +11,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    admin: false,
+    unfold: "false",
     flock: '',
     current: [],
     right: [{
@@ -49,6 +51,8 @@ Page({
     }],
     refresh: false, //下拉刷新
     list: [],
+    options_admin: ['修改小组信息', '注销小组'],
+    options: ['退出小组'],
   },
   /**
    * 生命周期函数
@@ -56,18 +60,28 @@ Page({
   onLoad: async function (options) {
     console.log("onload")
     V.flock_id = options.id; //获取随页面传递而来的flock_id
+    let admin = await SQL.flock_check_admin(V.flock_id, globalData.user_id)
+    this.setData({
+      admin: admin
+    })
   },
   onUnload: async function (options) {
     wx.setStorageSync('loading', 0)
     console.log("缓存已清除")
+    let login = await utils.verifyLogin()
+    if (!login) {
+      wx.navigateTo({
+        url: '../authorize/authorize',
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: async function () {
-    let flag = wx.getStorageSync("loading")
-    console.log("拿到缓存", flag)
-    if (!flag) { //没有显示过加载中 flag = 0
+    let loadFlag = wx.getStorageSync("loading")
+    console.log("拿到缓存", loadFlag)
+    if (!loadFlag) { //没有显示过加载中 flag = 0
       wx.showLoading({
         title: '加载中',
         mask: true
@@ -83,10 +97,9 @@ Page({
     })
     if (login) {
       //查询是否是成员
-      let flag = await SQL.flock_check_member(V.flock_id, globalData.user_id)
-      console.log("-------------------------------flag=", flag)
+      let joinFlag = await SQL.flock_check_member(V.flock_id, globalData.user_id)
       this.setData({
-        isJoined: flag
+        isJoined: joinFlag
       })
     } else {
       wx.navigateTo({
@@ -103,21 +116,78 @@ Page({
       this.setData({
         flock: result[0]
       })
-      let flag = this.data.isJoined
-      console.log("-------------------------------", flag, this.data.isJoined)
-      if (flag == 1) {
-        console.log("-------------------------------")
-        await this.getTaskList(); //获取target列表
-        await this.getAvatarList(); //获取头像列表
-      }
+      await this.getTaskList(); //获取target列表
+      await this.getAvatarList(); //获取头像列表
     }
-    if (!flag) { //没有显示过加载中
+    if (!loadFlag) { //没有显示过加载中
       wx.hideLoading({
         success: (res) => {},
       })
       wx.setStorageSync('loading', 1) //将标志设置成1
       console.log("将缓存设置成", 1)
     }
+  },
+  optionTap() {
+    let [admin, options, options_admin] = [this.data.admin, this.data.options, this.data.options_admin]
+    wx.showActionSheet({
+      itemList: admin ? options_admin : options,
+      success: res => {
+        let option = res.tapIndex
+        if (admin) {
+          if (option == 0) {
+            wx.navigateTo({
+              url: `../init/init?type=2&id=${V.flock_id}`,
+            })
+          } else if (option == 1) {
+            wx.showModal({
+              content: "注销圈子后，所有的信息将会被清除，请再次确定",
+              confirmText: "确定",
+              cancelText: "手滑了",
+              confirmColor: "black",
+              success: async (res) => {
+                if (res.confirm) { //用户点击确定
+                  await SQL.flock_delete(V.flock_id)
+                  utils.show_toast('注销成功')
+                  wx.switchTab({
+                    url: '../home/home',
+                  })
+                }
+              }
+            })
+          }
+        } else {
+          if (option == 0) {
+            wx.showModal({
+              content: "退出圈子后，您的所有信息将会被清除，请再次点击确定",
+              confirmText: "确定",
+              cancelText: "手滑了",
+              confirmColor: "black",
+              success: async (res) => {
+                if (res.confirm) { //用户点击确定
+                  let [flock_id, user_id] = [V.flock_id, globalData.user_id]
+                  await SQL.flock_quit(flock_id, globalData.user_id)
+                  //返回主页面
+                  utils.show_toast("退出成功！")
+                  wx.switchTab({
+                    url: '../home/home',
+                  })
+                }
+              }
+            })
+          } else {
+
+          }
+        }
+      }
+    })
+  },
+  /**
+   * 处理用户点击展开或者收起
+   */
+  unfold() {
+    this.setData({
+      unfold: !this.data.unfold
+    })
   },
   /**
    * 下拉刷新被触发
@@ -229,16 +299,7 @@ Page({
   },
   targetTap: function (e) {
     if (!this.data.isJoined) {
-      wx.showToast({
-        title: '请先加入该小队',
-        icon: "error"
-      })
-    } else {
-      let index = e.currentTarget.id
-      let id = this.data.list[index].id
-      wx.navigateTo({
-        url: '../record/record?id=' + id,
-      })
+      utils.show_toast("点击右上角加入小组之后查看计划详情",'forbidden')
     }
   },
   getSettingOftarget: async function (index) {
@@ -300,7 +361,7 @@ Page({
         }
       })
     } else { //用户未收藏
-      
+
 
       //数据库添加收藏记录
       let sql = `insert into collect(task_id,user_id) values(${task.id},${globalData.user_id})`

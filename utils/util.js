@@ -160,12 +160,6 @@ function genMediaPath(prefix, suffix) {
 }
 
 async function verifyLogin() {
-    //检查缓存
-    let refuse = await wx.getStorageSync('refuse')
-    if (refuse) {
-        return true
-    }
-
     let check = await wx.getStorageSync("user_id")
     console.log("you" + check)
     if (check) {
@@ -174,7 +168,6 @@ async function verifyLogin() {
         return true
     } else {
         //检查数据库
-
         let openid = await (await wx.cloud.callFunction({
             name: "getOpenID"
         })).result.openid

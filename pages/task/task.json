@@ -21,6 +21,5 @@
     "wux-segmented-control": "../../dist/segmented-control/index",
     "wux-date-picker": "../../dist/date-picker/index"
   },
-  "navigationBarBackgroundColor": "#A5DEE4",
-  "navigationBarTitleText": ""
+  "navigationBarTitleText": "云圈打卡"
 }

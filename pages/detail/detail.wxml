@@ -7,12 +7,19 @@
       </view>
       <view style="width: 650rpx;height: 100rpx; display: flex;">
         <view style="width: 550rpx;height: 100rpx;">
-          <view style=" width: 650rpx;height:60rpx;font-size: medium;line-height: 60rpx;">{{record.nickName}}
+          <view style=" width: 650rpx;height:60rpx;font-size: medium;line-height: 60rpx;display: flex;">{{record.nickName}}
+            <navigator url="../flock/flock?id={{record.fid}}">
+              <text style="font-size: small;" class="color_text_auxiliary">#{{record.fname}}小组</text>
+            </navigator>
+            <navigator url="../task/task?tid={{record.tid}}&fid={{record.fid}}">
+              <wux-tag color="orange">{{record.tname}}</wux-tag>
+            </navigator>
           </view>
           <view style="width: 650rpx;height:40rpx;font-size: small;color: #848C96;line-height:40rpx;">{{record.time}}</view>
+
         </view>
         <view wx:if="{{admin}}" style="width: 100rpx;height: 70rpx;" class="center">
-          <icon class="iconfont icon-shanchu color_subject_2 icon-medium" bindtap="delete_record"></icon>
+          <icon class="iconfont icon-shanchu  icon-medium color_subject" bindtap="delete_record"></icon>
         </view>
       </view>
     </view>
@@ -21,7 +28,6 @@
       <view wx:if="{{record.url}}" style="width: 670rpx;margin: 20rpx;" class="center">
         <image src="{{record.url}}" style="border-radius:10rpx;" lazy-load bindtap="previewImage"></image>
       </view>
-
     </view>
     <view style="width: 750rpx;height: 100rpx;display: flex;font-size: large;" class="color_subject">
       <view style="width: 200rpx;height: 100rpx;" class="center">
@@ -38,6 +44,8 @@
       </view>
     </view>
   </view>
+  <!-- 评论列表 -->
+  <text style="font-size: small;padding: 10rpx;" class="color_text_auxiliary">点赞和评论将通过发送消息的形式通知对方</text>
   <block wx:for="{{remarkList}}" wx:key="key">
     <view style="width: 710rpx;margin: 20rpx;background-color: white;border-radius: 30rpx;">
       <view style="width: 710rpx;height: 80rpx; display: flex;">
@@ -49,7 +57,7 @@
           <view style="width: 520rpx;height: 30rpx;align-items: center;font-size: x-small;">{{item.time}}</view>
         </view>
         <view class="center color_subject_2" style="width: 110rpx;height: 80rpx; display: flex; line-height: 100rpx; font-size: large;">
-          <icon id="{{index}}" wx:if="{{item.admin}}" class="iconfont icon-shanchu icon-medium "style="margin-right:10rpx" bindtap="delete_remark"></icon>
+          <icon id="{{index}}" wx:if="{{item.admin}}" class="iconfont icon-shanchu icon-medium " style="margin-right:10rpx" bindtap="delete_remark"></icon>
           <icon id="{{index}}" wx:if="{{!item.isLike}}" class="iconfont icon-dianzan1 icon-medium  " bindtap="remark_like"></icon>
           <icon id="{{index}}" wx:else class="iconfont icon-dianzan color_icon    " bindtap="remark_cancelLike"></icon>
           {{item.like_num}}
@@ -59,17 +67,17 @@
       </view>
     </view>
   </block>
-  <view wx:if="{{remarkList.length==0}}" style="width: 750rpx;height: 500rpx;">
+  <view wx:if="{{remarkList.length==0}}" style="width: 750rpx;height: 700rpx;">
     <wux-prompt visible="1" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无动态.png" text="暂无评论" />
   </view>
   <view style="width:750rpx;height:150rpx;position: fixed;bottom: 0rpx;display: flex;background-color: white;">
     <wux-cell hover-class="none">
-      <wux-input placeholder="再不评论就来不及了" bind:change="remark_input"bind:confirm="commit_remark" wux-class="cell" clear>
+      <wux-input placeholder="再不评论就来不及了" bind:change="remark_input" bind:confirm="commit_remark" wux-class="cell" clear>
         <image style="width: 20px; height: 20px; margin-right: 5px;border-radius: 50%;" src="{{info.avatarUrl}}" />
       </wux-input>
     </wux-cell>
     <view style="width: 200rpx;height: inherit;" class="center">
-      <view style="width: 120rpx;height: 60rpx;color: white;border-radius: 20rpx;font-size: medium;" class="background_color_subject center" bindtap="commit_remark">
+      <view style="width: 120rpx;height: 60rpx;color: white;border-radius: 20rpx;font-size: medium;" class="background_color_subject_3  center" bindtap="commit_remark">
         评论
         <icon class="iconfont icon-pinglun" />
       </view>

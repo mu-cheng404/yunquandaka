@@ -5,19 +5,36 @@ import {
 const globalData = getApp().globalData
 Page({
   data: {
+    banner: ["http://ccreblog.cn/wp-content/uploads/2022/05/1.png", "http://ccreblog.cn/wp-content/uploads/2022/05/2.png", "http://ccreblog.cn/wp-content/uploads/2022/05/4.png", "http://ccreblog.cn/wp-content/uploads/2022/05/3.png"],
+    currendIndex: 0,
+    endIndex: 3,
     loginFlag: "",
     subscribeFlag: "",
-    user_id: ""
+    user_id: "",
+    showButton: false
   },
   /**
    * 用户点击游客访问
    */
-  vistor: function(){
+  vistor: function () {
     //拒绝登录信息加入缓存
-     wx.setStorageSync('refuse', true)
+    wx.setStorageSync('refuse', true)
     wx.navigateBack({
       delta: 1,
     })
+  },
+  fanye: function (e) {
+    console.log(e)
+    let current = e.detail.current
+    if (current == this.data.endIndex) {
+      this.setData({
+        showButton: true
+      })
+    } else {
+      this.setData({
+        showButton: false
+      })
+    }
   },
   /**
    * 修改全局变量
@@ -43,14 +60,21 @@ Page({
         }).then(res => {
           openid = res.result.openid
         })
+        //插入数据库
         let id = utils.randomsForSixDigit()
         sql = `insert into user values(${id},'${openid}','${userInfo.nickName}','${userInfo.avatarUrl}')`
         this.setData({
           user_id: id,
         })
-        utils.executeSQL(sql)
+        await utils.executeSQL(sql)
         console.log("用户完成信息授权")
+        //设置全局变量
         this.setGlobalData()
+        //设置缓存
+        await wx.setStorage({
+          key: "user_id",
+          data: id
+        })
         wx.navigateBack({
           delta: 1,
         })
@@ -75,7 +99,7 @@ Page({
           ],
         }).then(async (res) => {
           console.log("查询用户权限结果", res)
-          
+
           let query = await that.queryAccess()
           if (!query) {
             that.getSub()
@@ -133,7 +157,7 @@ Page({
     })
     return JSON.stringify(refer) == JSON.stringify(list)
   },
-  onLoad:async function(){
+  onLoad: async function () {
 
   },
   // onLoad: async function (event) {
@@ -158,5 +182,5 @@ Page({
   //     console.log("用户授权信息 订阅")
   //   }
   // },
-  
+
 })

@@ -4,5 +4,6 @@
     "wux-dialog": "../../dist/dialog/index"
   },
   "disableScroll": true,
-  "navigationBarTitleText": ""
+  "navigationBarTitleText": "",
+  "navigationStyle": "custom"
 }

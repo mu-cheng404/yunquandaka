@@ -29,7 +29,8 @@
     "pages/statistics/statistics",
     "pages/message/message",
     "pages/experience/experience",
-    "pages/selectMember/selectMember"
+    "pages/selectMember/selectMember",
+    "pages/welcome/welcome"
   ],
   "window": {
     "backgroundTextStyle": "light",

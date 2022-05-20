@@ -5,7 +5,7 @@ const utils = require("../../utils/util")
 const SQL = require("../../utils/sql")
 var V = {
   id: "",
-  uid: getApp().globalData.user_id
+  uid: "",
 }
 Page({
 
@@ -16,6 +16,7 @@ Page({
   },
 
   onLoad: async function (options) {
+    V.uid = getApp().globalData.user_id
     wx.showLoading({
       title: '加载中',
       mask:true

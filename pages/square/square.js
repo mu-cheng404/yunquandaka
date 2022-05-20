@@ -65,7 +65,6 @@ Page({
       })
     }
   },
-  
   onUnload(){
     wx.setStorageSync('squareloading', 0)
   },
@@ -137,19 +136,18 @@ Page({
    * {*}
    */
   getRankList: async function () {
-    let rList = await SQL.flock_select_order_by_value() //执行
+    let date = utils.getCurrentFormatedDate();
+    let rList = await SQL.flock_select_order_by_value(date) //执行
     rList = rList && JSON.parse(rList) //处理数据
     this.setData({
       rankList: rList
     })
-
   },
   /**
    * 获取推荐圈子列表(随机推荐)
    * @param {*} type 类型
    */
   getRecommandList: async function (type) {
-
     //找出所有的不属于自己的圈子
     let reList = await SQL.flock_select_by_type(type, globalData.user_id) //执行
     reList = reList && JSON.parse(reList) //处理数据

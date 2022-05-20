@@ -107,12 +107,20 @@ async function flock_select_amdin(flock_id) {
 }
 /**
  * 获取用元气值排序后的圈子列表
+ * 
  */
-async function flock_select_order_by_value() {
+async function flock_select_order_by_value(date) {
     //获取所有圈子id
     // let flocks = await flock_select_all()
-    //计算所有圈子中打卡率
-    let sql = `select * from flock order by value desc` //定义sql语句
+    //计算计划打卡率
+    // select (select count(*) from record where record.task_id = task.id and record.date = "${date}")/(select count(*) from joining where joining.flock_id = flock.id)  from task where task.flock_id = flock.id
+    //计算计划平均值
+    // let sql = `select count(*) from record,task where record.task_id = task.id and record.date = "${date}"`
+    // let sql = `select count(*) from joining,flock where joining.flock_id = flock.id`
+    let sql = `select task.id as tid,task.name as tname,flock.name as fname,flock.avatarUrl as url, (round((select count(*) from record where record.task_id = task.id and record.date = "${date}")/(select count(*) from joining where joining.flock_id = flock.id),0)*100) as ratio from task,flock where task.flock_id = flock.id order by ratio desc`
+        // let sql = `select flock.*, avg(value) as a from flock order by a desc`
+        // let sql = `select avg(radio) from (select (select count(*) from record where record.task_id = task.id and record.date = "${date}")/(select count(*) from joining where joining.flock_id = flock.id) as ratio from task,flock)`
+        //定义sql语句
     let rList = await utils.executeSQL(sql) //执行
     return rList
 }
@@ -159,6 +167,16 @@ async function flock_delete(flock_id) {
  */
 async function flock_select_by_type(type, user_id) {
     let sql = `select *,(select count(*) from task where flock_id = flock.id and isEnd = 0) as num_of_task from flock where id not in (select flock_id from joining where user_id = ${user_id}) and type = '${type}';` //定义sql语句
+    let list = await utils.executeSQL(sql)
+    return list
+}
+/**
+ * 获取推荐小组（随机）
+ * @param {*} null
+ * @returns {id,name} 小组id和名称
+ */
+async function flock_select_recommandList() {
+    let sql = `select id,name from flock order by rand() limit 20;`
     let list = await utils.executeSQL(sql)
     return list
 }
@@ -395,8 +413,31 @@ async function task_member_num(task_id) {
     res = res && JSON.parse(res)
     return res[0].num
 }
+/**
+ * 修改计划基本信息
+ * @param {*} task_id 
+ * @param {*} name 
+ * @param {*} state 
+ * @returns 
+ */
 async function task_update(task_id, name, state) {
     let sql = `update task set name="${name}",state="${state}" where id=${task_id}`
+    await utils.executeSQL(sql)
+    return 0
+}
+/**
+ * 修改计划的大部分信息
+ * @param {*} id
+ * @param {*} name 
+ * @param {*} state 
+ * @param {*} type 
+ * @param {*} form 
+ * @param {*} defaultText 
+ * @param {*} start 
+ * @param {*} end 
+ */
+async function task_update_2(id, name, state, type, form, defaultText, start, end) {
+    let sql = `update task set name="${name}",state="${state}",type="${type}",form="${form}",defaultText="${defaultText}",start="${start}",end="${end}" where id=${id}`
     await utils.executeSQL(sql)
     return 0
 }
@@ -548,6 +589,16 @@ async function task_query_sum(task_id, user_id) {
     return sum[0].sum
 }
 /**
+ * 查询某一天已打卡成员的头像
+ * @param {*} task_id 计划id
+ * @param {*} date 查询的日期
+ */
+async function task_select_over_urlList(task_id, date) {
+    let sql = `select user.avatarUrl as url from record,user where record.date = '${date}' and record.task_id = ${task_id} and record.user_id = user.id`
+    let list = await utils.executeSQL(sql)
+    return list
+}
+/**
  * 查询当天用户有没有打过卡
  * @param {*} task_id 计划id
  * @param {*} user_id 用户id
@@ -634,7 +685,7 @@ async function joining_insert(user_id, flock_id) {
  * @param {*} user_id 用户id
  */
 async function record_select_all(user_id) {
-    let sql = `select record.*,user.avatarUrl,user.nickName,exists(select id from recordlike where record_id = record.id and user_id = ${user_id} ) as isLike,(select count(*) from recordlike where record_id = record.id) as like_num,(select count(*) from remark where record_id = record.id) as remark_num  from record,user where  record.user_id = user.id order by record.date desc,record.time desc `
+    let sql = `select record.*,user.avatarUrl,user.nickName,flock.name as fname,flock.id as fid ,task.id as tid,task.name as tname,exists(select id from recordlike where record_id = record.id and user_id = ${user_id} ) as isLike,(select count(*) from recordlike where record_id = record.id) as like_num,(select count(*) from remark where record_id = record.id) as remark_num  from record,user,flock,task where record.task_id = task.id and  record.flock_id = flock.id and record.user_id = user.id order by record.date desc,record.time desc `
     let list = utils.executeSQL(sql)
     return list
 }
@@ -644,7 +695,7 @@ async function record_select_all(user_id) {
  * @param {*} uid 
  */
 async function record_select_by_id(rid, uid) {
-    let sql = `select record.*,user.avatarUrl,user.nickName,exists(select id from recordlike where record_id = record.id and user_id = ${uid} ) as isLike,(select count(*) from recordlike where record_id = record.id) as like_num,(select count(*) from remark where record_id = record.id) as remark_num  from record,user where record.id = ${rid} and record.user_id = user.id`
+    let sql = `select flock.name as fname,flock.id as fid,task.name as tname,task.id as tid,record.*,user.avatarUrl,user.nickName,exists(select id from recordlike where record_id = record.id and user_id = ${uid} ) as isLike,(select count(*) from recordlike where record_id = record.id) as like_num,(select count(*) from remark where record_id = record.id) as remark_num  from record,user,task,flock where record.task_id = task.id and record.flock_id = flock.id and record.id = ${rid} and record.user_id = user.id`
     let list = utils.executeSQL(sql)
     return list
 }
@@ -752,6 +803,7 @@ module.exports = {
     flock_check_member,
     flock_delete,
     flock_select_by_type,
+    flock_select_recommandList,
     message_exists_id,
     message_select_by_id,
     message_select_id,
@@ -768,6 +820,7 @@ module.exports = {
     task_insert,
     task_member_num,
     task_update,
+    task_update_2,
     task_charts_message,
     task_time_line,
     task_quit,
@@ -780,6 +833,7 @@ module.exports = {
     task_select_flock,
     task_query_continuous,
     task_query_sum,
+    task_select_over_urlList,
     task_query_today,
     participate_insert,
     experience_select,

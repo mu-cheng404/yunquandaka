@@ -23,14 +23,17 @@ Page({
     }],
     button2: [{
       text: "去收藏"
-    }]
+    }],
+    recommandList: []
   },
   /**
    * 页面加载
    */
-  onLoad: async function (options) {},
-  onUnload:async function(options){
-    wx.setStorageSync('homeloading', 1)
+  onLoad: async function (options) {
+    await this.getRecommand()
+  },
+  onUnload: async function (options) {
+    wx.setStorageSync('homeloading', 0)
   },
   /**
    * 页面显示
@@ -66,6 +69,29 @@ Page({
           wx.setStorageSync('homeloading', 1)
         },
       })
+    }
+  },
+  /**
+   * 获取推荐小组
+   */
+  async getRecommand() {
+    let recommandList
+    //查询缓存
+    let flag = wx.getStorageSync('recommandList')
+    if (flag) { //缓存存在，则从缓存获取
+      console.log("从缓存中获取推荐小组列表")
+      recommandList = flag
+      this.setData({
+        recommandList: recommandList
+      })
+    } else { //缓存不存在，则重新获取
+      console.log("缓存不存在推荐小组列表，将从数据库重新获取")
+      recommandList = await SQL.flock_select_recommandList()
+      recommandList = recommandList && JSON.parse(recommandList)
+      this.setData({
+        recommandList: recommandList
+      })
+      wx.setStorageSync('recommandList', recommandList)
     }
   },
   /**
@@ -110,10 +136,14 @@ Page({
    */
   getGroupList: async function () {
     let result = await SQL.flock_select_count_by_uid(globalData.user_id)
-    result = result && JSON.parse(result)
-    this.setData({
-      groupList: result
-    })
+    if (result == "[]") {
+      
+    } else {
+      result = result && JSON.parse(result)
+      this.setData({
+        groupList: result
+      })
+    }
   },
   /**
    * 获取目标清单

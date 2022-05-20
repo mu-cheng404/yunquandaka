@@ -14,9 +14,8 @@
     <wux-rater slot="footer" allow-half star="☻" allow-clear default-value="{{ 2 }}" bind:change="rate_change" />
   </view>
 </view>
-<view style="margin-left:10%;margin-top: 45%;width: 100%;height: 250rpx;" wx:if="{{list.length==0}}">
-  <view style="width: 30%;height: 50%;margin-left: 25%;">
-    <image src="../../images/页面为空 .png" style="width: 100%;height: 100%;"></image>
-  </view>
-  <text style="font-style: italic; font-weight: 600;color: rgba(59, 62, 65, 0.219);">你还没有任何成就哦,快去打卡加入队伍吧 ! </text>
+<view wx:if="{{list.length==0}}" style="width: 100%;height: 100vh;"class="center" >
+  <view style="width:750rpx;height: 500rpx;">
+  <wux-prompt visible="{{list.length==''}}" title="暂无历史记录" />
+</view>
 </view>

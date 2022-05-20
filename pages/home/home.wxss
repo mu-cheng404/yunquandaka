@@ -227,7 +227,7 @@
   width: 270rpx;
   height: 380rpx;
   display: inline-block;
-  margin: 0 0 0 30rpx;
+  margin: 0 0 0 20rpx;
   border-radius: 10rpx;
   position: relative;
 }

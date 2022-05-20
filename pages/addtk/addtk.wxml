@@ -5,8 +5,9 @@
 <image id="tip" src="../../images/tip.png" bindtap="tipOpen"></image>
 <wux-cell-group title="基本信息">
   <wux-cell hover-class="none">
-    <wux-input label="计划名" placeholder="" bind:change="taskInput" value="{{taskName}}"maxlength="6" controlled="true" />
+    <wux-input label="计划名" placeholder="" bind:change="taskInput" value="{{taskName}}" controlled="true" />
   </wux-cell>
+
   <wux-cell hover-class="none">
     <wux-input label="计划描述" placeholder="" bind:change="stateInput" value="{{state}}" controlled="true" />
   </wux-cell>
@@ -31,4 +32,4 @@
   <wux-cell title="合计"  label="" extra="{{tag+'天'||'待选择'}}"></wux-cell>
 </wux-cell-group>
 
-<button bindtap="submit" class="button white"> 创建</button>
+<button bindtap="submit" class="button white"> {{pageType==1?'创建':'修改'}}</button>

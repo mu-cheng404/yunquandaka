@@ -1,16 +1,7 @@
 <wux-toast id="wux-toast"/>
 <wux-cell-group title="选项">
-  <wux-cell title="修改基本信息" is-link bindtap="adjust"></wux-cell>
-  <block wx:if="{{adjust}}">
-    <wux-cell hover-class="none">
-      <wux-input bind:change="onChangeOfNameInput" label="名称" value="{{valueOfName}}" controlled="true"></wux-input>
-    </wux-cell>
-    <wux-cell hover-class="none">
-      <wux-input bind:change="onChangeOfStateInput" label="说明" value="{{valueOfState}}" controlled="true"></wux-input>
-    </wux-cell>
-    <button bindtap="submit" disabled="{{flag}}" class="button white">修改</button>
-
-  </block>
+  <navigator url="../addtk/addtk?id={{target.id}}&type=2"></navigator>
+  <wux-cell title="修改基本信息" is-link ></wux-cell>
   <wux-cell title="查看成员" is-link bindtap="toMember" ></wux-cell>
   <wux-cell wx:if="{{!admin}}" title="退出计划" is-link bindtap="quitTask"></wux-cell>
   

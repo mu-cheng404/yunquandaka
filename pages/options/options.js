@@ -103,6 +103,7 @@ Page({
           let [flock_id, user_id] = [V.flock_id, globalData.user_id]
           await SQL.flock_quit(flock_id, user_id)
           //返回主页面
+          utils.show_toast("退出成功！")
           wx.switchTab({
             url: '../home/home',
           })
@@ -150,16 +151,34 @@ Page({
     })
   },
   submit: async function () {
-    wx.showLoading({
-      title: '上传数据中',
-      mask: true
-    })
+   
     this.setData({
       buttonLoading: true
     })
     //更新数据库里flock的信息
     let [flock_id, name, state, type, avatarUrl] = [V.flock_id, this.data.valueOfName, this.data.valueOfState, this.data.type, this.data.info.avatarUrl]
+     //判空处理
+     if(name.length>8){
+      utils.show_toast("名称限制在八个字以内！", 'fobidden')
+      return 
+    }
+    if (name == "") {
+      utils.show_toast('名称不能为空！', 'fobidden')
+      return
+    }
+    if (state == "") {
+      utils.show_toast('描述不能为空！', 'fobidden')
+      return
+    }
+    if (type == "") {
+      utils.show_toast('类别不能为空！', 'fobidden')
+      return
+    }
     console.log(avatarUrl,this.data.initUrl,avatarUrl != this.data.info.initUrl)
+    wx.showLoading({
+      title: '上传数据中',
+      mask: true
+    })
     if (avatarUrl != this.data.initUrl){//修改过
       await new Promise((resolve, reject) => {
         wx.cloud.uploadFile({

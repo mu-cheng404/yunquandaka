@@ -7,12 +7,15 @@ import {
 } from '../../dist/index'
 let V = {
   flock_id: "",
+  task_id: "",
+  type: "", //判断是新建页还是修改页
 }
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    id: "",
     tip: false, //是否跳出提示
     taskName: "",
     state: "",
@@ -37,16 +40,37 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    console.log("onload")
-    V.flock_id = options.id
-    let date = new Date()
-    let currentDate = util.formatTime(date).slice(0, 10)
-    this.setData({
-      flock_id: V.flock_id,
-      currentDate: currentDate
-    })
+    console.log(options,)
+    V.type = options.type
+    if (V.type == 1) {
+      console.log("onload")
+      V.flock_id = options.id
+      let date = new Date()
 
-    // this.tipOpen()
+      let currentDate = util.formatTime(date).slice(0, 10)
+      this.setData({
+        flock_id: V.flock_id,
+        currentDate: currentDate,
+        pageType: V.type
+      })
+    } else { //修改页
+      V.task_id = options.id
+      let task = await SQL.task_select_by_id(V.task_id);
+      task = task && JSON.parse(task)
+      task = task[0]
+      this.setData({
+        pageType: V.type,
+        id: task.id,
+        taskName: task.name,
+        state: task.state,
+        defaultText: task.defaultText,
+        type: task.type,
+        form: task.form,
+        start: task.start,
+        end: task.end,
+
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面显示
@@ -69,10 +93,14 @@ Page({
    */
   submit: async function () {
     //获取数据
-    let [id, name, state, creator, type, form, defaultText, flock_id, cycle, weekday, clock, start, end] = [util.randomsForSixDigit(), this.data.taskName, this.data.state, globalData.user_id, this.data.type, this.data.form, this.data.defaultText, V.flock_id, this.data.cycle, this.data.weekday, this.data.clock, this.data.start, this.data.end]
+    let [id, name, state, creator, type, form, defaultText, flock_id, cycle, weekday, clock, start, end] = [V.type == 1 ? util.randomsForSixDigit() : this.data.id, this.data.taskName, this.data.state, globalData.user_id, this.data.type, this.data.form, this.data.defaultText, V.flock_id, this.data.cycle, this.data.weekday, this.data.clock, this.data.start, this.data.end]
     //判空处理
     if (name == "") {
       util.show_toast("名称不能为空！", "forbidden")
+      return
+    }
+    if(name.length >6){
+      util.show_toast("名称不能超过6个字")
       return
     }
     if (state == "") {
@@ -103,10 +131,14 @@ Page({
     wx.showLoading({
       title: '提交数据中',
     })
-    await SQL.task_insert(id, name, state, creator, type, form, defaultText, flock_id, cycle, weekday, clock, start, end)
+    if (V.type == 1) {
+      await SQL.task_insert(id, name, state, creator, type, form, defaultText, flock_id, cycle, weekday, clock, start, end)
+    }else{
+      await SQL.task_update_2(id, name, state, type, form, defaultText, start, end)
+    }
     wx.hideLoading({
       success: (res) => {
-        util.show_toast("创建成功")
+        util.show_toast("成功!")
       },
     })
     //路由

@@ -196,6 +196,13 @@
           "query": "id=283928",
           "launchMode": "default",
           "scene": null
+        },
+        {
+          "name": "引导页面",
+          "pathName": "pages/welcome/welcome",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

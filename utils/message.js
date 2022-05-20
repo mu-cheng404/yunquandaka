@@ -54,7 +54,7 @@ async function send_remark_message(sender_id, receiver_id, flock_id, task_id, re
 
         let result = await utils.executeSQL(sql)
         result = result && JSON.parse(result)
-        content = `<span class='deepen'>${result[0].nickName}</span>给你的打卡评论了，<span class='click'>点击查看</span>`
+        content = `<span class='deepen'>${result[0].nickName}</span>给你的打卡评论了<span class='click'>点击查看</span>`
 
         let sql1 = `insert into message(sender_id, receiver_id, flock_id,task_id,content, time, url,hasRead,type) values(${sender_id}, ${receiver_id},${flock_id},${task_id},"${content}", '${time}', '${url}',${hasRead},3)`
         await utils.executeSQL(sql1)

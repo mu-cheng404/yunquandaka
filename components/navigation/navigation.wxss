@@ -6,7 +6,6 @@
 .custom_nav_box {
     position: fixed;
     width: 100%;
-    background: #A5DEE4;
 }
 
 .custom_nav_bar {

@@ -17,6 +17,7 @@ Page({
     V.id = options.id
     await this.getInitTargetInfo()
     this.setData({
+      id:V.id,
       admin: await sql.task_check_amdin(V.id, app.globalData.user_id)
     })
   },

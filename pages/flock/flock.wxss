@@ -71,19 +71,11 @@
 }
 
 #stateBox {
-  width: 750rpx;
-  height: 160rpx;
+  width: 710rpx;
+  padding: 20rpx;
+  background-color: white;
 }
 
-#state {
-  width: 710rpx;
-  height: 100rpx;
-  padding: 20rpx;
-  border-radius: 20rpx;
-  /* background-color: #ffffff25; */
-  color: white;
-  font-size: large;
-}
 
 
 .first {

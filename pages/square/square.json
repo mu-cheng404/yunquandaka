@@ -3,7 +3,8 @@
     "Tabs":"../../components/Tabs/Tabs",
     "wux-tabs": "../../dist/tabs/index",
     "wux-tab": "../../dist/tab/index",
-    "wux-badge": "../../dist/badge/index"
+    "wux-badge": "../../dist/badge/index",
+    "wux-search-bar": "../../dist/search-bar/index"
   },
   "disableScroll": true,
   "navigationBarTitleText": ""

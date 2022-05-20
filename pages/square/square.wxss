@@ -71,10 +71,6 @@ Page {
   width: 70rpx;
   height: 70rpx;
   float: left;
-
-
-
-
 }
 
 .top100content {

@@ -31,5 +31,7 @@ App({
       wx.setStorageSync('loading', 0)
       wx.setStorageSync('homeloading', 0)
       wx.setStorageSync('statloading', 0)
+      wx.setStorageSync('recommandList', '')
+      wx.setStorageSync('user_id', '')
     }
 })

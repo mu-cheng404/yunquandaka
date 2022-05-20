@@ -214,7 +214,7 @@ Page({
     wx.hideLoading({})
     utils.show_toast('评论成功')
     //将评论内容清除
-    wx.setData({
+    this.setData({
       value:''
     })
   }

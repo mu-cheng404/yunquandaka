@@ -17,6 +17,6 @@
   </view>
 </block>
 <view wx:if="{{admin}}" style="width: 750rpx;height: 80rpx; display: flex;justify-content: center;position: relative;">
-  <view style="width: 150rpx;height: 50rpx;border-radius: 10rpx;" class="background_color_subject center color_white" bindtap="dianjiguanli">管理<icon class="iconfont icon-medium icon-chengyuanguanli"></icon>
+  <view style="width: 150rpx;height: 50rpx;border-radius: 10rpx;" class="background_color_subject_3 center color_white" bindtap="dianjiguanli">管理>
   </view>
 </view>

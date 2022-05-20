@@ -7,15 +7,13 @@
       </view>
     </view>
   <wux-cell hover-class="none">
-    <wux-input bind:change="onChangeOfNameInput" label="名称"></wux-input>
+    <wux-input bind:change="onChangeOfNameInput" label="名称" controlled value="{{valueOfName}}"></wux-input>
   </wux-cell>
   <wux-cell hover-class="none">
-    <wux-input bind:change="onChangeOfStateInput" label="描述"></wux-input>
+    <wux-input bind:change="onChangeOfStateInput" label="签名" controlled value="{{valueOfState}}"></wux-input>
   </wux-cell>
   <picker mode="selector" range="{{typeArray}}" value="{{type}}" bindchange="typeChange">
     <wux-cell title="类别" is-link extra="{{type||'待选'}}"></wux-cell>
   </picker>
-
 </wux-cell-group>
-
-<button bindtap="submit" class="button white">创建</button>
+<button bindtap="submit" class="button white">{{pageType==1?'创建':'修改'}}</button>

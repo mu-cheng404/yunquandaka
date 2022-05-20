@@ -2,13 +2,53 @@ const util = require('../../utils/util')
 const SQL = require('../../utils/sql')
 const isTel = (value) => !/^1[34578]\d{9}$/.test(value)
 const app = getApp()
+var V = {
+  fid: "",
+  type: "",
+}
 Page({
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    avatarUrl: "https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c",
+    initUrl: "https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c",
+    valueOfName: "",
+    valueOfState: "",
+    type: "",
+    typeArray: ['班级', '宿舍', '伙伴', '社团', '组织']
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: async function (options) {
+    V.type = options.type
+    this.setData({
+      pageType: V.type
+    })
+    if (V.type == 1) { //新建
+
+    } else { //修改
+      V.fid = options.id
+      let flock = await SQL.flock_select_by_id(V.fid)
+      flock = flock && JSON.parse(flock)
+      flock = flock[0]
+      this.setData({
+        id: flock.id,
+        avatarUrl: flock.avatarUrl,
+        initUrl: flock.avatarUrl,
+        valueOfName: flock.name,
+        valueOfState: flock.state,
+        type: flock.type,
+      })
+    }
+  },
   submit: async function () {
-    let [id,creater_id,name,state,avatarUrl,type ] = [util.randomsForSixDigit(),app.globalData.user_id,this.data.valueOfName, this.data.valueOfState,this.data.avatarUrl, this.data.type ]
+    let [id, creater_id, name, state, avatarUrl, type] = [V.type == 1 ? util.randomsForSixDigit() : this.data.id, app.globalData.user_id, this.data.valueOfName, this.data.valueOfState, this.data.avatarUrl, this.data.type]
     //判空处理
-    if(name.length>8){
+    if (name.length > 8) {
       util.show_toast("名称限制在八个字以内！", 'fobidden')
-      return 
+      return
     }
     if (name == "") {
       util.show_toast('名称不能为空！', 'fobidden')
@@ -24,10 +64,10 @@ Page({
     }
     //创建
     wx.showLoading({
-      title: '创建中',
+      title: '处理中',
     })
-    if(this.data.initUrl != this.data.avatarUrl){
-      await new Promise((resolve,reject)=>{
+    if (this.data.initUrl != this.data.avatarUrl) {
+      await new Promise((resolve, reject) => {
         wx.cloud.uploadFile({
           filePath: this.data.avatarUrl,
           cloudPath: util.genMediaPath(`flock/${id}`, '.png'),
@@ -37,23 +77,33 @@ Page({
             avatarUrl = fileID
             resolve("成功")
           },
-          fail:async res=>{
+          fail: async res => {
             console.error
             reject(res)
           }
         })
       })
     }
-    await SQL.flock_insert(id,creater_id,name,state,avatarUrl,type)
+    if (V.type == 1) {
+      await SQL.flock_insert(id, creater_id, name, state, avatarUrl, type)
+    } else {
+      await SQL.flock_update(id, name, state, type, avatarUrl)
+    }
     wx.hideLoading({
       success: (res) => {
         util.show_toast("成功")
       },
     })
     //路由
-    wx.redirectTo({
-      url: '../flock/flock?id=' + id,
-    })
+    if (V.type == 1) {
+      wx.redirectTo({
+        url: '../flock/flock?id=' + id,
+      })
+    } else {
+      wx.navigateBack({
+        delta: 1
+      })
+    }
   },
   /**
    * 选择类别
@@ -64,18 +114,8 @@ Page({
     })
   },
 
+
   /**
-   * 页面的初始数据
-   */
-  data: {
-    avatarUrl:"https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c",
-    initUrl:"https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c",
-    valueOfName: "",
-    valueOfState: "",
-    type: "",
-    typeArray: ['班级', '宿舍', '伙伴', '社团', '组织']
-  },
-/**
    * 上传图片
    */
   updateImage: async function () {
@@ -132,12 +172,7 @@ Page({
       showCancel: !1,
     })
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
 
-  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成

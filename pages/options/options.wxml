@@ -12,7 +12,7 @@
       <wux-input bind:change="onChangeOfNameInput" label="名称" value="{{valueOfName}}" controlled="true"></wux-input>
     </wux-cell>
     <wux-cell hover-class="none">
-      <wux-input bind:change="onChangeOfStateInput" label="描述" value="{{valueOfState}}" controlled="true"></wux-input>
+      <wux-input bind:change="onChangeOfStateInput" label="签名" value="{{valueOfState}}" controlled="true"></wux-input>
     </wux-cell>
     <picker mode="selector" range="{{typeArray}}" value="{{type}}" bindchange="typeChange">
       <wux-cell title="类别" is-link extra="{{type||'待选'}}"></wux-cell>

@@ -1,0 +1,10 @@
+<swiper class="banner_box" bindchange="fike" indicator-dots="{{true}}" indicator-active-color='#fff'>
+  <swiper-item class="img_b" wx:for="{{ banners }}" wx:key="id">
+    <image class="img_log" src="{{item.picUrl}}" mode="aspectFit"></image>
+  </swiper-item>
+</swiper>
+<!-- button按钮  -->
+<view class="skip" bindtap="skip">
+  <!-- 可以更据guidance.js 下标判断到最后一页显示button按钮点击跳转-->
+  <button bindtap="getIndex" wx:if="{{ swiperCurrent+1 == swiperMaxNumber }}">开始体验~</button>
+</view>

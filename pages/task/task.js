@@ -1,5 +1,6 @@
 const utils = require("../../utils/util")
 const SQL = require("../../utils/sql")
+const message = require("../../utils/message")
 var V = {
   tid: '',
   fid: '',
@@ -18,7 +19,7 @@ Page({
       rest_of_day: ''
     },
     recordList: [],
-    admin: "1", //是否为管理员
+    admin: "false", //是否为管理员
     // task: {
     //   "id": 196943,
     //   "name": "测试",
@@ -36,6 +37,7 @@ Page({
     //   "isEnd": 0
     // }, //计划基本信息
     unfold: "false", //展开
+    urlList:[],
   },
   onLoad: async function (options) {
     //接收参数
@@ -77,6 +79,8 @@ Page({
         recordList: recordList
       })
     }
+    //获取已打卡用户的头像
+    await this.getOverAvatar()
     //取消加载
     //将缓存设置为1
     if (flag == 0) {
@@ -87,13 +91,62 @@ Page({
     }
   },
   /**
+   * 获取已打卡用户的头像
+   */
+  async getOverAvatar(){
+    let [task_id,date] = [V.tid,utils.getCurrentFormatedDate()];
+
+    let list = await SQL.task_select_over_urlList(task_id,date);
+    list = list && JSON.parse(list)
+
+    this.setData({urlList:list})
+  },
+  /**
+   * 用户点击设置
+   */
+  optionTap() {
+    wx.showActionSheet({
+      itemList: ['修改计划信息', '注销圈子'],
+      success: res => {
+        console.log(res)
+        let option = res.tapIndex
+        if (option == 0) {
+          wx.navigateTo({
+            url: `../addtk/addtk?id=${V.tid}&type=2`,
+          })
+        } else if (option == 1) {
+          wx.showModal({
+            content: "注销计划后，所有打卡数据将会被清除，请再次确定",
+            cancelText: "手滑了",
+            confirmText: "确定",
+            confirmColor: "black",
+            success: async (res) => {
+              if (res.confirm) { //用户点击确定
+                await SQL.task_delete(V.tid)
+                //返回小队页面
+                utils.show_toast("已注销")
+                wx.wx.navigateBack({
+                  delta: 1,
+                  success: (res) => {},
+                  fail: (res) => {},
+                  complete: (res) => {},
+                })
+              } else { //用户点击取消
+              }
+            }
+          })
+        }
+      }
+    })
+  },
+  /**
    * 给打卡点赞
    * @param {*} e 
    */
   async like(e) {
     wx.showLoading({
       title: '处理中',
-      mask:true
+      mask: true
     })
     //获取数据
     let index = e.currentTarget.id
@@ -109,7 +162,7 @@ Page({
     wx.hideLoading({})
     utils.show_toast("点赞成功！")
     //生成点赞通知
-    await message.send_like_message(V.uid,record.user_id,record.flock_id,record.task_id,record.id)
+    await message.send_like_message(V.uid, record.user_id, record.flock_id, record.task_id, record.id)
   },
   /**
    * 给打卡取消点赞
@@ -225,7 +278,7 @@ Page({
   },
   async toRecord() {
     //查询今天是不是已经大过卡了
-    let flag = await SQL.task_query_today(V.tid,V.uid)
+    let flag = await SQL.task_query_today(V.tid, V.uid)
     console.log(flag)
     if (flag) {
       utils.show_toast("今天已经打过卡了，休息一下吧")
