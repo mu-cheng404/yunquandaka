@@ -1,4 +1,5 @@
 const utils = require("../../utils/util")
+const SQL = require("../../utils/sql")
 import {
   $wuxDialog
 } from '../../dist/index'
@@ -60,13 +61,14 @@ Page({
         }).then(res => {
           openid = res.result.openid
         })
-        //插入数据库
-        let id = utils.randomsForSixDigit()
-        sql = `insert into user values(${id},'${openid}','${userInfo.nickName}','${userInfo.avatarUrl}')`
         this.setData({
           user_id: id,
         })
-        await utils.executeSQL(sql)
+        //插入数据库
+        let [id, nickName, avatarUrl] = [utils.randomsForSixDigit(),userInfo.nickName,userInfo.avatarUrl]
+        await SQL.user_insert(id, openid, nickName, avatarUrl) 
+        //初始化一些数据
+        await this.initData(id)
         console.log("用户完成信息授权")
         //设置全局变量
         this.setGlobalData()
@@ -82,6 +84,27 @@ Page({
       fail: (res) => {
         console.log("用户拒绝了信息授权")
       }
+    })
+  },
+  /**
+   * 初始化一些数据
+   * @param {*} id 用户id
+   */
+  async initData(user_id){
+    wx.showLoading({
+      title: '初始化中',
+    })
+    //插入一个提示用的小组
+    let [fid, creater_id, fname, fstate, avatarUrl, ftype] = [utils.randomsForSixDigit(),user_id,'hello！','新建在右上角|右上角设置删除该引导',globalData.logo,'组织']
+    await SQL.flock_insert(fid, creater_id, fname, fstate, avatarUrl, ftype)
+    //在小组内插入一个提示用的计划
+    let [tid, tname, tstate, creator, ttype, tform, defaultText, flock_id, tcycle, tweekday, tclock, tstart, tend] = [utils.randomsForSixDigit(),'底部新建计划|点击头像查看成员','点击星星收藏计划',user_id,"学习",'图片','默认文本',fid,'每天','周一','08:00',utils.formatTime(new Date()).slice(0, 10),"2032-05-31"]
+    await SQL.task_insert(tid, tname, tstate, creator, ttype, tform, defaultText, flock_id, tcycle, tweekday, tclock, tstart, tend)
+    //在记录内插入一个提示用的打卡
+    let [id,uid, date, time, content, url, duration] = [utils.randomsForSixDigit(),user_id,utils.formatTime(new Date()).slice(0, 10), utils.formatTime(new Date()).slice(11, 19),'右上角修改信息|右下角打卡 | 点击进入详情页面|详情页删除打卡','','']
+    await SQL.record_insert(id, fid, tid, uid, date, time, content, url, duration)
+    wx.hideLoading({
+      success: (res) => {},
     })
   },
   getSub: async function () {

@@ -15,6 +15,7 @@ App({
         // hasUserInfo: false,
         systeminfo: "", //系统信息
         tabBarHeight: 0, //tab栏高度
+        logo:"http://ccreblog.cn/wp-content/uploads/2022/05/logo配色图.png"
     },
     getSystemInfo() {
         let that = this

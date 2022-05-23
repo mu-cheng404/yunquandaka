@@ -168,11 +168,8 @@ Page({
   searchInput: async function (e) {
     let value = e.detail.value
     if (value.length >= 1) {
-      let sql = `select id,name,creater_id,exists(select id from joining where flock_id = flock.id and user_id = ${globalData.user_id}) as joined from flock where id like '${value}%' or name like '${value}%';`
-
-      let result = await utils.executeSQL(sql)
+      let result = await SQL.flock_search(globalData.user_id,value)
       result = result && JSON.parse(result)
-
       this.setData({
         searchResult: result,
       })
@@ -195,6 +192,7 @@ Page({
     console.log(e)
     this.setData({
       isFocus: false,
+      value:''
     })
   },
   /**

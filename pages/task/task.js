@@ -19,7 +19,7 @@ Page({
       rest_of_day: ''
     },
     recordList: [],
-    admin: "false", //是否为管理员
+    admin: false, //是否为管理员
     // task: {
     //   "id": 196943,
     //   "name": "测试",
@@ -37,7 +37,8 @@ Page({
     //   "isEnd": 0
     // }, //计划基本信息
     unfold: "false", //展开
-    urlList:[],
+    urlList: [],
+    join: "false",
   },
   onLoad: async function (options) {
     //接收参数
@@ -66,9 +67,10 @@ Page({
       utils.show_toast("找不到计划！", "forbidden")
       return
     }
-    //判断当前用户是否是管理员
-    let admin = await SQL.flock_check_admin(V.fid, V.uid)
+    let join = await SQL.joining_query(V.fid, V.uid) //获取当前用户是否加入小组
+    let admin = await SQL.flock_check_admin(V.fid, V.uid) //判断当前用户是否是管理员
     this.setData({
+      join: join,
       admin: admin
     })
     //获取打卡基本信息（缺省）  
@@ -90,16 +92,27 @@ Page({
       wx.setStorageSync('loading', 1)
     }
   },
+  toCal() {
+    if (this.data.join) {
+      wx.navigateTo({
+        url: `../calendar/calendar?id=${this.data.join}`,
+      })
+    } else {
+      utils.show_toast("您不是该小组成员！", 'forbidden')
+    }
+  },
   /**
    * 获取已打卡用户的头像
    */
-  async getOverAvatar(){
-    let [task_id,date] = [V.tid,utils.getCurrentFormatedDate()];
+  async getOverAvatar() {
+    let [task_id, date] = [V.tid, utils.getCurrentFormatedDate()];
 
-    let list = await SQL.task_select_over_urlList(task_id,date);
+    let list = await SQL.task_select_over_urlList(task_id, date);
     list = list && JSON.parse(list)
 
-    this.setData({urlList:list})
+    this.setData({
+      urlList: list
+    })
   },
   /**
    * 用户点击设置
@@ -277,15 +290,20 @@ Page({
     })
   },
   async toRecord() {
-    //查询今天是不是已经大过卡了
-    let flag = await SQL.task_query_today(V.tid, V.uid)
-    console.log(flag)
-    if (flag) {
-      utils.show_toast("今天已经打过卡了，休息一下吧")
+    if (this.data.join) {
+      //查询今天是不是已经打过卡了
+      let flag = await SQL.task_query_today(V.tid, V.uid)
+      console.log(flag)
+      if (flag) {
+        utils.show_toast("今天已经打过卡了，休息一下吧")
+      } else {
+        wx.navigateTo({
+          url: `../record/record?tid=${this.data.target.id}&fid=${this.data.target.flock_id}`
+        })
+      }
     } else {
-      wx.navigateTo({
-        url: `../record/record?tid=${this.data.target.id}&fid=${this.data.target.flock_id}`
-      })
+      utils.show_toast("您不是该小组成员！", 'forbidden')
     }
+
   }
 })

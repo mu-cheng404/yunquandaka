@@ -9,10 +9,10 @@
   </wux-cell>
 
   <wux-cell hover-class="none">
-    <wux-input label="计划描述" placeholder="" bind:change="stateInput" value="{{state}}" controlled="true" />
+    <wux-input label="计划描述" placeholder="选填" bind:change="stateInput" value="{{state}}" controlled="true" />
   </wux-cell>
   <wux-cell hover-class="none">
-    <wux-input label="预设内容" placeholder="" bind:change="defaultTextInput" value="{{defaultText}}" controlled="true" />
+    <wux-input label="预设内容" placeholder="选填" bind:change="defaultTextInput" value="{{defaultText}}" controlled="true" />
   </wux-cell>
 </wux-cell-group>
 <wux-cell-group title="其他" label="">

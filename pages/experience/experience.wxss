@@ -1,8 +1,0 @@
-#textarea{
-  width: 670rpx;
-  height: 380rpx;
-  margin: 20rpx;
-  padding: 20rpx;
-  background-color: white;
-  border-radius: 10rpx;
-}

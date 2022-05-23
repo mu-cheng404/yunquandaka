@@ -297,11 +297,6 @@ Page({
       url: '../view/view?id=' + this.data.list[this.data.targetIndex].id,
     })
   },
-  targetTap: function (e) {
-    if (!this.data.isJoined) {
-      utils.show_toast("点击右上角加入小组之后查看计划详情",'forbidden')
-    }
-  },
   getSettingOftarget: async function (index) {
     if (this.data.list.length != 0) {
       //获取进度条数据
@@ -339,6 +334,11 @@ Page({
    * 收藏计划
    */
   collect: async function (e) {
+    //判断是否加入
+    if(!this.data.isJoined){
+      utils.show_toast("您还不是该小组成员！",'forbidden')
+      return
+    }
     console.log(e)
     let index = e.currentTarget.id
     let task = this.data.list[index]

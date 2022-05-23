@@ -1,9 +1,0 @@
-<wux-toast id="wux-toast"/>
-<wux-cell-group title="选项">
-  <navigator url="../addtk/addtk?id={{target.id}}&type=2"></navigator>
-  <wux-cell title="修改基本信息" is-link ></wux-cell>
-  <wux-cell title="查看成员" is-link bindtap="toMember" ></wux-cell>
-  <wux-cell wx:if="{{!admin}}" title="退出计划" is-link bindtap="quitTask"></wux-cell>
-  
-  <wux-cell wx:if="{{admin}}" title="注销计划" is-link bindtap="logoutTarget"></wux-cell>
-</wux-cell-group>

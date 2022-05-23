@@ -245,5 +245,6 @@ Page({
     this.setData({
       current_1: key
     })
-  }
+  },
+ 
 })

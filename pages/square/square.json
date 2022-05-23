@@ -7,5 +7,5 @@
     "wux-search-bar": "../../dist/search-bar/index"
   },
   "disableScroll": true,
-  "navigationBarTitleText": ""
+  "navigationBarTitleText": "云圈打卡"
 }

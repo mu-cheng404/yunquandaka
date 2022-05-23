@@ -74,11 +74,13 @@ Page({
             await SQL.message_update_state(message.id,'拒绝')
             utils.show_toast("拒绝加入")
             await this.getAndSetMessageList()
-
           }
         }
       })
     } else if (message.type == 3 || message.type == 4) {
+      this.setData({
+        ['messageList['+index+'].hasRead'] : 1,
+      })
       await SQL.message_read(message.id)
       wx.navigateTo({
         url: message.url,

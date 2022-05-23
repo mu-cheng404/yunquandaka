@@ -38,9 +38,7 @@ Page({
       success: (res) => {
         let newUserInfo = res.userInfo
         let sql = `update user set nickName='${newUserInfo.nickName}',avatarUrl='${newUserInfo.avatarUrl}' where id = ${globalData.user_id}`
-
         utils.executeSQL(sql)
-
         this.onLoad()
       }
     })

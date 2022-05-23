@@ -43,8 +43,8 @@ Page({
   previewImage() {
     console.log("预览图片")
     wx.previewImage({
-      urls: [this.data.exp.url],
-      current: this.data.exp.url
+      urls: [this.data.record.url],
+      current: this.data.record.url
     })
   },
   /**

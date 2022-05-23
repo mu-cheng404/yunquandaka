@@ -1,11 +1,46 @@
 <view wx:if="{{login}}">
   <wux-toast id="wux-toast" />
-
+  <!-- 搜索框 -->
+  <view id="searchBar" class="">
+    <wux-search-bar controlled value="{{value}}" clear maxlength="8" bind:change="searchInput" bind:cancel="onCancel" bind:focus="onFocus" placeholder="小组ID或者小组名" wux-class="serachBarInner" focus="{{isFocus}}"></wux-search-bar>
+  </view>
+  <!-- 显示搜索结果 -->
+  <block wx:if="{{isFocus}}">
+    <view id="part1">
+      <block wx:for="{{searchResult}}" wx:key="key">
+        <view class="item">
+          <!-- 头像 -->
+          <view class="center" style="width: 20%;height: inherit;">
+            <image style="width: 60rpx;height: 60rpx;border-radius: 10rpx;" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+          </view>
+          <!-- 名称 -->
+          <view class="center" style="width: 20%;height: inherit;">
+            {{item.name}}
+          </view>
+          <!-- ID -->
+          <view class="center" style="width: 30%;height: inherit;">
+            <view class="item_id center">{{item.id}}</view>
+          </view>
+          <!-- 按钮 -->
+          <view class="center" style="width: 30%;height: inherit;">
+            <navigator url="../flock/flock?id={{item.id}}">
+              <view class="item_operate center" bindtap="gotoTap" style="margin-right: 10rpx;">
+                查看
+              </view>
+            </navigator>
+          </view>
+        </view>
+      </block>
+      <view wx:if="{{searchResult.length == 0}}" style="height: 500rpx;width: 750rpx;">
+        <wux-prompt visible="{{searchResult.length == 0}}" text="搜索结果为空" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无灵感.png" />
+      </view>
+    </view>
+  </block>
   <block wx:if="{{!isFocus}}">
     <view style="padding-left: 20rpx;width: 730rpx;height: 60rpx;position: relative;display: flex;line-height: 60rpx;font-size: small;  ">
       小组列表
       <navigator url="../init/init?type=1" style="position: absolute;right: 10rpx;top: 10rpx;height: 40rpx;">
-        <view style="float: right;width:130rpx;height:100%;;display:flex;border-radius: 15rpx; " class="center background_color_subject color_subject border" >
+        <view style="float: right;width:130rpx;height:100%;;display:flex;border-radius: 15rpx; " class="center background_color_subject color_subject border">
           新建<icon class="iconfont icon-xinjian color_subject " style="margin-left:20rpx"></icon>
         </view>
       </navigator>
@@ -34,7 +69,7 @@
       </block>
     </scroll-view>
     <!-- 热门小组 -->
-    <view style="padding-left: 20rpx;width: 730rpx;height: 30rpx;font-size: small;">热门小组（可加入）</view>
+    <view style="padding-left: 20rpx;width: 730rpx;height: 30rpx;font-size: small;">热门小组 <text style="" class="color_text_auxiliary">（公开）</text></view>
     <view style="padding: 20rpx;width: 710rpx;height: 110rpx;display: flex;flex-wrap: wrap;overflow: hidden;line-height: 60rpx;">
       <block wx:for="{{recommandList}}" wx:key="key">
         <navigator url="../flock/flock?id={{item.id}}">
@@ -42,6 +77,7 @@
         </navigator>
       </block>
     </view>
+    <!-- 收藏计划列表 -->
     <view id="targetBox">
       <view style="padding-left: 20rpx;width: 730rpx;height: 50rpx;font-size: small;">收藏计划</view>
       <view wx:if="{{targetList==''}}" style="width: 750rpx;height: 500rpx;">

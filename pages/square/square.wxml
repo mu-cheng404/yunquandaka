@@ -1,41 +1,4 @@
 <wux-toast id="wux-toast"></wux-toast>
-<!-- 搜索框 -->
-<!-- <view id="searchBar" class="">
-  <wux-search-bar clear maxlength="8" bind:change="searchInput" bind:cancel="onCancel" bind:focus="onFocus" placeholder="队伍ID或者队伍名" wux-class="serachBarInner" focus="{{isFocus}}"></wux-search-bar>
-</view> -->
-<!-- 显示搜索结果 -->
-<!-- <block wx:if="{{isFocus}}">
-  <view id="part1">
-    <view class="header bgTheme_color white">
-      <view class="center" style="width: 200rpx;height: 70rpx;">
-        <view class="header_id center">ID</view>
-      </view>
-      <view class="center" style="width: 330rpx;height: 70rpx;">
-        <view class="header_name center">小队名</view>
-      </view>
-      <view class="center" style="width: 220rpx;height: 70rpx;">
-        <view class="header_operate center">查看</view>
-      </view>
-    </view>
-    <block wx:for="{{searchResult}}" wx:key="key">
-      <view class="item">
-        <view class="center" style="width: 200rpx;height: 60rpx;">
-          <view class="item_id center">{{item.id}}</view>
-        </view>
-        <view class="center" style="width: 330rpx;height: 60rpx;">
-          <view class="item_name center" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.name}}</view>
-        </view>
-        <view class="center" style="width: 220rpx;height: 60rpx;">
-          <navigator url="../flock/flock?id={{item.id}}">
-            <view class="item_operate center" bindtap="gotoTap" style="margin-right: 10rpx;">
-              查看
-            </view>
-          </navigator>
-        </view>
-      </view>
-    </block>
-  </view>
-</block> -->
 <!-- 轮播海报 -->
 <view style="width: 750rpx;height: {{windowHeight*0.3}}px;">
   <view class="swiper">
@@ -63,8 +26,6 @@
     </wux-tabs>
   </view>
 </view>
-
-
 <scroll-view scroll-y style="width:750rpx;height: {{windowHeight*0.7}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
 
   <!-- 云圈 -->
@@ -74,11 +35,11 @@
         <view style="background-color:white; width:710rpx;border-radius: 20rpx;margin: 20rpx;">
           <view style="width: 710rpx;height: 100rpx;display: flex;margin-top: 10rpx;">
             <view style="width: 100rpx;height: 100rpx;" class="center">
-              <image src='{{item.avatarUrl}}' style="width:70rpx;height:70rpx;border-radius:50%;margin: 10rpx;"></image>
+              <image  src='{{item.avatarUrl}}' style="width:70rpx;height:70rpx;border-radius:50%;margin: 10rpx;"></image>
             </view>
             <view style="width:500rpx;height:100rpx">
               <view style=" width: 500rpx;height:60rpx;font-size: medium;line-height: 60rpx;">{{item.nickName}}
-              <text style="font-size: small;" class="color_text_auxiliary">#{{item.fname}}小组</text>
+                <text style="font-size: small;" class="color_text_auxiliary">#{{item.fname}}小组</text>
               </view>
               <view style="width: 500rpx;height:40rpx;font-size: small;color: #848C96;line-height:40rpx;">{{item.date}} {{item.time}}</view>
             </view>
@@ -90,7 +51,7 @@
           </view>
           <view class="fengmian">
             <view style=" width:600rpx;margin-left:100rpx;padding: 0rpx 10rpx 10rpx 0rpx;word-break: break-all; overflow-y: auto;">{{item.content}}</view>
-            <image wx:if="{{item.url}}" style="width:200rpx;height:200rpx;margin-left: 100rpx; border-radius: 10rpx;" src="{{item.url}}"></image>
+            <image mode="aspectFill" wx:if="{{item.url}}" style="width: 300rpx;max-height: 200rpx;margin-left: 100rpx; border-radius: 10rpx;" src="{{item.url}}" lazy-load></image>
           </view>
           <view style="width: 500rpx;height: 50rpx;margin-left: 100rpx; ">
             <wux-tag color="orange">{{item.tname}}</wux-tag>
@@ -129,38 +90,37 @@
         </navigator>
       </view>
     </block>
-
-
-
   </block>
   <!-- 排行榜 -->
   <block wx:if="{{current=='tab3'}}">
     <view style="width: 750rpx;height: 50rpx; display: flex; font-size: small;" class="color_text_auxiliary">
       <view style="width: 100rpx;margin-left: 50rpx;">头像</view>
       <view style="width: 235rpx;">所属小组</view>
-      <view style="width: 240rpx;">计划</view>
-      <view style="width: 80rpx;">打卡率</view>
+      <view style="width: 220rpx;">计划</view>
+      <view style="width: 100rpx;">打卡率</view>
     </view>
     <block wx:for="{{rankList}}" wx:for-item="item" wx:for-index="index" wx:key="id">
-      <navigator url="../flock/flock?id={{item.id}}">
-        <view style="  font-size:25rpx;background-color: white; width:95%;height:100rpx;border:2rpx solid rgb(190, 214, 214); margin-bottom: 20rpx;margin-left: 17rpx;border-radius: 30rpx;">
-          <view class="center" style="float: left;width:100rpx;height:100%;">
-            <image src='{{item.url}}' style="margin-left: 20rpx; width:60rpx;height:60rpx;border-radius:20%;"></image>
-          </view>
-          <view style="width:230rpx;margin-left:40rpx;height: 70rpx;float: left; text-align: left;margin-top: 40rpx; color: rgb(101, 137, 172);">
-            {{item.fname}}
-          </view>
-          <view style="width:180rpx;height: 70rpx;text-align: left;margin-top: 40rpx;float: left; color: rgb(101, 137, 172);">
-            {{item.tname}}
-          </view>
-          <view style="width:50rpx;height:70rpx;text-align: left;margin-top: 40rpx; color: rgb(101, 137, 172);float: right;margin-right: 50rpx;">
-            <text wx:if="{{index == 0}}" style="color: gold;">{{item.ratio}}%</text>
-            <text wx:elif="{{index == 1}}" style="color: silver;">{{item.ratio}}%</text>
-            <text wx:elif="{{index == 2}}" style="color: rgb(102, 50, 24);">{{item.ratio}}%</text>
-            <text wx:else style="color: black;">{{item.ratio}}%</text>
-          </view>
+      <view style="  font-size:25rpx;background-color: white; width:95%;height:100rpx;border:2rpx solid rgb(190, 214, 214); margin-bottom: 20rpx;margin-left: 17rpx;border-radius: 30rpx;">
+        <view class="center" style="float: left;width:100rpx;height:100%;">
+          <image src='{{item.url}}' style="margin-left: 20rpx; width:60rpx;height:60rpx;border-radius:20%;"></image>
         </view>
-      </navigator>
+        <view style="width:230rpx;margin-left:40rpx;height: 70rpx;float: left; text-align: left;margin-top: 40rpx; color: rgb(101, 137, 172);">
+          <navigator url="../flock/flock?id={{item.fid}}">
+            {{item.fname}}
+          </navigator>
+        </view>
+        <view style="width:180rpx;height: 70rpx;text-align: left;margin-top: 40rpx;float: left; color: rgb(101, 137, 172);">
+          <navigator url="../task/task?tid={{item.tid}}&fid={{item.fid}}">
+            {{item.tname}}
+          </navigator>
+        </view>
+        <view style="width:50rpx;height:70rpx;text-align: left;margin-top: 40rpx; color: rgb(101, 137, 172);float: right;margin-right: 50rpx;">
+          <text wx:if="{{index == 0}}" style="color: gold;">{{item.ratio*100}}%</text>
+          <text wx:elif="{{index == 1}}" style="color: silver;">{{item.ratio*100}}%</text>
+          <text wx:elif="{{index == 2}}" style="color: rgb(102, 50, 24);">{{item.ratio*100}}%</text>
+          <text wx:else style="color: black;">{{item.ratio*100}}%</text>
+        </view>
+      </view>
     </block>
   </block>
   <!-- <view style="width: 750rpx;height: {{tabBarHeight}}rpx;scroll-snap-align: none;"></view> -->

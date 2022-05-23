@@ -103,10 +103,6 @@ Page({
       util.show_toast("名称不能超过6个字")
       return
     }
-    if (state == "") {
-      util.show_toast("描述不能为空！", "forbidden")
-      return
-    }
     if (type == "") {
       util.show_toast("请选择计划类型！", "forbidden")
       return

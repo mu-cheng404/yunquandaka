@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "wux-button": "../../dist/button/index",
-    "wux-upload": "../../dist/upload/index"
-  },
-  "navigationBarTitleText": "分享心得"
-}

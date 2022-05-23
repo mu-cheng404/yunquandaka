@@ -12,6 +12,18 @@
       </view>
     </view>
   </view>
+  <!-- 耗费时间选择 -->
+  <view style="margin:0 40rpx;padding: 0 10rpx; width: 650rpx;height: 80rpx;border-radius: 15rpx;background-color: white; display: flex; line-height: 80rpx;">
+    <text class="color_text_auxiliary">时间记录</text> <text class="color_text_auxiliary"style="font-size:small">(选填)</text>
+    <picker range="{{hour}}" value="{{hourValue}}" bindchange="hourChange">
+      <view style="margin-top: 15rpx;width: 80rpx;height: 50rpx;border-radius: 20rpx;" class="background_color_label_background center">{{hourValue?hour[hourValue]:''}}</view>
+    </picker>
+    h
+    <picker range="{{minute}}" value="{{minuteValue}}" bindchange="minuteChange">
+      <view style="margin-top: 15rpx;width: 80rpx;height: 50rpx;border-radius: 20rpx;" class="background_color_label_background center">{{minuteValue?minute[minuteValue]:''}}</view>
+    </picker>
+    m
+  </view>
   <view style="width:750rpx;height:180rpx;margin-bottom: 300rpx;" class="center">
     <view style="width: 150rpx;height: 150rpx;border-radius: 50%;; z-index: 2;font-size: x-large;font-weight: bold; display: flex;" class="center background_color_white color_subject">
       <icon class="iconfont icon-dianji icon-x-large" bindtap="submit"></icon>

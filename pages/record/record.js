@@ -13,6 +13,10 @@ Page({
     fileList: '',
     info: {},
     content: "",
+    hour: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
+    hourValue: "",
+    minute: ['0', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'],
+    minuteValue: "",
   },
   /**
    * 生命周期函数--监听页面加载
@@ -21,6 +25,20 @@ Page({
     V.tid = options.tid
     V.fid = options.fid
     V.uid = getApp().globalData.user_id
+  },
+  hourChange(e) {
+    console.log(e)
+    let idx = e.detail.value
+    this.setData({
+      hourValue: idx
+    })
+  },
+  minuteChange(e) {
+    console.log(e)
+    let idx = e.detail.value
+    this.setData({
+      minuteValue: idx
+    })
   },
   /**
    * 上传图片
@@ -58,7 +76,7 @@ Page({
   },
   submit: async function () {
     //获取数据
-    let [id, fid, tid, uid, date, time, content, url] = [util.randomsForSixDigit(), V.fid, V.tid, V.uid, util.formatTime(new Date()).slice(0, 10), util.formatTime(new Date()).slice(11, 19), this.data.content, '']
+    let [id, fid, tid, uid, date, time, content, url, duration] = [util.randomsForSixDigit(), V.fid, V.tid, V.uid, util.formatTime(new Date()).slice(0, 10), util.formatTime(new Date()).slice(11, 19), this.data.content, '', this.data.hourValue + 'h' + this.data.minuteValue + 'm']
     //判空
     if (content == "") {
       util.show_toast("打卡内容为空", "forbidden")
@@ -73,7 +91,7 @@ Page({
       mask: true
     })
     //操作数据库
-    await SQL.record_insert(id, fid, tid, uid, date, time, content, url)
+    await SQL.record_insert(id, fid, tid, uid, date, time, content, url, duration)
     //停止加载
     wx.hideLoading({})
     //完成提示
@@ -133,6 +151,6 @@ Page({
     })
   },
   onRemove(e) {
-    
+
   },
 })

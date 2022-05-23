@@ -64,7 +64,7 @@ async function flock_select_by_id(flock_id) {
  * 获取所有圈子id
  */
 async function flock_select_all() {
-    let sql = `select id from flock`
+    let sql = `select id from flock where flock.name!='hello！'`
     let res = await utils.executeSQL(sql)
     return res
 }
@@ -117,7 +117,7 @@ async function flock_select_order_by_value(date) {
     //计算计划平均值
     // let sql = `select count(*) from record,task where record.task_id = task.id and record.date = "${date}"`
     // let sql = `select count(*) from joining,flock where joining.flock_id = flock.id`
-    let sql = `select task.id as tid,task.name as tname,flock.name as fname,flock.avatarUrl as url, (round((select count(*) from record where record.task_id = task.id and record.date = "${date}")/(select count(*) from joining where joining.flock_id = flock.id),0)*100) as ratio from task,flock where task.flock_id = flock.id order by ratio desc`
+    let sql = `select flock.id as fid,task.id as tid,task.name as tname,flock.name as fname,flock.avatarUrl as url, (round((select count(*) from record where record.task_id = task.id and record.date = "${date}")/(select count(*) from joining where joining.flock_id = flock.id),4)) as ratio from task,flock where task.flock_id = flock.id and flock.name!='hello！' order by ratio desc`
         // let sql = `select flock.*, avg(value) as a from flock order by a desc`
         // let sql = `select avg(radio) from (select (select count(*) from record where record.task_id = task.id and record.date = "${date}")/(select count(*) from joining where joining.flock_id = flock.id) as ratio from task,flock)`
         //定义sql语句
@@ -166,7 +166,7 @@ async function flock_delete(flock_id) {
  * @param {*} user_id 用户id
  */
 async function flock_select_by_type(type, user_id) {
-    let sql = `select *,(select count(*) from task where flock_id = flock.id and isEnd = 0) as num_of_task from flock where id not in (select flock_id from joining where user_id = ${user_id}) and type = '${type}';` //定义sql语句
+    let sql = `select *,(select count(*) from task where flock_id = flock.id and isEnd = 0) as num_of_task from flock where id not in (select flock_id from joining where user_id = ${user_id}) and type = '${type}' and flock.name!='hello！';` //定义sql语句
     let list = await utils.executeSQL(sql)
     return list
 }
@@ -176,7 +176,17 @@ async function flock_select_by_type(type, user_id) {
  * @returns {id,name} 小组id和名称
  */
 async function flock_select_recommandList() {
-    let sql = `select id,name from flock order by rand() limit 20;`
+    let sql = `select id,name from flock where flock.name!='hello！' order by rand()  limit 20;`
+    let list = await utils.executeSQL(sql)
+    return list
+}
+/**
+ * 根据value模糊查找，排除掉用户已经加入的
+ * @param {*} user_id 用户id
+ * @param {*} value 模糊查找的值（id或者名称）
+ */
+async function flock_search(user_id, value) {
+    let sql = `select * from flock where id like '%${value}%' or name like '%${value}%' and id not in (select flock_id from joining where user_id = ${user_id}) `
     let list = await utils.executeSQL(sql)
     return list
 }
@@ -248,6 +258,18 @@ async function remark_cancel_like(rid, uid) {
     let sql1 = `delete from remarklike where remark_id = ${rid} and user_id = ${uid}`
     await utils.executeSQL(sql1)
     return 0
+}
+/**
+ * 插入用户数据 
+ * @param {*} id 用户id
+ * @param {*} openid openid
+ * @param {*} nickName 昵称
+ * @param {*} avatarUrl 头像
+ */
+async function user_insert(id, openid, nickName, avatarUrl) {
+    let sql = `insert into user values(${id},'${openid}','${nickName}','${avatarUrl}')`
+    await utils.executeSQL(sql)
+    return true
 }
 /**
  * 查询消息是否存在，如果消息存在返回id如果不存在返回0
@@ -453,7 +475,7 @@ async function task_charts_message(task_id, date) {
     }
     let number = await task_member_num(task_id)
         // round(count(*)/${number},2)*100
-    let sql = `select round(count(distinct date)/${number},2)*100 as rate,date from record where task_id = ${task_id} and date in (${date}) group by date order by date`
+    let sql = `select round(count(distinct user_id)/${number},2)*100 as rate,date from record where task_id = ${task_id} and date in (${date}) group by date order by date`
     let res = await utils.executeSQL(sql)
     return res
 
@@ -681,11 +703,25 @@ async function joining_insert(user_id, flock_id) {
     return true
 }
 /**
+ * 查询某个用户是否加入小组
+ * @param {*} flock_id 小组id
+ * @param {*} user_id 用户id
+ */
+async function joining_query(flock_id, user_id) {
+    let sql = `select id as flag from joining where flock_id = ${flock_id} and user_id = ${user_id} limit 1`
+    let flag = await utils.executeSQL(sql)
+    if (flag == "[]") {
+        return false
+    } else {
+        return true
+    }
+}
+/**
  * 获取所有打卡
  * @param {*} user_id 用户id
  */
 async function record_select_all(user_id) {
-    let sql = `select record.*,user.avatarUrl,user.nickName,flock.name as fname,flock.id as fid ,task.id as tid,task.name as tname,exists(select id from recordlike where record_id = record.id and user_id = ${user_id} ) as isLike,(select count(*) from recordlike where record_id = record.id) as like_num,(select count(*) from remark where record_id = record.id) as remark_num  from record,user,flock,task where record.task_id = task.id and  record.flock_id = flock.id and record.user_id = user.id order by record.date desc,record.time desc `
+    let sql = `select record.*,user.avatarUrl,user.nickName,flock.name as fname,flock.id as fid ,task.id as tid,task.name as tname,exists(select id from recordlike where record_id = record.id and user_id = ${user_id} ) as isLike,(select count(*) from recordlike where record_id = record.id) as like_num,(select count(*) from remark where record_id = record.id) as remark_num  from record,user,flock,task where flock.name != 'hello！' and record.task_id = task.id and  record.flock_id = flock.id and record.user_id = user.id order by record.date desc,record.time desc `
     let list = utils.executeSQL(sql)
     return list
 }
@@ -717,11 +753,12 @@ async function record_select_by_tid(t_id, u_id) {
  * @param {*} uid 用户id
  * @param {*} date 日期
  * @param {*} time 时间
- * @param {*} content 内容
+ * @param {*} content 内容  
  * @param {*} url 图片链接
+ * @param {*} duration 持续时间
  */
-async function record_insert(id, fid, tid, uid, date, time, content, url) {
-    let sql = `insert into record values(${id},${fid},${tid},${uid},'${date}','${time}','${content}','${url}',0)`
+async function record_insert(id, fid, tid, uid, date, time, content, url, duration) {
+    let sql = `insert into record values(${id},${fid},${tid},${uid},'${date}','${time}','${content}','${url}',0,'${duration}')`
     await utils.executeSQL(sql)
     return true
 }
@@ -804,6 +841,7 @@ module.exports = {
     flock_delete,
     flock_select_by_type,
     flock_select_recommandList,
+    flock_search,
     message_exists_id,
     message_select_by_id,
     message_select_id,
@@ -841,6 +879,7 @@ module.exports = {
     experience_insert,
     experience_delete,
     joining_insert,
+    joining_query,
     record_select_all,
     record_select_by_id,
     record_select_by_tid,
@@ -853,5 +892,6 @@ module.exports = {
     remark_insert,
     remark_like,
     remark_cancel_like,
+    user_insert,
     poter_select,
 }

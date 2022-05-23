@@ -177,11 +177,9 @@
 
 .item {
   width: 750rpx;
-  height: 60rpx;
+  height: 100rpx;
   display: flex;
   background-color: white;
-  margin-bottom: 5rpx;
-  margin-bottom: 10rpx;
 }
 
 .item_id {

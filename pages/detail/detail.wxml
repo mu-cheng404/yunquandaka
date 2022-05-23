@@ -25,8 +25,8 @@
     </view>
     <view style="width: 710rpx;padding:20rpx;display: flex;flex-direction: column; word-break: break-all">
       {{record.content}}
-      <view wx:if="{{record.url}}" style="width: 670rpx;margin: 20rpx;" class="center">
-        <image src="{{record.url}}" style="border-radius:10rpx;" lazy-load bindtap="previewImage"></image>
+      <view wx:if="{{record.url}}" style="width: 710rpx;" class="center">
+        <image mode="widthFix" src="{{record.url}}" style="border-radius:10rpx;" lazy-load bindtap="previewImage"></image>
       </view>
     </view>
     <view style="width: 750rpx;height: 100rpx;display: flex;font-size: large;" class="color_subject">

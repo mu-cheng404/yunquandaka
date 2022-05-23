@@ -67,8 +67,8 @@
   </view>
   <scroll-view scroll-y style="width:750rpx;height: {{windowHeight*0.67}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
     <block wx:if="{{list.length>0}}" wx:for="{{list}}" wx:key="key">
-      <navigator url="{{isJoined?'../task/task?tid='+ item.id + '&fid=' + item.flock_id:''}}">
-        <view class="targetBox" id="{{index}}" bindtap="targetTap">
+      <navigator url="../task/task?tid={{item.id}}&fid={{item.flock_id}}">
+        <view class="targetBox" id="{{index}}">
           <view class="targetIcon center">
             <icon id="{{index}}" class="iconfont {{!item.collect?'icon-shoucang1':'icon-shoucang'}} color_icon " style="font-size: 60rpx;" catchtap="collect"></icon>
           </view>

@@ -9,7 +9,6 @@
     "pages/record/record",
     "pages/addtk/addtk",
     "pages/detail/detail",
-    "pages/options/options",
     "pages/members/members",
     "pages/share/share",
     "pages/demo/demo",
@@ -17,7 +16,6 @@
     "pages/accomplishment/accomplishment",
     "pages/advice/advice",
     "pages/aboutus/aboutus",
-    "pages/targetOption/targetOption",
     "pages/view/view",
     "pages/authorize/authorize",
     "pages/loading/loading",
@@ -28,9 +26,7 @@
     "pages/calendar/calendar",
     "pages/statistics/statistics",
     "pages/message/message",
-    "pages/experience/experience",
-    "pages/selectMember/selectMember",
-    "pages/welcome/welcome"
+    "pages/selectMember/selectMember"
   ],
   "window": {
     "backgroundTextStyle": "light",
