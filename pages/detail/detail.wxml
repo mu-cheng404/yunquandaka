@@ -67,9 +67,12 @@
       </view>
     </view>
   </block>
+  <!-- 评论缺省提示 -->
   <view wx:if="{{remarkList.length==0}}" style="width: 750rpx;height: 700rpx;">
     <wux-prompt visible="1" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无动态.png" text="暂无评论" />
   </view>
+  <view style="width: 750rpx;height:150rpx;"></view>
+  <!-- 评论框 -->
   <view style="width:750rpx;height:150rpx;position: fixed;bottom: 0rpx;display: flex;background-color: white;">
     <wux-cell hover-class="none">
       <wux-input placeholder="再不评论就来不及了" bind:change="remark_input" bind:confirm="commit_remark" wux-class="cell" clear>

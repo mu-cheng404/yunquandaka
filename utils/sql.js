@@ -117,7 +117,7 @@ async function flock_select_order_by_value(date) {
     //计算计划平均值
     // let sql = `select count(*) from record,task where record.task_id = task.id and record.date = "${date}"`
     // let sql = `select count(*) from joining,flock where joining.flock_id = flock.id`
-    let sql = `select flock.id as fid,task.id as tid,task.name as tname,flock.name as fname,flock.avatarUrl as url, (round((select count(*) from record where record.task_id = task.id and record.date = "${date}")/(select count(*) from joining where joining.flock_id = flock.id),4)) as ratio from task,flock where task.flock_id = flock.id and flock.name!='hello！' order by ratio desc`
+    let sql = `select flock.id as fid,task.id as tid,task.name as tname,flock.name as fname,flock.avatarUrl as url, concat(round((select count(*) from record where record.task_id = task.id and record.date = "${date}")/(select count(*) from joining where joining.flock_id = flock.id)*100,2),'%') as ratio from task,flock where task.flock_id = flock.id and flock.name!='hello！' order by ratio desc`
         // let sql = `select flock.*, avg(value) as a from flock order by a desc`
         // let sql = `select avg(radio) from (select (select count(*) from record where record.task_id = task.id and record.date = "${date}")/(select count(*) from joining where joining.flock_id = flock.id) as ratio from task,flock)`
         //定义sql语句

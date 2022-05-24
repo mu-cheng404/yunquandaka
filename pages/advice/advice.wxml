@@ -1,4 +1,4 @@
-<view style="width: 0rpx;height: 0rpx;">
+<!-- <view style="width: 0rpx;height: 0rpx;">
   <wux-toast id="wux-toast" mask="false" />
   <view class="label">
   </view>
@@ -26,4 +26,4 @@
     <wux-button block type="balanced" bind:click="submit">完成</wux-button>
   </view>
 
-</view>
+</view> -->

@@ -1,1 +1,39 @@
-/* pages/aboutus/aboutus.wxss */
+page 
+{
+background-color:rgb(233, 243, 243);
+
+
+}
+.div1
+{
+
+  width:80%;
+  height:380rpx;
+  border:1rpx  solid  black;
+  background-color:white;
+  margin-left: 10%;
+  margin-top:50rpx;
+  border-radius: 5%;
+  box-shadow: 10rpx  10rpx  5rpx rgb(208, 228, 231);
+}
+.img
+{
+width:30%;
+height: 30%;
+margin-left: 35%;
+margin-top: 30rpx;
+
+}
+.div2
+{
+  width:80%;
+ 
+  border:1rpx  solid  black;
+  background-color:white;
+  margin-left: 10%;
+  margin-top:50rpx;
+  border-radius: 5%;
+box-shadow: -10rpx  -10rpx  5rpx rgb(208, 228, 231);
+
+
+}

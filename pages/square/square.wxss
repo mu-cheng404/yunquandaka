@@ -3,8 +3,7 @@ Page {
 }
 
 .swiper {
-  width: 750rpx;
-  height: 300rpx;
+  
 }
 
 .swiper-item {

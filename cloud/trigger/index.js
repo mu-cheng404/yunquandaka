@@ -20,6 +20,7 @@ exports.main = async (event, context) => {
   let end = []
   let end_log = []
   //数据库里检查所有满足条件的target,所有还没有结束的target都需要检查是否需要提醒 
+  
   let sql = `select u.openid,t.id,t.flock_id,t.name,t.cycle,t.weekday,t.clock from task as t,joining as j,user as u where t.isEnd = 0 and t.flock_id = j.flock_id and j.user_id = u.id`
   console.log(sql)
   let result

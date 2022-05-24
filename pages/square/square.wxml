@@ -1,7 +1,7 @@
 <wux-toast id="wux-toast"></wux-toast>
 <!-- 轮播海报 -->
-<view style="width: 750rpx;height: {{windowHeight*0.3}}px;">
-  <view class="swiper">
+<view style="width: 750rpx;height: 400rpx;">
+  <view class="" style="width: 750rpx;height: 280rpx;">
     <swiper class="swiper" autoplay interval="3000" circular indicator-dots="{{true}}" indicator-color="white">
       <block wx:for="{{swiper}}">
         <swiper-item class="swiper-item">
@@ -26,7 +26,7 @@
     </wux-tabs>
   </view>
 </view>
-<scroll-view scroll-y style="width:750rpx;height: {{windowHeight*0.7}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
+<scroll-view scroll-y style="width:750rpx;height: {{windowHeight-200}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
 
   <!-- 云圈 -->
   <block wx:if="{{current=='tab1'}}">
@@ -115,10 +115,10 @@
           </navigator>
         </view>
         <view style="width:50rpx;height:70rpx;text-align: left;margin-top: 40rpx; color: rgb(101, 137, 172);float: right;margin-right: 50rpx;">
-          <text wx:if="{{index == 0}}" style="color: gold;">{{item.ratio*100}}%</text>
-          <text wx:elif="{{index == 1}}" style="color: silver;">{{item.ratio*100}}%</text>
-          <text wx:elif="{{index == 2}}" style="color: rgb(102, 50, 24);">{{item.ratio*100}}%</text>
-          <text wx:else style="color: black;">{{item.ratio*100}}%</text>
+          <text wx:if="{{index == 0}}" style="color: gold;">{{item.ratio}}</text>
+          <text wx:elif="{{index == 1}}" style="color: silver;">{{item.ratio}}</text>
+          <text wx:elif="{{index == 2}}" style="color: rgb(102, 50, 24);">{{item.ratio}}</text>
+          <text wx:else style="color: black;">{{item.ratio}}</text>
         </view>
       </view>
     </block>

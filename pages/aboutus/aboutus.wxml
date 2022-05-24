@@ -1,2 +1,43 @@
-<!--pages/aboutus/aboutus.wxml-->
-<text>pages/aboutus/aboutus.wxml</text>
+<view  class="div1">
+<image src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fp1.ssl.qhimg.com%2Ft01b300a4448986638e.jpg&refer=http%3A%2F%2Fp1.ssl.qhimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655791354&t=c88ceddbc713ccda05ba1238b9c69a4b"class="img"></image>
+<view  style="margin-left: 230rpx;margin-top: 10rpx;">济南大学</view>
+<view  style="margin-left: 230rpx; margin-top: 10rpx;">云圈打卡</view>
+<view  style="margin-left: 120rpx; margin-top: 10rpx;">负责人:计科1903吴春城</view>
+<view  style="margin-left: 170rpx; margin-top: 10rpx;">QQ:2831795696</view>
+</view>
+<view  style="font-size: 70rpx;color: rgb(17, 105, 128);  text-shadow: 10px 10px 10px #6ee6e6;margin-left: 230rpx;margin-top: 25rpx;">关于我们</view>
+<view class="div2">
+<view style="padding-top: 40rpx; padding-left: 10rpx;" > 项目背景:</view>
+<view style=" padding-left: 50rpx;">根据市场调研,随着快节奏生活的普及,人们对于自身的各种能力提升的需求迫切,本项目旨在提供一个
+每日打卡平台,满足受众对自身的监督和与同伴互相监督的需求,提升自我,完美蜕变.</view>
+
+ <view  style="padding-top: 50rpx;  padding-left: 10rpx;">项目各模块功能:</view>
+ <view style=" padding-left: 50rpx;" >
+<view>一.主页</view>
+<view>(1)可搜索小组</view>
+<view>(2)可新建小组以及计划</view>
+<view>(3)显示参加的小组信息</view>
+<view>(4)显示热门小组推荐</view>
+<view>(5)显示搜藏计划且表明完成情况</view>
+<view>二.发现</view>
+<view>(1)云圈界面:显示全服朋友们打卡感想,可以和大家互动,交流经验哦.</view>
+<view>(2)推荐界面:根据打卡所属类型给您推荐小组</view>
+<view>(3)排行界面:根据打卡率进行排名,激励您和您的小组成员打卡.</view>
+<view>三.我的</view>
+<view>(1)点击同步微信形象,更新您当前的形象</view>
+<view>(2)计划记录:显示您的打卡天数,打卡率,激励自我积极打卡,并且可对自我打分</view>
+<view>(3)客服中心:有什么问题联系我们哦</view>
+<view>(4)可将我们的小程序分享给您的朋友,欢迎加入我们!</view>
+
+</view>
+<view style="padding-top: 50rpx;">
+  <view style="  padding-left: 10rpx;" >
+如何联系我们 
+<view  style=" padding-left: 50rpx;" >(1)可通过QQ:2831795696联系本项目组长计科1903吴春城</view>
+<view  style=" padding-left: 50rpx;">(2)可通过"我的"界面联系客服,项目组成员为您答疑</view>
+</view>
+</view>
+<view style="padding-top: 50rpx;">
+  <view style=" padding-left: 10rpx;padding-bottom: 50rpx;" >感谢您的支持!!</view>
+</view>
+</view>
