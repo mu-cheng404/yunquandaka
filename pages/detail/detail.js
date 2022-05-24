@@ -200,6 +200,11 @@ Page({
     })
     //插入评论信息
     let [user_id, record_id, time, content] = [V.uid, this.data.record.id, utils.formatTime(new Date()), this.data.value]
+    //
+    if(content == ''){
+      utils.show_toast("内容为空！","forbidden")
+      return 
+    }
     wx.showLoading({
       title: '提交数据中',
       mask: true

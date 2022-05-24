@@ -1,6 +1,6 @@
 <wux-toast id="wux-toast"></wux-toast>
 <!-- 轮播海报 -->
-<view style="width: 750rpx;height: 400rpx;">
+<view style="width: 750rpx;height: 380rpx;">
   <view class="" style="width: 750rpx;height: 280rpx;">
     <swiper class="swiper" autoplay interval="3000" circular indicator-dots="{{true}}" indicator-color="white">
       <block wx:for="{{swiper}}">
