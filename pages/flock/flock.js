@@ -140,10 +140,8 @@ Page({
             })
           } else if (option == 1) {
             wx.showModal({
-              content: "注销圈子后，所有的信息将会被清除，请再次确定",
-              confirmText: "确定",
-              cancelText: "手滑了",
-              confirmColor: "black",
+              title:"提示",
+              content: "注销后，所有的信息将会被清除，请再次确定",
               success: async (res) => {
                 if (res.confirm) { //用户点击确定
                   await SQL.flock_delete(V.flock_id)
@@ -158,10 +156,8 @@ Page({
         } else {
           if (option == 0) {
             wx.showModal({
-              content: "退出圈子后，您的所有信息将会被清除，请再次点击确定",
-              confirmText: "确定",
-              cancelText: "手滑了",
-              confirmColor: "black",
+              title:"提示",
+              content: "退出圈子后，您的所有信息将会被清除",
               success: async (res) => {
                 if (res.confirm) { //用户点击确定
                   let [flock_id, user_id] = [V.flock_id, globalData.user_id]
@@ -222,7 +218,7 @@ Page({
     //处理
     let that = this
     wx.showLoading({
-      title: '申请中',
+      title: '处理中',
       mask: true
     })
     //添加数据
@@ -234,54 +230,6 @@ Page({
     utils.show_toast("加入成功")
     //渲染页面
     await this.onShow()
-  },
-  /**
-   * 用户点击登录
-   */
-  async apply_to_join() {
-    //检查是否申请过
-    let flock = this.data.flock
-    let [sender_id, receiver_id, flock_id, task_id] = [globalData.user_id, flock.creater_id, flock.id, ""]
-    let res = await SQL.message_check_hasSend_and_state(sender_id, receiver_id, flock_id, task_id)
-    if (res) { //已经发送过通知了
-      if (res == "未处理") {
-        utils.show_toast("已经发送申请，管理员正在处理中", 'forbidden')
-        return
-      } else if (res == "拒绝") {
-        console.log("拒绝拒绝")
-        wx.showModal({
-          content: "管理员拒绝了你的申请，是否重新发送申请",
-          cancelText: '取消',
-          confirmText: "再次发送",
-          success: async res => {
-            let confirm = res.confirm
-            if (confirm) {
-              //获取message_id
-              let message_id = await SQL.message_select_id(sender_id, receiver_id, flock_id, task_id)
-              //删除旧消息
-              await SQL.message_delete_by_id(message_id)
-              //发送新消息
-              await message.send_apply_message(sender_id, receiver_id, flock_id)
-              utils.showToast("已发送申请，等待管理员处理")
-            } else {}
-          }
-        })
-      }
-    } else { //第一次发送
-      wx.showModal({
-        content: "确认给圈子发送加入申请",
-        cancelText: "下次吧",
-        success: async res => {
-          let confirm = res.confirm
-          if (confirm) {
-            let [user_id, receiver_id, flock_id] = [globalData.user_id, this.data.flock.creater_id, this.data.flock.id]
-            await message.send_apply_message(user_id, receiver_id, flock_id)
-            utils.showToast("已发送申请，等待管理员处理")
-          }
-        }
-      })
-    }
-
   },
   /**
    * 用户预览头像
@@ -345,7 +293,8 @@ Page({
     let flag = task.collect
     if (flag == 1) { //用户已收藏
       wx.showModal({
-        content: "是否取消收藏，取消后在主页将不可见",
+        title:"提示",
+        content: "取消后计划在主页将不可见",
         success: res => {
           if (res.confirm) { //用户点击确定
             let sql = `delete from collect where task_id = ${task.id} and user_id = ${globalData.user_id}`
@@ -471,41 +420,5 @@ Page({
       title: "快来加入我的小组",
     }
   },
-  joinTap: async function () {
-    wx.showModal({
-      text: '再确认一下',
-      content: "再确认一下",
-      success: async res => {
-        console.log(res)
-        if (res.confirm) { //用户点击确认
-          await this.datahandle() //数据添加到数据库
-          wx.showToast({ //加入成功
-            title: '加入成功',
-          })
-          this.setData({
-            isJoined: true
-          })
-        } else {
-
-        }
-      }
-    })
-  },
-  applyToJoin: async function () {
-    wx.showModal({
-      content: "再次确认",
-      success: async res => {
-        if (res.confirm) {
-          let user_id = globalData.user_id
-          let sql = `insert into joining(user_id,flock_id) values(${user_id},${this.data.flock.id})`
-          await utils.executeSQL(sql)
-          wx.showToast({
-            title: '您已成功加入！',
-          })
-        } else {
-
-        }
-      },
-    })
-  },
+  
 })

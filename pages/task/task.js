@@ -129,10 +129,8 @@ Page({
           })
         } else if (option == 1) {
           wx.showModal({
-            content: "注销计划后，所有打卡数据将会被清除，请再次确定",
-            cancelText: "手滑了",
-            confirmText: "确定",
-            confirmColor: "black",
+            title:"提示",
+            content: "注销后，所有数据将会被清除，请再次确定",
             success: async (res) => {
               if (res.confirm) { //用户点击确定
                 await SQL.task_delete(V.tid)

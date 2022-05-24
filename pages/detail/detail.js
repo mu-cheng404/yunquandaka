@@ -60,6 +60,7 @@ Page({
     let index = e.currentTarget.id
     let remark = this.data.remarkList[index]
     wx.showModal({
+      title:'提示',
       content: "确定删除",
       success: async res => {
         let confirm = res.confirm
@@ -82,6 +83,7 @@ Page({
    */
   async delete_record() {
     wx.showModal({
+      title:"提示",
       content: "确定删除",
       success: async res => {
         let confirm = res.confirm

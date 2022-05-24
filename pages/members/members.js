@@ -43,9 +43,8 @@ Page({
     console.log(user)
     let _this = this
     wx.showModal({
+      title:"提示",
       content: "点击确定踢掉ta",
-      cancelColor: 'cancelColor',
-      cancelText: "手滑了",
       success: async res => {
         let confirm = res.confirm
         if (confirm) {

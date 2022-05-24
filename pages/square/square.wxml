@@ -26,8 +26,7 @@
     </wux-tabs>
   </view>
 </view>
-<scroll-view scroll-y style="width:750rpx;height: {{windowHeight-200}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
-
+<scroll-view scroll-y style="width:750rpx;height: {{windowHeight-windowWidth/750*380}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
   <!-- 云圈 -->
   <block wx:if="{{current=='tab1'}}">
     <block wx:if="{{rList.length!=0}}" wx:for="{{rList}}" wx:key="id">
