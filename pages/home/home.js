@@ -188,6 +188,13 @@ Page({
       isFocus: true
     })
   },
+  onClear(e) {
+    console.log('onClear', e)
+    this.setData({
+      error: true,
+      value: '',
+    })
+  },
   onCancel(e) {
     console.log(e)
     this.setData({

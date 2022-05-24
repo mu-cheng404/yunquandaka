@@ -2,7 +2,7 @@
   <wux-toast id="wux-toast" />
   <!-- 搜索框 -->
   <view id="searchBar" class="">
-    <wux-search-bar controlled value="{{value}}" clear maxlength="8" bind:change="searchInput" bind:cancel="onCancel" bind:focus="onFocus" placeholder="小组ID或者小组名" wux-class="serachBarInner" focus="{{isFocus}}"></wux-search-bar>
+    <wux-search-bar controlled clear showCancel value="{{value}}" clear maxlength="8" bind:change="searchInput" bind:cancel="onCancel" bind:focus="onFocus" placeholder="小组ID或者小组名" wux-class="serachBarInner" focus="{{isFocus}}"></wux-search-bar>
   </view>
   <!-- 显示搜索结果 -->
   <block wx:if="{{isFocus}}">
