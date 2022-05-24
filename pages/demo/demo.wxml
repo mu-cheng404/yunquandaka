@@ -1,1 +1,1 @@
-<button bindtap="execute">发通知</button>
+<button bindtap="execute">测试</button>

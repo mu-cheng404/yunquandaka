@@ -1,6 +1,51 @@
 const utils = require("../utils/util")
 
 /**
+ * 插入记录
+ * @param {*} id 
+ * @param {*} uid 
+ * @param {*} tid 
+ * @param {*} fid 
+ * @param {*} duration 
+ * @param {*} sum   
+ * @param {*} rate 
+ * @param {*} grade 
+ */
+async function accomplish_insert(id, uid, tid, fid, duration, sum, rate, grade) {
+    let sql = `insert into accomplish(id,user_id,task_id,flock_id,duration,sum,rate,grade) values(${id},${uid},${tid},${duration},${sum},'${rate}',${grade})`
+    await utils.executeSQL(sql)
+    return true
+}
+/**
+ * 给历史记录打分
+ * @param {*} id 
+ * @param {*} grade 
+ */
+async function accomplish_update_grade(id, grade) {
+    let sql = `update accomplish set grade = ${grade} where id = ${id}`
+    await utils.executeSQL(sql)
+    return true
+}
+/**
+ * 删除历史记录
+ * @param {*} id 
+ */
+async function accomplish_delete(id) {
+    let sql = `delete from accomplish where id = ${id}`
+    await utils.executeSQL(sql)
+    return true
+}
+/**
+ * 查找用户历史
+ * 计划name
+ * @param {*} uid 
+ */
+async function accomplish_select(uid) {
+    let sql = `select a.*,flock.name as fname,task.name as tname from accomplish,flock,task as a where a.user_id = ${uid} and flock.id = a.flock_id and task.id = a.task_id`
+    let list = await utils.executeSQL(sql)
+    return list
+}
+/**
  * 更新小组数据
  * @param {*} flock_id 圈子ID
  * @param {*} name 修改后的名字
@@ -826,6 +871,10 @@ async function poter_select() {
     return list
 }
 module.exports = {
+    accomplish_insert,
+    accomplish_update_grade,
+    accomplish_delete,
+    accomplish_select,
     flock_update,
     flock_insert,
     flock_quit,

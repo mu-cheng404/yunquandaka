@@ -16,14 +16,15 @@
 <view id="body">
   <wux-cell-group wux-class="group">
     <navigator url="../accomplishment/accomplishment">
-      <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/记录-1.png" title="历史记录" is-link hasLine="false"></wux-cell>
+      <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/记录-1.png" title="历史报告" is-link hasLine="false"></wux-cell>
     </navigator>
     <wux-cell hasLine thumb="http://ccreblog.cn/wp-content/uploads/2022/05/客服.png" title="客服中心" is-link open-type="contact" bind:contact="onContact">
     </wux-cell>
     <wux-white-space size="small" />
-    <!-- <navigator url="../advice/advice">
-      <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/意见反馈-1.png" title="意见反馈" is-link hasLine="false"></wux-cell>
-    </navigator> -->
+    <navigator url="../advice/advice">
+      <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/意见反馈-1.png" title="意见反馈" is-link open-type="feedback" hasLine="false"></wux-cell>
+    </navigator>
+    <wux-white-space size="small" />
     <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/微信分享.png" title="分享给朋友" is-link open-type="share" hasLine="0"></wux-cell>
     <wux-white-space size="small" />
     <navigator url="../aboutus/aboutus">

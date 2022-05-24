@@ -11,8 +11,10 @@ Page({
     avatarList: ["../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", ]
   },
   execute:async function(){
-    let sql = `delete from flock where creater_id = 579718`
-    await utils.executeSQL(sql)
+    let sql2 = `select user_id from joining where flock_id =148886 `
+    let list =  await utils.executeSQL(sql2)
+    list = list && JSON.parse(list)
+    console.log(list)
   },
   consoleH: function (params) {
     console.log("Hello world")

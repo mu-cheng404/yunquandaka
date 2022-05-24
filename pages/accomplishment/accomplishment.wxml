@@ -14,8 +14,8 @@
     <wux-rater slot="footer" allow-half star="☻" allow-clear default-value="{{ 2 }}" bind:change="rate_change" />
   </view>
 </view>
-<view wx:if="{{list.length==0}}" style="width: 100%;height: 100vh;"class="center" >
+<view wx:if="{{list.length==0}}" style="width: 100%;height: 1000rpx;"class="center" >
   <view style="width:750rpx;height: 500rpx;">
-  <wux-prompt visible="{{list.length==''}}" title="暂无历史记录" />
+  <wux-prompt icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无灵感.png" visible="{{list.length==''}}" title="暂无报告" text="计划到期后会自动生成专属的计划报告" />
 </view>
 </view>
