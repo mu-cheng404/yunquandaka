@@ -12,7 +12,8 @@ Page({
     loginFlag: "",
     subscribeFlag: "",
     user_id: "",
-    showButton: false
+    showButton: false,
+    check:false,
   },
   /**
    * 用户点击游客访问
@@ -44,10 +45,25 @@ Page({
     globalData.user_id = this.data.user_id
     globalData.hasUserInfo = true
   },
+  radioChange(e){
+    console.log(e)
+    if(e.detail.value == "agree"){
+      this.setData({check:true})
+    }
+  },
+  goto(){
+    wx.navigateTo({
+      url: '../protocol/protocol',
+    })
+  },
   /**
    * 用户授权
    */
   getInfo: async function () {
+    if(!this.data.check){
+      utils.show_toast('请先勾选隐私政策与隐私协议','forbidden')
+      return
+    }
     let openid, userInfo, sql
     //弹窗获取用户信息
     wx.getUserProfile({

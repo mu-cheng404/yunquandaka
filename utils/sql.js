@@ -12,7 +12,7 @@ const utils = require("../utils/util")
  * @param {*} grade 
  */
 async function accomplish_insert(id, uid, tid, fid, duration, sum, rate, grade) {
-    let sql = `insert into accomplish(id,user_id,task_id,flock_id,duration,sum,rate,grade) values(${id},${uid},${tid},${duration},${sum},'${rate}',${grade})`
+    let sql = `insert into accomplish(id,user_id,task_id,flock_id,duration,sum,rate,grade) values(${id},${uid},${tid},${fid}},${duration},${sum},'${rate}',${grade})`
     await utils.executeSQL(sql)
     return true
 }

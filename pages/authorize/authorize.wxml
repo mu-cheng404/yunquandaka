@@ -5,10 +5,21 @@
     <image src="{{item}}" mode="aspectFill" style="width:100%;height:100%; position: relative;z-index: -1;"></image>
   </swiper-item>
 </swiper>
-<view wx:if="{{showButton}}" class="center" style="left: 50%;margin-left: -100rpx;bottom: 100rpx;width: 200rpx;height: 80rpx;border-radius: 20rpx; font-size: medium;font-weight: bold;position: absolute;z-index: 1;background-color: rgb(227, 248, 255);color: rgb(104, 225, 253);" bindtap="getInfo">授权登录</view> -->
+<view wx:if="{{showButton}}" class="center" style="left: 50%;margin-left: -100rpx;bottom: 200rpx;width: 200rpx;height: 80rpx;border-radius: 20rpx; font-size: medium;font-weight: bold;position: absolute;z-index: 1;background-color: rgb(227, 248, 255);color: rgb(104, 225, 253);" bindtap="getInfo">授权登录</view>
+<view wx:if="{{showButton}}" style="width: 250rpx;height: 100rpx;bottom: 100rpx;left: 50%;margin-left: -125rpx;font-size: small;color: rgb(123, 123, 123);position: absolute;z-index: 2;" >
+  <radio-group bindchange="radioChange">
+    <radio color="rgb(179, 200, 121)"value="agree" /> 已同意并阅读
+  </radio-group>
+  <text style="color: cadetblue;" bindtap="goto">《云圈打卡APP用户隐私政策》《云圈打卡用户服务协议》</text>
+</view> -->
 
-<view class="center" style="width: 100%;height: 1000rpx;flex-direction: column;"> 
-  <image style="width: 600rpx;height: 600rpx;border-radius: 50rpx;margin-bottom: 100rpx;" src="cloud://yuan-1-1gylic1ae84507a5.7975-yuan-1-1gylic1ae84507a5-1309718930/admin/logo.png"></image> 
-  <view class="center color_white background_color_subject_1" style="margin-top: -200rpx;width: 200rpx;height: 80rpx;border-radius: 20rpx;   font-size: medium;font-weight: bold;" bindtap="getInfo">授权登录</view> 
- 
+<view class="center" style="width: 100%;height: 1000rpx;flex-direction: column;">
+  <image style="width: 600rpx;height: 600rpx;border-radius: 50rpx;margin-bottom: 100rpx;" src="cloud://yuan-1-1gylic1ae84507a5.7975-yuan-1-1gylic1ae84507a5-1309718930/admin/logo.png"></image>
+  <view class="center color_white background_color_subject_1" style="margin-top: -200rpx;width: 200rpx;height: 80rpx;border-radius: 20rpx;   font-size: medium;font-weight: bold;" bindtap="getInfo">授权登录</view>
+  <view  style="width: 250rpx;height: 100rpx;font-size: small;color: rgb(123, 123, 123);" >
+  <radio-group bindchange="radioChange">
+    <radio color="rgb(179, 200, 121)"value="agree" /> 已同意并阅读
+  </radio-group>
+  <text style="color: cadetblue;" bindtap="goto">《云圈打卡APP用户隐私政策》《云圈打卡用户服务协议》</text>
+</view>
 </view>

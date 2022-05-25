@@ -25,7 +25,8 @@
     "pages/calendar/calendar",
     "pages/statistics/statistics",
     "pages/message/message",
-    "pages/selectMember/selectMember"
+    "pages/selectMember/selectMember",
+    "pages/protocol/protocol"
   ],
   "window": {
     "backgroundTextStyle": "light",
