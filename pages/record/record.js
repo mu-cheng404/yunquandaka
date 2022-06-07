@@ -75,8 +75,13 @@ Page({
     })
   },
   submit: async function () {
+     //加载
+     wx.showLoading({
+      title: '上传数据中',
+      mask: true
+    })
     //获取数据
-    let [id, fid, tid, uid, date, time, content, url, duration] = [util.randomsForSixDigit(), V.fid, V.tid, V.uid, util.formatTime(new Date()).slice(0, 10), util.formatTime(new Date()).slice(11, 19), this.data.content, '', this.data.hourValue + 'h' + this.data.minuteValue + 'm']
+    let [id, fid, tid, uid, date, time, content, url, duration] = [util.randomsForSixDigit(), V.fid, V.tid, V.uid, util.formatTime(new Date()).slice(0, 10), util.formatTime(new Date()).slice(11, 19), this.data.content, '', this.data.hourValue*60+this.data.minuteValue]
     //判空
     if (content == "") {
       util.show_toast("打卡内容为空", "forbidden")
@@ -85,11 +90,7 @@ Page({
     if (this.data.fileList != '') {
       url = await this.uploadImage(this.data.fileList[0].url)
     }
-    //加载
-    wx.showLoading({
-      title: '上传数据中',
-      mask: true
-    })
+  
     //操作数据库
     await SQL.record_insert(id, fid, tid, uid, date, time, content, url, duration)
     //停止加载

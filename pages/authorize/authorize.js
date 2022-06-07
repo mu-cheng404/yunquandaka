@@ -138,7 +138,6 @@ Page({
           ],
         }).then(async (res) => {
           console.log("查询用户权限结果", res)
-
           let query = await that.queryAccess()
           if (!query) {
             that.getSub()
@@ -159,7 +158,6 @@ Page({
       desc: "获取头像和昵称信息",
       success: async (res) => {
         userInfo = res.userInfo
-
         //获取用户openid
         await wx.cloud.callFunction({
           name: "getOpenID"

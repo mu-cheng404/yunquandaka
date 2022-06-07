@@ -69,7 +69,7 @@
       </block>
     </scroll-view>
     <!-- 热门小组 -->
-    <view style="padding-left: 20rpx;width: 730rpx;height: 30rpx;font-size: small;">热门小组 <text style="" class="color_text_auxiliary">（公开）</text></view>
+    <view style="padding-left: 20rpx;width: 730rpx;height: 30rpx;font-size: small;">热门小组 <text style="" class="color_text_auxiliary"></text></view>
     <view style="padding: 20rpx;width: 710rpx;height: 110rpx;display: flex;flex-wrap: wrap;overflow: hidden;line-height: 60rpx;">
       <block wx:for="{{recommandList}}" wx:key="key">
         <navigator url="../flock/flock?id={{item.id}}">
@@ -77,9 +77,9 @@
         </navigator>
       </block>
     </view>
-    <!-- 收藏计划列表 -->
+    <!-- 收藏项目列表 -->
     <view id="targetBox">
-      <view style="padding-left: 20rpx;width: 730rpx;height: 50rpx;font-size: small;">收藏计划</view>
+      <view style="padding-left: 20rpx;width: 730rpx;height: 50rpx;font-size: small;font-weight: bold;">收藏项目</view>
       <view wx:if="{{targetList==''}}" style="width: 750rpx;height: 500rpx;">
         <wux-prompt visible="1" buttons="{{groupList.length==0?'':button2}}" bind:click="toCollect" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无任务.png" />
       </view>
@@ -92,14 +92,17 @@
             <view class="targetName">
               <view class="{{item.over?'name1_over':'name1'}}">
                 {{item.name}}
-                <text>#{{item.flock_name}}</text>
+                <text></text>
               </view>
               <block wx:if="{{!item.over}}">
-                <view class="color_text_auxiliary" style="padding-left: 10rpx;font-size: small;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.state}}</view>
+                <view class="color_text_auxiliary" style="padding-left: 10rpx;font-size: small;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                  {{item.flock_name}} | {{item.cycle}}计划{{item.weekday?' | '+item.weekday:''}}</view>
               </block>
               <!-- <image class="collect" src="../../images/{{item.over?'完成':'收藏'}}.png"></image> -->
               <view class="collect center">
-                <icon class="iconfont {{item.over?'icon-wancheng':'icon-weiwancheng'}}  icon-large  color_subject"></icon>
+                <navigator url="../statistics/statistics?id={{item.id}}">
+                  <image src="http://ccreblog.cn/wp-content/uploads/2022/05/统计.png" style="width: 50rpx;height: 50rpx;"></image>
+                </navigator>
               </view>
             </view>
           </view>

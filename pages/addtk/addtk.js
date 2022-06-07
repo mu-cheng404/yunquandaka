@@ -22,8 +22,8 @@ Page({
     defaultText: "",
     type: "",
     form: "",
-    cycle: "每天",
-    weekday: "周一",
+    cycle: "",
+    weekday: "",
     clock: "00:00",
     start: "",
     end: "",
@@ -32,7 +32,7 @@ Page({
     typeArray: ['学习', '日常', '运动', '活动'],
     formArray: ['图片', '文字', '图片+文字'],
     weekdayArray: ['周一', '周二', '周三', '周四', '周五', '周六', '周天'],
-    cycleArray: ['每天', '每周'],
+    cycleArray: ['日', '周'],
     clockArray: ["00:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
     list: [],
   },
@@ -68,7 +68,8 @@ Page({
         form: task.form,
         start: task.start,
         end: task.end,
-
+        cycle:task.cycle,
+        weekday:task.weekday
       })
     }
   },
@@ -104,22 +105,18 @@ Page({
       return
     }
     if (type == "") {
-      util.show_toast("请选择计划类型！", "forbidden")
+      util.show_toast("请选择项目类型！", "forbidden")
       return
     }
-    if (form == "") {
-      util.show_toast("请选择建议打卡形式！", "forbidden")
+    // if (form == "") {
+    //   util.show_toast("请选择建议打卡形式！", "forbidden")
+    //   return
+    // }
+    if(cycle==""){
+      util.show_toast("请选择统计周期！", "forbidden")
       return
     }
-    if (start == "") {
-      util.show_toast("请选择计划开始时间！", "forbidden")
-      return
-    }
-    if (end == "") {
-      util.show_toast("请选择结束时间！", "forbidden")
-      return
-    }
-    if (start == end) {
+    if (start!=""&&end!=""&&start == end) {
       util.show_toast("开始时间和结束时间至少相隔一天！", "forbidden")
       return
     }
@@ -130,7 +127,7 @@ Page({
     if (V.type == 1) {
       await SQL.task_insert(id, name, state, creator, type, form, defaultText, flock_id, cycle, weekday, clock, start, end)
     }else{
-      await SQL.task_update_2(id, name, state, type, form, defaultText, start, end)
+      await SQL.task_update_2(id, name, state, type, form, defaultText,cycle, weekday,start, end)
     }
     wx.hideLoading({
       success: (res) => {

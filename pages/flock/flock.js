@@ -11,6 +11,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    nickName: "", //用户昵称
     admin: false,
     unfold: "false",
     flock: '',
@@ -51,8 +52,8 @@ Page({
     }],
     refresh: false, //下拉刷新
     list: [],
-    options_admin: ['修改小组信息', '注销小组'],
-    options: ['退出小组'],
+    options_admin: ['修改小组信息', '解散小组', '修改昵称'],
+    options: ['退出小组', '修改昵称'],
   },
   /**
    * 生命周期函数
@@ -64,6 +65,7 @@ Page({
     this.setData({
       admin: admin
     })
+
   },
   onUnload: async function (options) {
     wx.setStorageSync('loading', 0)
@@ -87,14 +89,15 @@ Page({
         mask: true
       })
     }
-    let login = await utils.verifyLogin()
-
+    //获取屏幕信息
     this.setData({
       pixelRatio: globalData.systeminfo.pixelRatio,
       windowHeight: globalData.systeminfo.windowHeight,
       windowWidth: globalData.systeminfo.windowWidth,
       tabBarHeight: globalData.tabBarHeight
     })
+    //查询是否登陆过
+    let login = await utils.verifyLogin()
     if (login) {
       //查询是否是成员
       let joinFlag = await SQL.flock_check_member(V.flock_id, globalData.user_id)
@@ -107,11 +110,18 @@ Page({
       })
     }
     console.log("onshow")
-
+    //查询在该小组中的昵称
+    if (this.data.isJoined) {
+      let nickName = await SQL.joining_select_nickName_by_fid_uid(V.flock_id, globalData.user_id)
+      this.setData({
+        nickName: nickName
+      })
+    }
+    //查询小组基本信息
     let result = await SQL.flock_select_by_id(V.flock_id)
     result = result && JSON.parse(result)
     if (result.length == 0) {
-      utils.show_toast("圈子不存在", 'forbidden')
+      utils.show_toast("小组不存在", 'forbidden')
     } else {
       this.setData({
         flock: result[0]
@@ -119,6 +129,7 @@ Page({
       await this.getTaskList(); //获取target列表
       await this.getAvatarList(); //获取头像列表
     }
+
     if (!loadFlag) { //没有显示过加载中
       wx.hideLoading({
         success: (res) => {},
@@ -128,10 +139,11 @@ Page({
     }
   },
   optionTap() {
+    let that = this
     let [admin, options, options_admin] = [this.data.admin, this.data.options, this.data.options_admin]
     wx.showActionSheet({
       itemList: admin ? options_admin : options,
-      success: res => {
+      success: async res => {
         let option = res.tapIndex
         if (admin) {
           if (option == 0) {
@@ -140,24 +152,26 @@ Page({
             })
           } else if (option == 1) {
             wx.showModal({
-              title:"提示",
-              content: "注销后，所有的信息将会被清除，请再次确定",
+              title: "提示",
+              content: "解散后，所有的信息将会被清除，请再次确定",
               success: async (res) => {
                 if (res.confirm) { //用户点击确定
                   await SQL.flock_delete(V.flock_id)
-                  utils.show_toast('注销成功')
+                  utils.show_toast('解散成功')
                   wx.switchTab({
                     url: '../home/home',
                   })
                 }
               }
             })
+          } else {
+            await that.updateNickName()
           }
         } else {
           if (option == 0) {
             wx.showModal({
-              title:"提示",
-              content: "退出圈子后，您的所有信息将会被清除",
+              title: "提示",
+              content: "退出小组后，您的所有信息将会被清除",
               success: async (res) => {
                 if (res.confirm) { //用户点击确定
                   let [flock_id, user_id] = [V.flock_id, globalData.user_id]
@@ -170,9 +184,44 @@ Page({
                 }
               }
             })
-          } else {
-
+          } else if (option == 1) {
+            await that.updateNickName()
           }
+        }
+      }
+    })
+  },
+  /**
+   * 弹窗更新昵称
+   */
+  async updateNickName() {
+    let nickName = await SQL.joining_select_nickName_by_fid_uid(V.flock_id, globalData.user_id)
+    wx.showModal({
+      title: "修改昵称",
+      content: nickName,
+      editable: true,
+      success: async res => {
+        let {
+          content,
+          confirm
+        } = res
+        if (confirm) {
+          this.setData({
+            nickName: content
+          })
+          //处理
+          wx.showLoading({
+            title: '处理中',
+            mask: true
+          })
+          //添加数据
+          let [user_id, flock_id, nickName] = [globalData.user_id, V.flock_id, content]
+          await SQL.joining_update_nickName_by_fid_uid(nickName, flock_id, user_id)
+
+          wx.hideLoading({
+            success: async res => {},
+          })
+          utils.show_toast("修改成功")
         }
       }
     })
@@ -215,21 +264,49 @@ Page({
    * 直接加入
    */
   async to_join() {
-    //处理
     let that = this
-    wx.showLoading({
-      title: '处理中',
-      mask: true
+    //检查订阅
+    let res = await wx.requestSubscribeMessage({
+      tmplIds: [
+        "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
+      ]
     })
-    //添加数据
-    let [user_id, flock_id] = [globalData.user_id, V.flock_id]
-    await SQL.joining_insert(user_id, flock_id)
-    wx.hideLoading({
-      success: async res => {},
+    if (res['MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI'] == 'reject') {
+      await wx.showToast({
+        title:'订阅消息失败',
+        icon:"error"
+      })
+    }
+    let name = await SQL.user_select_name_by_id(globalData.user_id)
+    //提示输入昵称，在设置里可修改
+    wx.showModal({
+      title: "输入小组昵称",
+      content: name,
+      editable: true,
+      showCancel: false,
+      success: async res => {
+        let {
+          content,
+          confirm
+        } = res
+        if (confirm) {
+          //处理
+          wx.showLoading({
+            title: '处理中',
+            mask: true
+          })
+          //添加数据
+          let [user_id, flock_id, nickName] = [globalData.user_id, V.flock_id, content]
+          await SQL.joining_insert(user_id, flock_id, nickName)
+          wx.hideLoading({
+            success: async res => {},
+          })
+          utils.show_toast("加入成功")
+          await this.onShow()
+        }
+      }
     })
-    utils.show_toast("加入成功")
-    //渲染页面
-    await this.onShow()
+    console.log(res)
   },
   /**
    * 用户预览头像
@@ -279,12 +356,12 @@ Page({
   },
 
   /**
-   * 收藏计划
+   * 收藏项目
    */
   collect: async function (e) {
     //判断是否加入
-    if(!this.data.isJoined){
-      utils.show_toast("您还不是该小组成员！",'forbidden')
+    if (!this.data.isJoined) {
+      utils.show_toast("您还不是该小组成员！", 'forbidden')
       return
     }
     console.log(e)
@@ -293,8 +370,8 @@ Page({
     let flag = task.collect
     if (flag == 1) { //用户已收藏
       wx.showModal({
-        title:"提示",
-        content: "取消后计划在主页将不可见",
+        title: "提示",
+        content: "取消后项目在主页将不可见",
         success: res => {
           if (res.confirm) { //用户点击确定
             let sql = `delete from collect where task_id = ${task.id} and user_id = ${globalData.user_id}`
@@ -418,7 +495,9 @@ Page({
     }
     return {
       title: "快来加入我的小组",
+      imageUrl:"http://ccreblog.cn/wp-content/uploads/2022/05/logo配色图.png",
+
     }
   },
-  
+
 })

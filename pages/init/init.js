@@ -55,7 +55,7 @@ Page({
       return
     }
     if (state == "") {
-      util.show_toast('描述不能为空！', 'fobidden')
+      util.show_toast('签名不能为空！', 'fobidden')
       return
     }
     if (type == "") {

@@ -24,6 +24,8 @@ Page({
     current: "tab1", //当前的标签
     current_1: "1", //小标签栏的标签
     refresh: false,
+    bottomLoading: false,
+    bottomNone: false
   },
   onLoad: async function () {
 
@@ -44,15 +46,15 @@ Page({
 
   },
   onShow: async function () {
-     //获取缓存，检测是否加载过
-     let flag = wx.getStorageSync("squareloading")
-     console.log(flag)
-     if (flag == 0) {
-       wx.showLoading({
-         title: '加载中',
-         mask: true
-       })
-     }
+    //获取缓存，检测是否加载过
+    let flag = wx.getStorageSync("squareloading")
+    console.log(flag)
+    if (flag == 0) {
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
+    }
     await this.getRankList()
     await this.getrList()
     //取消加载
@@ -65,7 +67,7 @@ Page({
       })
     }
   },
-  onUnload(){
+  onUnload() {
     wx.setStorageSync('squareloading', 0)
   },
   /**
@@ -124,7 +126,7 @@ Page({
    * {id,wirtter_name,writter_url,time,content}
    */
   getrList: async function () {
-    let rList = await SQL.record_select_all(globalData.user_id)
+    let rList = await SQL.record_select_limit_20(globalData.user_id)
     rList = rList && JSON.parse(rList)
     this.setData({
       rList: rList
@@ -149,11 +151,11 @@ Page({
    */
   getRecommandList: async function (type) {
     //找出所有的不属于自己的圈子
-    let reList = await SQL.flock_select_by_type(type, globalData.user_id) //执行
-    reList = reList && JSON.parse(reList) //处理数据
-    this.setData({
-      reList: reList
-    })
+    // let reList = await SQL.flock_select_by_type(type, globalData.user_id) //执行
+    // reList = reList && JSON.parse(reList) //处理数据
+    // this.setData({
+    //   reList: reList
+    // })
 
   },
   /**
@@ -163,7 +165,7 @@ Page({
   async like(e) {
     wx.showLoading({
       title: '加载中',
-      mask:true,
+      mask: true,
     })
     //获取数据
     let index = e.currentTarget.id
@@ -178,9 +180,8 @@ Page({
     //反馈
     utils.show_toast("点赞成功！")
     //生成点赞通知
-    wx.hideLoading({
-    })
-    await message.send_like_message(globalData.user_id,record.user_id,record.flock_id,record.task_id,record.id)
+    wx.hideLoading({})
+    await message.send_like_message(globalData.user_id, record.user_id, record.flock_id, record.task_id, record.id)
   },
   /**
    * 给打卡取消点赞
@@ -189,7 +190,7 @@ Page({
   async cancelLike(e) {
     wx.showLoading({
       title: '处理中',
-      mask:true
+      mask: true
     })
     //获取数据
     let index = e.currentTarget.id
@@ -216,8 +217,6 @@ Page({
     let key = e.detail.key
     if (key == 'tab1') {
       await this.getrList()
-    } else if (key == "tab2") {
-      await this.getRecommandList('宿舍')
     } else if (key == 'tab3') {
       await this.getRankList()
     }
@@ -246,5 +245,28 @@ Page({
       current_1: key
     })
   },
- 
+  /**
+   * 滑动触底后获取更多数据
+   */
+  async lower() {
+    let length = this.data.rList.length
+    console.log(length)
+    this.setData({
+      bottomLoading: true
+    })
+    let list = await SQL.record_select_more(globalData.user_id, length)
+    if (list == '[]') {
+      this.setData({
+        bottomNone: true
+      })
+    }
+    list = list && JSON.parse(list)
+    console.log(list)
+    setTimeout(() => {
+      this.setData({
+        rList: this.data.rList.concat(list),
+        bottomLoading: false
+      })
+    }, 500);
+  }
 })

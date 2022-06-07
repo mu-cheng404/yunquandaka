@@ -81,7 +81,7 @@ Page({
       url: '../advice/advice',
     })
   },
-  
+
   async check_message() {
     this.setData({
       message: await SQL.message_count_of_id_hasRead(globalData.user_id)
@@ -90,6 +90,29 @@ Page({
   toAdmin: function () {
     wx.navigateTo({
       url: '../admin/admin',
+    })
+  },
+  async openauthority() {
+    if(await utils.verifySubscription()){
+      utils.show_toast("您已订阅")
+      return 
+    }
+    wx.showModal({
+      title: "订阅提示",
+      content: "为了避免订阅框多次弹出，建议勾选“不在提醒”",
+      showCancel: false,
+      success: async res => {
+        let flag = await utils.popupSubscription()
+        if(flag){
+          utils.show_toast("订阅成功！")
+        }else{
+          utils.show_toast("订阅失败，提供意见反馈给我们")
+        }
+      },
+      fail: res => {
+        utils.show_toast('出错了')
+        console.log(res)
+      }
     })
   },
   /**
@@ -102,7 +125,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  async onShow () {
+  async onShow() {
     await this.check_message()
   },
 

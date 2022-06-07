@@ -1,7 +1,7 @@
 <wux-calendar id="wux-calendar" />
-<view style="margin-left: 40rpx;width:710rpx;height: 100rpx;display: flex;align-items: center;">
+<!-- <view style="margin-left: 40rpx;width:710rpx;height: 100rpx;display: flex;align-items: center;">
   连续打卡{{continuous}}天
 </view>
 <view style="margin-left: 40rpx;width:710rpx;height: 100rpx;display: flex;align-items: center;">
   累计打卡{{sum}}天
-</view>
+</view> -->

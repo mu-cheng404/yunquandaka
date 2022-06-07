@@ -4,7 +4,11 @@
     "wux-timeline": "../../dist/timeline/index",
     "wux-timeline-item": "../../dist/timeline-item/index",
     "wux-button": "../../dist/button/index",
-    "wux-circle": "../../dist/circle/index"
+    "wux-circle": "../../dist/circle/index",
+    "wux-tabs": "../../dist/tabs/index",
+    "wux-tab": "../../dist/tab/index",
+    "wux-badge": "../../dist/badge/index"
   },
-  "navigationBarTitleText": ""
+  "navigationBarTitleText": "统计",
+  "disableScroll": true
 }

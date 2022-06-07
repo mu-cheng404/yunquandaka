@@ -16,8 +16,9 @@
               </view>
 
               <view style="width: 100%;height: 30%; display: flex;align-items: center;position: relative;">
-                <view style="font-size: small;">
+                <view style="font-size: small;display: flex;align-items: center;">
                   <wux-tag color="rgb(179, 200, 121)" style="margin: 20rpx 0 0 -10rpx;">{{flock.type}}</wux-tag>
+
                 </view>
               </view>
               <view style="width: 100%;height: 35%;display: flex;align-items: center;">
@@ -42,15 +43,19 @@
       </view>
     </view>
   </view>
+  <view wx:if="{{isJoined}}" class="background_color_white" style="display: flex;align-items: center;margin-left: 20rpx;"> 修改昵称：
+    <view style="padding:5rpx;height: 50rpx;border-radius: 20rpx;" class="background_color_label_background center" bindtap="updateNickName">{{nickName}}</view>
+  </view>
   <!-- 小组签名 -->
   <view id="stateBox" style="{{unfold?'white-space: nowrap;overflow: hidden;text-overflow: ellipsis;':''}}">
     {{flock.state==""?"这个小队很懒，没有说明":flock.state}}
     <view wx:if="{{flock.state.length>=22}}" style="width: 750rpx;height: 50rpx;font-size: small;" class="center color_text_auxiliary" bindtap="unfold">[{{unfold?'展开':'收起'}}]</view>
   </view>
+ 
   <!-- 提示信息 -->
   <view style="width: 750rpx;height: 15%;" class="">
     <view wx:if="{{isJoined}}" style="width: 750rpx;height: 100rpx;display: flex;position: relative;">
-      <view style=" padding: 20rpx;width: 750rpx;height: 80rpx; font-size: medium;">当前计划<text style="font-size: small;" class="color_text_auxiliary">(点击⭐将计划放在首页)</text></view>
+      <view style=" padding: 20rpx;width: 750rpx;height: 80rpx; font-size: medium;">正在进行<text style="font-size: small;" class="color_text_auxiliary">(点击⭐将项目放在首页)</text></view>
       <view class="center background_color_subject" style="width: 130rpx; height:50rpx; position: absolute; right: 20rpx;top:15rpx;font-size: small; color: white;border-radius: 20rpx;">
         <block wx:if="{{isJoined}}">
           <button open-type="share" class="center background_color_subject_3 color_white border" style="width: 130rpx; height:50rpx; position: absolute; right: 0rpx; top: 0rpx;font-size: small; border-radius: 20rpx;padding:0;">
@@ -63,27 +68,33 @@
   </view>
   <!-- 缺省 -->
   <view wx:if="{{list.length==0}}" style="width: 750rpx;height:{{windowHeight*0.67}}px;">
-    <wux-prompt title="当下没有计划" text="压力给到组长" visible="{{true}}" />
+    <wux-prompt title="当下没有项目" text="点击下方新建" visible="{{true}}" />
   </view>
+  <!-- 项目列表 -->
   <scroll-view scroll-y style="width:750rpx;height: {{windowHeight*0.67}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
     <block wx:if="{{list.length>0}}" wx:for="{{list}}" wx:key="key">
       <navigator url="../task/task?tid={{item.id}}&fid={{item.flock_id}}">
         <view class="targetBox" id="{{index}}">
-          <view class="targetIcon center">
+          <view wx:if="{{isJoined}}" class="targetIcon center">
             <icon id="{{index}}" class="iconfont {{!item.collect?'icon-shoucang1':'icon-shoucang'}} color_icon " style="font-size: 60rpx;" catchtap="collect"></icon>
           </view>
-          <view class="targetName" >
+          <view class="targetName">
             <view class="{{isOver?'name1_over':'name1'}}" style="font-size: medium;">
               {{item.name}}
             </view>
             <block wx:if="{{!isOver}}">
               <view class="name2">
                 <block wx:if="{{!isOver}}">
-                  <view class="color_text_auxiliary" style="font-size: small;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.state}}</view>
+                  <view class="color_text_auxiliary" style="font-size: small;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: flex;align-items: center;">
+                    <!-- <icon class="iconfont icon-{{item.cycle=='周'?'zhoujihua':'dayly'}}" style="font-size: 30rpx;"></icon> -->
+                    {{item.cycle}}计划{{item.weekday?' | '+item.weekday:''}}
+                  </view>
                 </block>
               </view>
               <view wx:if="{{isJoined}}" class="collect center">
-               
+                <navigator url="../statistics/statistics?id={{item.id}}">
+                  <image src="http://ccreblog.cn/wp-content/uploads/2022/05/统计.png" style="width: 50rpx;height: 50rpx;"></image>
+                </navigator>
               </view>
             </block>
           </view>
@@ -94,14 +105,14 @@
 
 
 </view>
-<!-- 新建计划 -->
+<!-- 新建项目 -->
 <navigator wx:if="{{isJoined&&admin}}" url="../addtk/addtk?id={{flock.id}}&type=1">
   <view class="newTarget background_color_subject color_subject border" style="font-size: large;" hover-class="newTargetHover">
     <view class="center" style="width: 100rpx;height: 100rpx;">
       <icon class="iconfont icon-tianjia icon-large "></icon>
     </view>
     <view style="height: 100rpx;line-height: 100rpx;font-size: medium;padding-left: 10rpx;" class="">
-      添加一个新计划
+      添加一个新项目
     </view>
   </view>
 </navigator>

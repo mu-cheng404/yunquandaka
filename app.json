@@ -26,7 +26,8 @@
     "pages/statistics/statistics",
     "pages/message/message",
     "pages/selectMember/selectMember",
-    "pages/protocol/protocol"
+    "pages/protocol/protocol",
+    "pages/toturial/toturial"
   ],
   "window": {
     "backgroundTextStyle": "light",

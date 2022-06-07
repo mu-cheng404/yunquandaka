@@ -1,31 +1,69 @@
-<view style="width: 750rpx;height: 80rpx; align-items: center; " class="center">
-  最近一周打卡率
-</view>
-<!-- 表格 -->
-<view style="width: 750rpx;height:{{height*0.4}}px;">
-  <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" style="height:{{height*0.4}}px;"></canvas>
-</view>
-<!-- 进度环 -->
-<view style="width:750rpx;height: 400rpx;flex-direction: column;" class="center">
-  <view style="width: 200rpx;height: 80rpx;display: flex;align-items: center;" class="center">当前进度</view>
-  <wux-circle percent="{{percent}}" color="#33cd5f">{{rest<=0?'已结束':'还剩'+rest+'天'}}</wux-circle>
-</view>
-<!-- 时间轴 -->
-<view class=" center" style="width:750rpx;height:200rpx;display:flex;flex-direction: column; align-items:center">
-  <picker mode="date" bindchange="changeDate">
-    <view style="padding: 0 20rpx;height: inherit; background-color: rgba(255, 255, 255, 0.5);" class="center">
-      打卡时间轴<icon class="iconfont icon-xiala icon-small color_subject" style="margin-left: 10rpx;margin-bottom: 15rpx;"></icon>
-    </view>
-  </picker>
-  <text style="font-size: small;padding: 0 10rpx;" class="background_color_label_background">当前{{date}}</text>
-</view>
-<view wx:if="{{list.length>0}}" style="width: 750rpx;padding-bottom: 50rpx;">
-  <wux-timeline wx:if="{{list.length}}" position="alternate">
-    <block wx:for="{{list}}" wx:key="key">
-      <wux-timeline-item content="{{item.time+' '+item.name}}完成！" />
+<wux-toast id="wux-toast"></wux-toast>
+<view style="width: 750rpx;height: 100rpx;">
+  <wux-tabs wux-class="bordered" controlled current="{{ key }}" bindchange="onTabsChange">
+    <block wx:for="{{ tabs }}" wx:key="key">
+      <wux-tab key="{{ item.key }}" title="{{ item.title }}"></wux-tab>
     </block>
-  </wux-timeline>
+  </wux-tabs>
 </view>
-<view style="width: 750rpx;height: 300rpx;">
-  <wux-prompt visible="{{list.length==0}}" title="暂无数据" />
-</view>
+
+<swiper current="{{ index }}" bindchange="onSwiperChange" style="width: 750rpx;height:{{windowHeight}}px;">
+  <!-- 图表分析 -->
+  <swiper-item>
+    <scroll-view scroll-y style="width:750rpx;height: {{windowHeight}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration class="center">
+      <!-- 饼图 -->
+      <view style="width: 750rpx;height: {{windowHeight/2}}px;" class="center">
+        <canvas canvas-id="pieCanvas" disable-scroll="true" class="canvas" style="width: 750rpx;height: {{windowHeight/2}}px;"></canvas>
+      </view>
+      <view style="width: 750rpx;height: 300rpx;display:flex;flex-direction: column;justify-content: center;align-items: center;font-weight:bold">
+        <view wx:if="{{taskType=='日'}}"> 统计时间：{{currentDate}}</view>
+        <view wx:if="{{taskType=='周'}}"> 统计时间：{{locate.start}}~{{locate.end}}</view>
+        <view> 实打卡人数：{{overList.length}}人</view>
+        <view>未打卡人数：{{unOverList.length}}人</view>
+      </view>
+
+    </scroll-view>
+  </swiper-item>
+
+  <!-- 展示时间轴 -->
+  <swiper-item>
+    <scroll-view scroll-y style="width:750rpx;height: {{windowHeight}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
+      <view wx:if="{{list.length>0}}" style="width: 650rpx;padding: 50rpx;">
+        <wux-timeline wx:if="{{list.length}}" >
+          <block wx:for="{{list}}" wx:key="key">
+            <wux-timeline-item content="{{item.date }}{{item.time+' '+item.nickName}} 打卡！" />
+          </block>
+        </wux-timeline>
+      </view>
+      <view wx:if="{{list.length==0}}" style="width: 750rpx;height: {{windowHeight}}px">
+        <wux-prompt visible="{{list.length==0}}" text="暂无数据" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无灵感.png" />
+      </view>
+    </scroll-view>
+  </swiper-item>
+
+  <!-- 展示未打卡 -->
+  <swiper-item>
+    <scroll-view scroll-y style="width:750rpx;height: {{windowHeight}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
+      <block wx:for="{{unOverList}}">
+        <view style="width: 750rpx;height: 80rpx;display: flex;">
+          <view style="width:10%;height: inherit;" class="center">
+            {{index+1}}</view>
+          <view style="width: 20%;height: inherit;" class="center">
+            <image src="{{item.avatarUrl}}" style="width: 50rpx;height: 50rpx;border-radius: 10rpx;"></image>
+          </view>
+          <view style="width: 50%;height: inherit;" class="center">
+            {{item.nickName}}
+          </view>
+          <!-- 管理员才显示提醒按钮 -->
+          <view wx:if="{{admin}}" style="width: 20%;height: inherit;" class="center">
+            <button id="{{index}}" size="mini" bindtap="remind">提醒</button>
+          </view>
+        </view>
+      </block>
+      <view wx:if="{{unOverList.length==0}}" style="width: 750rpx;height: {{windowHeight}}px">
+        <wux-prompt visible="{{unOverList.length==0}}" text="全部完成" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无灵感.png" />
+      </view>
+    </scroll-view>
+  </swiper-item>
+
+</swiper>

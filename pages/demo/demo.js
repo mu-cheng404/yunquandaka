@@ -2,19 +2,98 @@ var test = 1;
 const utils = require("../../utils/util")
 const SQL = require("../../utils/sql")
 const message = require("../../utils/message")
+const wxCharts = require("../../utils/wxcharts.js"); //相对路径
+
 Page({
- 
   /**
    * 页面的初始数据
    */
   data: {
-    avatarList: ["../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", ]
+    avatarList: ["../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", ],
+    height: 0
   },
-  execute:async function(){
-    let sql2 = `select user_id from joining where flock_id =148886 `
-    let list =  await utils.executeSQL(sql2)
-    list = list && JSON.parse(list)
-    console.log(list)
+  onLoad: async function (options) {
+    let pie = {
+      canvasId: 'pieGraph', // canvas-id
+      type: 'pie', // 图表类型，可选值为pie, line, column, area, ring
+      series: [{
+        name: '已打卡',
+        data: 20,
+      }, {
+        name: '未打卡',
+        data: 30,
+      }],
+      width: 310, // 宽度，单位为px
+      height: 300, // 高度，单位为px
+      legend: false, // 是否显示图表下方各类别的标识
+      dataLabel: true, // 是否在图表中显示数据内容值
+      extra: {
+        pie: {
+          offsetAngle: -90
+        }
+      }
+    };
+    new wxCharts(pie);
+  },
+  execute: async function () {
+    // let res = await wx.showModal({
+
+    // })
+    // console.log(res)
+    // console.log("我最牛")
+    wx.requestSubscribeMessage({
+      tmplIds: [
+        "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
+      ],
+      success: res => {
+        console.log(res)
+      },
+      fail: res => {
+        console.log(res)
+      }
+    })
+    let subFlag = await utils.verifySubscription()
+    if (!subFlag) {
+      wx.requestSubscribeMessage({
+        tmplIds: [
+          "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
+        ],
+        success: res => {
+          console.log(res)
+        },
+        fail: res => {
+          console.log(res)
+        }
+      })
+    } else {
+      console.log("订阅成功")
+    }
+    // let arr = [1,2,4,5,6]
+    // console.log(arr)
+    // arr.push(9)
+    // console.log(arr)
+
+    // let sql = `delete from flock where name='hello！'`
+
+    // let sql= `update joining set nickName = (select nickName from user where id = joining.user_id) where nickName is NULL`
+    // await utils.executeSQL(sql)
+    // let sql= `update task set cycle = '日' where cycle = '每天' or cycle = '每周'`
+    // await utils.executeSQL(sql)
+    //测试时间
+    // let myDate = new utils.myDate()
+
+    // let date = new Date()
+    // let locate = myDate.locateWeek(date)
+    // console.log(locate.start)
+    //测试page
+    // let page = getCurrentPages()
+    // console.log(page)
+    // console.log(page[0].route)
+
+  },
+  async sub() {
+    let res = await utils.popupSubscription()
+    console.log(res)
   },
   consoleH: function (params) {
     console.log("Hello world")
@@ -74,14 +153,14 @@ Page({
       console.log(res)
     })
   },
-  getCurrentFormatedDate:function(){
+  getCurrentFormatedDate: function () {
     let date = new Date()
     const year = date.getFullYear()
     const month = date.getMonth() + 1
     const day = date.getDate()
     return `${[year, month, day].map(this.formatNumber).join('-')}`
   },
-  formatNumber:function(n){
+  formatNumber: function (n) {
     n = n.toString()
     return n[1] ? n : `0${n}`
   },
@@ -114,45 +193,17 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: async function (options) {
-    await wx.cloud.callFunction({
-      name: "trigger"
-    }).then((res) => {
-      console.log(res.result)
-    })
-    let myOldDate = new Date("Tue Mar 22 2022 04:53:01 GMT+0000")
-    //期待变成 Tue Mar 22 2022 12:53:01 GMT+0800
-    let p1 = Date.parse(myOldDate)
-    console.log("Tue Mar 22 2022 04:53:01 GMT+0000的时间戳=" + p1)
-    let forward = "Tue Mar 22 2022 12:53:01 GMT+0800"
-    let p2 = Date.parse(forward)
-    console.log("Tue Mar 22 2022 12:53:01 GMT+0800的时间戳=" + p2)
-    //开始转变
-    console.log("中国时区的时差为=" + new Date().getTimezoneOffset())
-    let p3 = myOldDate.getTime() + (60000 * (480));
-    console.log("旧的时间戳为=" + p1)
-    console.log("新的时间戳为=" + p3);
-    let myNewDate = new Date(p3)
-    console.log("新的时间为=" + myNewDate)
 
-    //14:12:09 GMT+0000 (Coordinated Universal Time)
-    //22:14:24 GMT+0800 (中国标准时间)
-    // let hour = "09";
-    // console.log(hour-16)
-    // if (hour < 16) {
-    //   hour = hour.slice(1,2)
-    //   hour = parseInt(hour) + 8
-    //   hour = "0"+hour
-    // }else{
-    //   hour = hour -16;
-    //   hour = "0"+hour
-    // }
-    // console.log(hour)
-  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {},
+  onReady: async function () {
+    let {
+      windowHeight,
+      windowWidth
+    } = await wx.getSystemInfo()
+    console.log(windowHeight, windowWidth)
+  },
 
   /**
    * 生命周期函数--监听页面显示

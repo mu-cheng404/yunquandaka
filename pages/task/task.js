@@ -35,10 +35,11 @@ Page({
     //   "start": "2022-05-09",
     //   "end": "2022-07-09",
     //   "isEnd": 0
-    // }, //计划基本信息
-    unfold: "false", //展开
+    // }, //项目基本信息
+    unfold: true, //展开
     urlList: [],
-    join: "false",
+    join: false,
+    xiaozubutton:false,
   },
   onLoad: async function (options) {
     //接收参数
@@ -48,6 +49,20 @@ Page({
     console.log("tid=", V.tid, "fid=", V.fid, "uid=", V.uid)
   },
   onShow: async function () {
+    //检查是否从广场跳转
+    let pages = getCurrentPages()
+    if(pages[0].route=='pages/square/square'){
+      this.setData({
+        xiaozubutton:"true"
+      })
+    }
+    //检查是否登录
+    let login = await utils.verifyLogin()
+    if(!login) {
+      wx.navigateTo({
+        url: '../authorize/authorize',
+      })
+    }
     //获取缓存，检测是否加载过
     let flag = wx.getStorageSync("loading")
     if (flag == 0) {
@@ -56,7 +71,7 @@ Page({
         mask: true
       })
     }
-    //获取计划基本信息并赋值（缺省）
+    //获取项目基本信息并赋值（缺省）
     let target = await SQL.task_select_by_id(V.tid)
     if (target != "[]") {
       target = target && JSON.parse(target)
@@ -64,7 +79,7 @@ Page({
         target: target[0]
       })
     } else {
-      utils.show_toast("找不到计划！", "forbidden")
+      utils.show_toast("找不到项目！", "forbidden")
       return
     }
     let join = await SQL.joining_query(V.fid, V.uid) //获取当前用户是否加入小组
@@ -119,7 +134,7 @@ Page({
    */
   optionTap() {
     wx.showActionSheet({
-      itemList: ['修改计划信息', '注销圈子'],
+      itemList: ['修改项目信息', '注销项目'],
       success: res => {
         console.log(res)
         let option = res.tapIndex
@@ -208,7 +223,7 @@ Page({
 
   },
   /**
-   * 获取当前计划的详细信息
+   * 获取当前项目的详细信息
    * input:tid
    * process:从数据库获取
    * output:task对象
@@ -231,9 +246,9 @@ Page({
     let num_of_all //总人数
     let percent_of_bar //进度条百分比
     //定义进度环所需变量
-    let start = targetInfo.start //计划开始时间 格式：2022-03-28 
+    let start = targetInfo.start //项目开始时间 格式：2022-03-28 
     let current = utils.getCurrentFormatedDate() //当前时间 格式：2022-03-28
-    let end = targetInfo.end //计划结束时间
+    let end = targetInfo.end //项目结束时间
     let gap_of_start_and_end //总时间间隔
     let gap_of_start_and_current //已经进行的时间间隔
     let rest_of_day //剩余多少天
@@ -289,16 +304,10 @@ Page({
   },
   async toRecord() {
     if (this.data.join) {
-      //查询今天是不是已经打过卡了
-      let flag = await SQL.task_query_today(V.tid, V.uid)
-      console.log(flag)
-      if (flag) {
-        utils.show_toast("今天已经打过卡了，休息一下吧")
-      } else {
         wx.navigateTo({
           url: `../record/record?tid=${this.data.target.id}&fid=${this.data.target.flock_id}`
         })
-      }
+      
     } else {
       utils.show_toast("您不是该小组成员！", 'forbidden')
     }

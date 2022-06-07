@@ -1,7 +1,39 @@
+const SQL = require("../utils/sql")
+
 import {
     $wuxToast
 } from '../dist/index'
 
+class myDate { //时间类
+    constructor() {}
+        /**
+         * 计算相关时间
+         * @param {*} input 输入的时间
+         * @param {*} num 天数 -2就是前两天 +2就是后两天
+         * @returns 和date相隔num天的日期 2022-04-03
+         */
+    getDateByDateAndNum(input, num) {
+            let date = new Date(new Date(input) - num * 24 * 60 * 60 * 1000)
+            const year = date.getFullYear()
+            const month = date.getMonth() + 1
+            const day = date.getDate()
+            return `${[year, month, day].map(formatNumber).join('-')}`
+        }
+        /**
+         * 根据输入的时间定位周
+         * @param {} input  输入的日期 
+         * @returns 返回本周周一、周天的日期
+         */
+    locateWeek(input) {
+        let date = new Date(input)
+        let locate = {
+            start: this.getDateByDateAndNum(date, date.getDay() - 1),
+            end: this.getDateByDateAndNum(date, date.getDay() - 7)
+        }
+        return locate
+    }
+
+}
 const globalData = getApp().globalData
     /**
      * 返回当前格式化时间
@@ -38,6 +70,7 @@ function getCurrentFormatedDatebyDate(tag) {
     const day = date.getDate()
     return `${[year, month, day].map(formatNumber).join('-')}`
 }
+
 /**
  * 返回距离当前日期前tag时间的日期
  * @param {*} date 当前时间
@@ -158,7 +191,10 @@ function genMediaPath(prefix, suffix) {
     let date = formatTime(new Date())
     return `${prefix}-${date}${suffix}`
 }
-
+/**
+ * 检测是否登录
+ * @returns 
+ */
 async function verifyLogin() {
     let check = await wx.getStorageSync("user_id")
     console.log("you" + check)
@@ -190,6 +226,90 @@ async function verifyLogin() {
             return true
         }
     }
+}
+/**
+ * 检查是否订阅
+ */
+async function verifySubscription() {
+    let flag
+    await wx.getSetting({
+        withSubscriptions: true,
+    }).then((res) => {
+        let list = res.subscriptionsSetting.itemSettings //订阅列表
+        let status1 = list['MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI']
+        if (status1 == "accept") {
+            flag = 1
+        } else {
+            flag = 0
+        }
+        // "XfpLvF_QtFsXoKcVz7sgMovDkTTW8wHhOa5mbwdiTTs": "accept",
+        // "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI": "accept",
+        // "V1M7ZJ09GIic3WyzkpRNU3XuXHaM-ORxs59YDGcPeSI": "accept"
+    })
+    return flag
+}
+/**
+ * 弹出订阅框
+ */
+async function popupSubscription() {
+    let result
+    try {
+
+        wx.requestSubscribeMessage({
+            tmplIds: [
+                "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
+            ],
+            success: res => {
+                result = res
+            },
+            fail: res => {
+                result = res
+            }
+        })
+    } catch (res) {
+        console.log(res)
+    }
+    return result
+}
+/**
+ * 获取发送通知需要的数据
+ * @param {*} tid 
+ * @param {*} uid 
+ * @returns 
+ */
+async function get_info_of_justify(tid, uid) {
+    let sql = `select task.flock_id as fid,task.name as tname, flock.name as fname,user.openid as openid from task,user,flock where task.flock_id = flock.id and task.id = ${tid} and user.id = ${uid}`
+    let info = await executeSQL(sql)
+    return info
+}
+/**
+ * 发送未打卡通知
+ * @param {*} tid 计划id
+ * @param {*} uid 用户id
+ */
+async function send_unover_justify(tid, uid) {
+    let message
+    let info = await get_info_of_justify(tid, uid)
+    info = info && JSON.parse(info)
+    info = info[0]
+
+    let { fid, tname, fname, openid } = info
+    let date = getCurrentFormatedDate()
+    await wx.cloud.callFunction({
+        name: 'send_unover_notify',
+        data: {
+            thing4Data: tname,
+            thing5Data: '小云提醒你打卡啦',
+            phrase3Data: `来自${fname}`,
+            time2Data: date,
+            touser: openid,
+            fid: fid,
+            tid: tid
+        },
+    }).then(res => {
+        message = res
+    })
+    return message.result
 }
 /**
  * 提示
@@ -225,6 +345,7 @@ module.exports = {
     getWeekDate,
     randomsForSixDigit,
     executeSQL,
+    myDate,
     getCurrentFormatedDate,
     getYesterday,
     getDiffBetweenDate,
@@ -233,6 +354,9 @@ module.exports = {
     escape2Html,
     genMediaPath,
     verifyLogin,
+    verifySubscription,
+    popupSubscription,
     showToast,
     show_toast,
+    send_unover_justify,
 }

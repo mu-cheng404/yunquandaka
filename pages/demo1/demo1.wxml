@@ -1,14 +1,16 @@
-<wux-tabs defaultCurrent="tab1" direction="vertical" bindchange="onTabsChange">
-  <wux-tab key="1" title="Tab 1">12152</wux-tab>
-  <wux-tab key="2" title="Tab 2"></wux-tab>
-  <wux-tab key="3" title="Tab 3"></wux-tab>
+<wux-tabs wux-class="bordered" controlled current="{{ key }}" bindchange="onTabsChange">
+  <block wx:for="{{ tabs }}" wx:key="key">
+    <wux-tab key="{{ item.key }}" title="{{ item.title }}"></wux-tab>
+  </block>
 </wux-tabs>
-<block wx:if="{{current==1}}">
-  这是第一个栏目
-</block>
-<block wx:if="{{current==2}}">
-  这是第二个栏目
-</block>
-<block wx:if="{{current==3}}">
-  这是第三个栏目
-</block>
+<swiper current="{{ index }}" bindchange="onSwiperChange">
+    <swiper-item>
+    124
+    </swiper-item>
+    <swiper-item>
+    gahskj
+    </swiper-item>
+    <swiper-item>
+    ask
+    </swiper-item>
+</swiper>

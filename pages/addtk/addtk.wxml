@@ -5,22 +5,31 @@
 <image id="tip" src="../../images/tip.png" bindtap="tipOpen"></image>
 <wux-cell-group title="基本信息">
   <wux-cell hover-class="none">
-    <wux-input label="计划名" placeholder="" bind:change="taskInput" value="{{taskName}}" controlled="true" />
+    <wux-input label="项目名" placeholder="" bind:change="taskInput" value="{{taskName}}" controlled="true" />
   </wux-cell>
 
   <wux-cell hover-class="none">
-    <wux-input label="计划描述" placeholder="选填" bind:change="stateInput" value="{{state}}" controlled="true" />
+    <wux-input label="说明" placeholder="选填" bind:change="stateInput" value="{{state}}" controlled="true" />
   </wux-cell>
-  <wux-cell hover-class="none">
+  <!-- <wux-cell hover-class="none">
     <wux-input label="预设内容" placeholder="选填" bind:change="defaultTextInput" value="{{defaultText}}" controlled="true" />
-  </wux-cell>
+  </wux-cell> -->
 </wux-cell-group>
-<wux-cell-group title="其他" label="">
+<wux-cell-group title="必填" label="">
   <picker bindchange="typePickerChange" value="{{type}}" range="{{typeArray}}">
     <wux-cell title="任务类型" is-link label="" extra="{{type}}"></wux-cell>
   </picker>
-  <picker bindchange="formPickerChange" value="{{form}}" range="{{formArray}}">
+  <!-- <picker bindchange="formPickerChange" value="{{form}}" range="{{formArray}}">
     <wux-cell title="建议形式" is-link label="" extra="{{form}}"></wux-cell>
+  </picker> -->
+  <picker bindchange="cyclePickerChange" value="{{cycle}}" range="{{cycleArray}}">
+    <wux-cell title="统计周期" is-link label="" extra="{{cycle}}"></wux-cell>
+  </picker>
+
+</wux-cell-group>
+<wux-cell-group title="选填" label="">
+  <picker bindchange="weekdayPickerChange" value="{{weekday}}" range="{{weekdayArray}}">
+    <wux-cell title="周标签" is-link label="在周几打卡" extra="{{weekday}}"></wux-cell>
   </picker>
   <picker bindchange="startPickerChange" mode="date" value="{{start}}" start="{{currentDate}}">
     <wux-cell title="开始时间" is-link label="" extra="{{start}}"></wux-cell>
@@ -29,7 +38,7 @@
   <picker bindchange="endPickerChange" mode="date" value="{{end}}" start="{{currentDate}}">
     <wux-cell title="结束时间" is-link label="" extra="{{end}}"></wux-cell>
   </picker>
-  <wux-cell title="合计"  label="" extra="{{tag+'天'||'待选择'}}"></wux-cell>
+  <wux-cell title="合计" label="" extra="{{tag+'天'||'待选择'}}"></wux-cell>
 </wux-cell-group>
 
 <button bindtap="submit" class="button white"> {{pageType==1?'创建':'修改'}}</button>

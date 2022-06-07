@@ -13,10 +13,10 @@
   <!-- tab栏 -->
   <wux-tabs controlled="true" current="{{current}}" bind:change="onTabsChange">
     <wux-tab key="tab1" title="云圈"></wux-tab>
-    <wux-tab key="tab2" title="推荐"></wux-tab>
+    <!-- <wux-tab key="tab2" title="推荐"></wux-tab> -->
     <wux-tab key="tab3" title="排行"></wux-tab>
   </wux-tabs>
-  <view wx:if="{{current=='tab2'}}" style="width: 150rpx;float: left; position: fixed;left: 0rpx;top: 440rpx; z-index: 100;">
+  <!-- <view wx:if="{{current=='tab2'}}" style="width: 150rpx;float: left; position: fixed;left: 0rpx;top: 440rpx; z-index: 100;">
     <wux-tabs defaultCurrent="tab1" direction="vertical" bindchange="onTabsChange_1">
       <wux-tab key="1" title="伙伴"></wux-tab>
       <wux-tab key="2" title="班级"></wux-tab>
@@ -24,7 +24,7 @@
       <wux-tab key="5" title="社团"></wux-tab>
       <wux-tab key="6" title="组织"></wux-tab>
     </wux-tabs>
-  </view>
+  </view> -->
 </view>
 <scroll-view scroll-y style="width:750rpx;height: {{windowHeight-windowWidth/750*380}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
   <!-- 云圈 -->
@@ -58,14 +58,14 @@
           <view class="color_text_auxiliary" style="width: 610rpx;height: 50rpx; margin-left: 100rpx;margin-top: 20rpx;font-size: medium;">留言{{item.remark_num}} ></view>
         </view>
       </navigator>
-
+      
     </block>
 
 
   </block>
   <!-- 推荐小队 -->
 
-  <block wx:if="{{current=='tab2'}}" style="width: 750rpx;display: flex;">
+  <!-- <block wx:if="{{current=='tab2'}}" style="width: 750rpx;display: flex;">
 
     <view wx:if="{{reList.length==0}}" style="margin-left: 150rpx;width:600rpx;height:{{windowHeight*0.7}}px;">
       <wux-prompt visible="{{reList.length==0}}" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_空白页-通用.png" text="暂无推荐" />
@@ -89,7 +89,7 @@
         </navigator>
       </view>
     </block>
-  </block>
+  </block> -->
   <!-- 排行榜 -->
   <block wx:if="{{current=='tab3'}}">
     <view style="width: 750rpx;height: 50rpx; display: flex; font-size: small;" class="color_text_auxiliary">
@@ -112,15 +112,17 @@
           <navigator url="../task/task?tid={{item.tid}}&fid={{item.fid}}">
             {{item.tname}}
           </navigator>
-        </view>
+        </view> 
         <view style="width:50rpx;height:70rpx;text-align: left;margin-top: 40rpx; color: rgb(101, 137, 172);float: right;margin-right: 50rpx;">
-          <text wx:if="{{index == 0}}" style="color: gold;">{{item.ratio}}</text>
-          <text wx:elif="{{index == 1}}" style="color: silver;">{{item.ratio}}</text>
-          <text wx:elif="{{index == 2}}" style="color: rgb(102, 50, 24);">{{item.ratio}}</text>
-          <text wx:else style="color: black;">{{item.ratio}}</text>
+          <text wx:if="{{index == 0}}" style="color: gold;">{{item.ratio+'%'}}</text>
+          <text wx:elif="{{index == 1}}" style="color: silver;">{{item.ratio+'%'}}</text>
+          <text wx:elif="{{index == 2}}" style="color: rgb(102, 50, 24);">{{item.ratio+'%'}}</text>
+          <text wx:if="{{item.ratio!='0.00'&&index!=0&&index!=1&&index!=2}}" style="color: black;">{{item.ratio+'%'}}</text>
         </view>
       </view>
     </block>
   </block>
+  <view wx:if="{{bottomLoading}}" style="width: 750rpx;" class="center"> <wux-spin  wux-class="spin" size="small" tip="加载中" /></view>
+  <view wx:if="{{bottomNone}}" style="width: 750rpx;" class="center color_text_auxiliary">没有数据啦~</view>
   <!-- <view style="width: 750rpx;height: {{tabBarHeight}}rpx;scroll-snap-align: none;"></view> -->
 </scroll-view>
