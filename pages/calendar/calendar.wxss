@@ -1,3 +1,10 @@
 .calendar{
   width: 100rpx;
 }
+.image_box{
+  width: 100%;
+  height: 200rpx;
+}
+.image{
+  
+}

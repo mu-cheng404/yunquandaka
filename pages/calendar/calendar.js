@@ -3,6 +3,7 @@ import {
 } from '../../dist/index'
 const utils = require("../../utils/util")
 const SQL = require("../../utils/sql")
+const app = getApp()
 var V = {
   id: "",
   uid: "",
@@ -11,12 +12,11 @@ Page({
 
   data: {
     dateList: [],
-    continuous:0,
-    sum:0,
   },
 
   onLoad: async function (options) {
-    V.uid = getApp().globalData.user_id
+    V.uid = app.globalData.user_id
+    
     wx.showLoading({
       title: '加载中',
       mask:true
@@ -24,13 +24,6 @@ Page({
     V.id = options.id
     //查询当前用户的打卡记录
     await this.queryDate()
-    //查询连续打卡时间和累计打卡时间
-    let con = await SQL.task_query_continuous(V.id,V.uid)
-    let sum = await SQL.task_query_sum(V.id,V.uid)
-    this.setData({
-      continuous:con,
-      sum:sum
-    })
     //打开日历
     this.openCalendar()
   },
