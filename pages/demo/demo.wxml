@@ -1,3 +1,1 @@
-<button bindtap="execute">测试</button> 
-<button bindtap="sub">授权</button>
-<canvas canvas-id="pieCanvas" disable-scroll="true" class="canvas" style="width: 600rpx;height: 600rpx;"></canvas>
+<button bindtap="testAPI">测试</button>

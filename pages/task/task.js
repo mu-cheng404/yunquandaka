@@ -39,7 +39,9 @@ Page({
     unfold: true, //展开
     urlList: [],
     join: false,
-    xiaozubutton:false,
+    xiaozubutton: false,
+    bottomLoading: false,
+    bottomNone: false,
   },
   onLoad: async function (options) {
     //接收参数
@@ -51,16 +53,9 @@ Page({
   onShow: async function () {
     //检查是否从广场跳转
     let pages = getCurrentPages()
-    if(pages[0].route=='pages/square/square'){
+    if (pages[0].route == 'pages/square/square') {
       this.setData({
-        xiaozubutton:"true"
-      })
-    }
-    //检查是否登录
-    let login = await utils.verifyLogin()
-    if(!login) {
-      wx.navigateTo({
-        url: '../authorize/authorize',
+        xiaozubutton: "true"
       })
     }
     //获取缓存，检测是否加载过
@@ -71,7 +66,74 @@ Page({
         mask: true
       })
     }
-    //获取项目基本信息并赋值（缺省）
+    await new Promise((resolve, reject) => {
+      //集中力量办大事
+      utils.CheckLogin(); //守卫登录态
+      this.getJoin(); //获取加入态
+      this.getAdmin(); //获取身份
+      this.getBaseInfo(); //获取项目基本信息并赋值（缺省）
+      this.getRList(); //获取打卡基本信息（缺省）
+      resolve();
+    })
+    //取消加载
+    //将缓存设置为1
+    if (flag == 0) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      wx.setStorageSync('loading', 1)
+    }
+  },
+  async getAdmin() {
+    let admin = await SQL.flock_check_admin(V.fid, V.uid); //判断当前用户是否是管理员
+    this.setData({
+      admin: admin
+    });
+  },
+  async getJoin() {
+    //获取加入态
+    let join = await SQL.joining_query(V.fid, V.uid); //获取当前用户是否加入小组
+    this.setData({
+      join: join
+    })
+  },
+  async getRList() {
+    //获取20条打卡记录
+    let recordList = await SQL.record_select_by_tid_limit_20(V.tid, V.uid);
+    if (recordList != '[]') {
+      recordList = recordList && JSON.parse(recordList)
+      this.setData({
+        recordList: recordList
+      })
+    }
+  },
+  async onReachBottom() {
+    //触底获取更多打卡记录
+    const nlength = this.data.recordList.length;
+    if (!this.data.bottomLoading) {
+      this.setData({
+        bottomLoading: true,
+      })
+    }
+    let list = await SQL.record_select_by_tid_more(V.tid, V.uid, nlength);
+    if (list == '[]') {
+      this.setData({
+        bottomNone: true,
+        bottomLoading: false,
+      })
+      return
+    } else {
+      list = list && JSON.parse(list);
+      setTimeout(() => {
+        this.setData({
+          recordList: this.data.recordList.concat(list),
+          bottomLoading: false
+        })
+      }, 500);
+    }
+  },
+  async getBaseInfo() {
+    //获取基本信息
     let target = await SQL.task_select_by_id(V.tid)
     if (target != "[]") {
       target = target && JSON.parse(target)
@@ -81,30 +143,6 @@ Page({
     } else {
       utils.show_toast("找不到项目！", "forbidden")
       return
-    }
-    let join = await SQL.joining_query(V.fid, V.uid) //获取当前用户是否加入小组
-    let admin = await SQL.flock_check_admin(V.fid, V.uid) //判断当前用户是否是管理员
-    this.setData({
-      join: join,
-      admin: admin
-    })
-    //获取打卡基本信息（缺省）  
-    let recordList = await SQL.record_select_by_tid(V.tid, V.uid)
-    if (recordList != '[]') {
-      recordList = recordList && JSON.parse(recordList)
-      this.setData({
-        recordList: recordList
-      })
-    }
-    //获取已打卡用户的头像
-    await this.getOverAvatar()
-    //取消加载
-    //将缓存设置为1
-    if (flag == 0) {
-      wx.hideLoading({
-        success: (res) => {},
-      })
-      wx.setStorageSync('loading', 1)
     }
   },
   toCal() {
@@ -121,10 +159,8 @@ Page({
    */
   async getOverAvatar() {
     let [task_id, date] = [V.tid, utils.getCurrentFormatedDate()];
-
     let list = await SQL.task_select_over_urlList(task_id, date);
     list = list && JSON.parse(list)
-
     this.setData({
       urlList: list
     })
@@ -144,7 +180,7 @@ Page({
           })
         } else if (option == 1) {
           wx.showModal({
-            title:"提示",
+            title: "提示",
             content: "注销后，所有数据将会被清除，请再次确定",
             success: async (res) => {
               if (res.confirm) { //用户点击确定
@@ -304,13 +340,13 @@ Page({
   },
   async toRecord() {
     if (this.data.join) {
-        wx.navigateTo({
-          url: `../record/record?tid=${this.data.target.id}&fid=${this.data.target.flock_id}`
-        })
-      
+      wx.navigateTo({
+        url: `../record/record?tid=${this.data.target.id}&fid=${this.data.target.flock_id}`
+      })
+
     } else {
       utils.show_toast("您不是该小组成员！", 'forbidden')
     }
 
-  }
+  },
 })

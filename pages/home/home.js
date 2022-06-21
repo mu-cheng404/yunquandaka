@@ -30,7 +30,7 @@ Page({
    * 页面加载
    */
   onLoad: async function (options) {
-    await this.getRecommand()
+
   },
   onUnload: async function (options) {
     wx.setStorageSync('homeloading', 0)
@@ -40,30 +40,33 @@ Page({
    */
   onShow: async function () {
     //获取缓存，检测是否加载过
-    let flag = wx.getStorageSync("homeloading")
-    console.log(flag)
+    let flag = wx.getStorageSync("homeloading");
+    console.log("获取homeloading缓存=", flag);
+
     if (flag == 0) {
+      console.log("第一次加载");
       wx.showLoading({
         title: '加载中',
         mask: true
       })
     }
-    let login = await utils.verifyLogin()
-    // let login = 1 //跳过检查
-    this.setData({
-      login: login
+    //守卫登录状态
+
+    const login = await utils.CheckLogin();
+    console.log(login ? '已登录，当前global.user_id=' + globalData.user_id : '未登录')
+
+    await new Promise((resolve, reject) => {
+      this.getGroupList();
+      this.getRecommand()
+      this.getTargetList();
+      console.log("成功获取数据")
+      resolve()
     })
-    if (login) {
-      await this.getGroupList();
-      await this.getTargetList();
-    } else {
-      wx.navigateTo({
-        url: '../authorize/authorize',
-      })
-    }
+
     //取消加载
     //将缓存设置为1
     if (flag == 0) {
+      console.log("取消加载");
       wx.hideLoading({
         success: (res) => {
           wx.setStorageSync('homeloading', 1)
@@ -137,7 +140,7 @@ Page({
   getGroupList: async function () {
     let result = await SQL.flock_select_count_by_uid(globalData.user_id)
     if (result == "[]") {
-      
+
     } else {
       result = result && JSON.parse(result)
       this.setData({
@@ -168,7 +171,7 @@ Page({
   searchInput: async function (e) {
     let value = e.detail.value
     if (value.length >= 1) {
-      let result = await SQL.flock_search(globalData.user_id,value)
+      let result = await SQL.flock_search(globalData.user_id, value)
       result = result && JSON.parse(result)
       this.setData({
         searchResult: result,
@@ -199,7 +202,7 @@ Page({
     console.log(e)
     this.setData({
       isFocus: false,
-      value:''
+      value: ''
     })
   },
   /**

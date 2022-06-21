@@ -26,11 +26,11 @@ class myDate { //时间类
          */
     locateWeek(input) {
         let date = new Date(input)
-        let locate = {
-            start: this.getDateByDateAndNum(date, date.getDay() - 1),
-            end: this.getDateByDateAndNum(date, date.getDay() - 7)
+        let week = date.getDay() ? date.getDay() : 7;
+        return {
+            start: this.getDateByDateAndNum(date, week - 1),
+            end: this.getDateByDateAndNum(date, week - 7)
         }
-        return locate
     }
 
 }
@@ -192,40 +192,102 @@ function genMediaPath(prefix, suffix) {
     return `${prefix}-${date}${suffix}`
 }
 /**
+ * 获取UID
+ * @return 如果UID存在返回就返回，不存在返回false
+ */
+async function GetUID() {
+    let storage_UID = await wx.getStorageSync('user_id');
+    if (!storage_UID) { //缓存里找不到去数据库找
+        const openid = await (await wx.cloud.callFunction({ //获取openid
+            name: "getOpenID"
+        })).result.openid
+        const sql = `select id from user where openid='${openid}'` //查询数据库
+        let result = await executeSQL(sql)
+        if (result == '[]') { //数据库里也找不到
+            return false;
+        } else { //数据库里找到了
+            result = result && JSON.parse(result);
+            return result[0].id;
+        }
+    } else { //缓存里找到了
+        return storage_UID;
+    }
+}
+/**
+ * 查看登录态
+ * @returns 1 已登录 2 登录过自行退出 3从未登陆过
+ */
+async function CheckLogin() {
+
+    const UID = await GetUID();
+    if (!UID) { //没找到UID
+        wx.navigateTo({
+            url: `../authorize/authorize?state=3`
+        })
+        return false
+    }
+    //用户已注册，现在查询登录态
+
+    globalData.user_id = UID; //全局赋值
+    await wx.setStorageSync('user_id', UID); //缓存赋值
+    const login = await wx.getStorageSync("login") //缓存中login
+
+    if (login == 1) { //登录状态是1
+        return true;
+    } else if (login == 2) { //登录状态是2
+        wx.navigateTo({
+            url: `../authorize/authorize?state=2`
+        })
+        return true;
+    } else { //缓存中无登录状态
+        wx.setStorageSync('login', 1);
+    }
+
+
+}
+
+/**
  * 检测是否登录
  * @returns 
  */
 async function verifyLogin() {
-    let check = await wx.getStorageSync("user_id")
-    console.log("you" + check)
-    if (check) {
-        globalData.hasUserInfo = true
-        globalData.user_id = check
-        return true
-    } else {
-        //检查数据库
-        let openid = await (await wx.cloud.callFunction({
-            name: "getOpenID"
-        })).result.openid
 
-        // openid = '132'
-        let sql = `select id from user where openid='${openid}'`
-        let result = await executeSQL(sql)
-        if (result == '[]') { //指没有信息
-            globalData.hasUserInfo = false
-            return false
-        } else { //有信息
-            result = result && JSON.parse(result)
-            globalData.hasUserInfo = true
-            globalData.user_id = result[0].id
-                //设置缓存
-            await wx.setStorage({
-                key: "user_id",
-                data: result[0].id
-            })
-            return true
-        }
+    let login = await wx.getStorageSync("login") //缓存中login
+    let check = await wx.getStorageSync("user_id") //缓存中user_id
+    switch (login) {
+        case 1: //已登陆
+            return true;
+        case 2: //登陆过后面自己退出了
+            return false;
+        default: //新用户
+            if (check) { //缓存中存在user_id
+                globalData.hasUserInfo = true
+                globalData.user_id = check
+                return true
+            } else {
+                let openid = await (await wx.cloud.callFunction({ //获取openid
+                    name: "getOpenID"
+                })).result.openid
+
+                let sql = `select id from user where openid='${openid}'` //查询数据库
+                let result = await executeSQL(sql)
+                if (result == '[]') { //指没有信息
+                    globalData.hasUserInfo = false
+                    return false
+                } else { //有信息
+                    result = result && JSON.parse(result)
+                    globalData.hasUserInfo = true
+                    globalData.user_id = result[0].id
+
+                    await wx.setStorage({ //设置缓存
+                        key: "user_id",
+                        data: result[0].id
+                    })
+                    return true
+                }
+            }
     }
+
 }
 /**
  * 检查是否订阅
@@ -299,8 +361,8 @@ async function send_unover_justify(tid, uid) {
         name: 'send_unover_notify',
         data: {
             thing4Data: tname,
-            thing5Data: '小云提醒你打卡啦',
-            phrase3Data: `来自${fname}`,
+            thing5Data: `${fname}提醒你打卡`,
+            phrase3Data: "未打卡",
             time2Data: date,
             touser: openid,
             fid: fid,
@@ -359,4 +421,5 @@ module.exports = {
     showToast,
     show_toast,
     send_unover_justify,
+    CheckLogin,
 }

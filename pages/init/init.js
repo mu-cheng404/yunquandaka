@@ -2,6 +2,7 @@ const util = require('../../utils/util')
 const SQL = require('../../utils/sql')
 const isTel = (value) => !/^1[34578]\d{9}$/.test(value)
 const app = getApp()
+const globalData = app.globalData;
 var V = {
   fid: "",
   type: "",
@@ -11,8 +12,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    avatarUrl: "https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c",
-    initUrl: "https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c",
+    avatarUrl: "",
+    initUrl: "",
     valueOfName: "",
     valueOfState: "",
     type: "",
@@ -22,9 +23,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    V.type = options.type
+    V.type = options.type;
     this.setData({
-      pageType: V.type
+      pageType: V.type,
+      avatarUrl: globalData.initUrl,
+      initUrl: globalData.initUrl,
     })
     if (V.type == 1) { //新建
 
@@ -52,10 +55,6 @@ Page({
     }
     if (name == "") {
       util.show_toast('名称不能为空！', 'fobidden')
-      return
-    }
-    if (state == "") {
-      util.show_toast('签名不能为空！', 'fobidden')
       return
     }
     if (type == "") {

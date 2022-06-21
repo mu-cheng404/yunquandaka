@@ -2,8 +2,28 @@ Page {
   background-color: white;
 }
 
-.swiper {
-  
+.scope {
+  width: 180rpx;
+  height: 40rpx;
+  font-size: small;
+  display: flex;
+  border: 1rpx solid rgb(179, 200, 121);
+  border-radius: 20rpx;
+  float: right;
+  margin-bottom: 20rpx;
+}
+.scope_left {
+  width: 50%;
+  height: 100%;
+  border-top-left-radius: 20rpx;
+  border-bottom-left-radius: 20rpx;
+}
+
+.scope_right {
+  width: 50%;
+  height: 100%;
+  border-top-right-radius: 20rpx;
+  border-bottom-right-radius: 20rpx;
 }
 
 .swiper-item {

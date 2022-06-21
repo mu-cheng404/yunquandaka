@@ -1,7 +1,7 @@
 <wux-toast id='wux-toast'></wux-toast>
 
 <view style="width: 100%;height: 100vh;flex-direction: column;" class="background_color_subject_1 center">
-  <view class="bgwhite center" style="width:630rpx;height:400rpx;padding:20rpx;;margin: 40rpx;border-radius: 20rpx;">
+  <view class="bgwhite center" style="width:630rpx;height:400rpx;padding:20rpx;;margin: 40rpx 0;border-radius: 20rpx;">
     <view class="textareaBox" style="position: relative;">
       <textarea name="content" id="textarea1" cols="60" rows="10" placeholder="请输入正文" cursor-spacing="20" bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{content}}">
     </textarea>
@@ -12,9 +12,17 @@
       </view>
     </view>
   </view>
+  <!-- 常用标签，存储在缓存 -->
+  <view class="label color_text_auxiliary">
+    快捷内容，点击即用
+  </view>
+  <view class="label_box">
+    <wux-tag wx:for="{{labelList}}" wx:key="key" controlled id="{{index}}" closable color="#87d068" bind:change="HandleChange" bind:click="HandleClick">{{item}}</wux-tag>
+    <wux-tag color="#87d068" bind:click="HandleCreate">新建+</wux-tag>
+  </view>
   <!-- 耗费时间选择 -->
   <view style="margin:0 40rpx;padding: 0 10rpx; width: 650rpx;height: 80rpx;border-radius: 15rpx;background-color: white; display: flex; line-height: 80rpx;">
-    <text class="color_text_auxiliary">时间记录</text> <text class="color_text_auxiliary"style="font-size:small">(选填)</text>
+    <text class="color_text_auxiliary">时间记录</text> <text class="color_text_auxiliary" style="font-size:small">(选填)</text>
     <picker range="{{hour}}" value="{{hourValue}}" bindchange="hourChange">
       <view style="margin-top: 15rpx;width: 80rpx;height: 50rpx;border-radius: 20rpx;" class="background_color_label_background center">{{hourValue?hour[hourValue]:''}}</view>
     </picker>

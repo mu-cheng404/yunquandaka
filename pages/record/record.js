@@ -17,6 +17,7 @@ Page({
     hourValue: "",
     minute: ['0', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'],
     minuteValue: "",
+    labelList: [],
   },
   /**
    * 生命周期函数--监听页面加载
@@ -25,6 +26,82 @@ Page({
     V.tid = options.tid
     V.fid = options.fid
     V.uid = getApp().globalData.user_id
+    const labelList = wx.getStorageSync('labelList')
+    if (labelList.length > 0) {
+      this.setData({
+        labelList: labelList
+      })
+    }
+  },
+  /**
+   * 新建标签
+   */
+  async HandleCreate() {
+    const that = this
+    wx.showModal({
+      title: "新建",
+      content: "",
+      editable: true,
+      showCancel: true,
+      placeholderText: "新的快捷内容",
+      success: res => {
+        const {
+          confirm,
+          content
+        } = res;
+        console.log(confirm, content, res)
+        if (confirm) {
+          let list = that.data.labelList //copy一份
+          list.push(content)
+          this.setData({ //更新页面数据
+            labelList: list
+          })
+          util.show_toast("添加成功");
+          wx.setStorageSync('labelList', list); //更新缓存
+        }
+      }
+    })
+  },
+  /**
+   * 点击
+   * @param {*} e 
+   */
+  async HandleClick(e){
+    const label_id = e.currentTarget.id;
+    const label_value = this.data.labelList[label_id];
+    this.setData({
+      content: label_value,
+    })
+},
+  /**
+   * 删除标签
+   * @param {*} e 标签id
+   */
+  async HandleChange(e) {
+    console.log(e)
+    const that = this
+    wx.showModal({
+      title: '提示',
+      content: "确定删除？",
+      success: res => {
+        const {confirm} = res;
+        const label_id = e.currentTarget.id;
+        let list = that.data.labelList; //拷贝一份
+        if (confirm) {
+          list.splice(label_id, 1);
+          console.log(list)
+          that.setData({ //更新页面
+            labelList: list,
+          })
+          util.show_toast("删除成功！"); //提示
+
+          wx.setStorageSync('labelList', list); //更新缓存
+        } else {
+          //pass
+        }
+      }
+    })
+
   },
   hourChange(e) {
     console.log(e)
@@ -75,13 +152,13 @@ Page({
     })
   },
   submit: async function () {
-     //加载
-     wx.showLoading({
+    //加载
+    wx.showLoading({
       title: '上传数据中',
       mask: true
     })
     //获取数据
-    let [id, fid, tid, uid, date, time, content, url, duration] = [util.randomsForSixDigit(), V.fid, V.tid, V.uid, util.formatTime(new Date()).slice(0, 10), util.formatTime(new Date()).slice(11, 19), this.data.content, '', this.data.hourValue*60+this.data.minuteValue]
+    let [id, fid, tid, uid, date, time, content, url, duration] = [util.randomsForSixDigit(), V.fid, V.tid, V.uid, util.formatTime(new Date()).slice(0, 10), util.formatTime(new Date()).slice(11, 19), this.data.content, '', this.data.hourValue * 60 + this.data.minuteValue]
     //判空
     if (content == "") {
       util.show_toast("打卡内容为空", "forbidden")
@@ -90,7 +167,7 @@ Page({
     if (this.data.fileList != '') {
       url = await this.uploadImage(this.data.fileList[0].url)
     }
-  
+
     //操作数据库
     await SQL.record_insert(id, fid, tid, uid, date, time, content, url, duration)
     //停止加载

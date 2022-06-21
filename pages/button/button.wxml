@@ -1,0 +1,25 @@
+<view class="center" style="flex-direction: column;">
+  type
+  <wux-button block type="positive">positive</wux-button>
+  通栏 full 没有圆角
+  <wux-button block full type="positive">positive</wux-button>
+  镂空outline
+  <wux-button block outline type="calm">calm</wux-button>
+  尺寸默认是中size small default large
+  <wux-button block size="small" type="positive">positive</wux-button>
+  <wux-button block size="default" type="calm">calm</wux-button>
+  <wux-button block size="large" type="energized">energized</wux-button>
+  清除样式clear
+  <wux-button block clear type="positive">positive</wux-button>
+  带有加载loading
+  <wux-button block loading type="positive">positive</wux-button>
+  禁止disabled
+  <wux-button block disabled type="positive">positive</wux-button>
+  带有图标
+  <wux-button block type="balanced">
+    <wux-icon type="ios-save" size="16" /> balanced
+  </wux-button>
+  根节点样式类wux-class
+  <wux-button block type="positive" wux-class="handleButton">positive</wux-button>
+  bindclick点击事件
+</view>

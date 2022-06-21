@@ -8,9 +8,7 @@
     <wux-input label="项目名" placeholder="" bind:change="taskInput" value="{{taskName}}" controlled="true" />
   </wux-cell>
 
-  <wux-cell hover-class="none">
-    <wux-input label="说明" placeholder="选填" bind:change="stateInput" value="{{state}}" controlled="true" />
-  </wux-cell>
+
   <!-- <wux-cell hover-class="none">
     <wux-input label="预设内容" placeholder="选填" bind:change="defaultTextInput" value="{{defaultText}}" controlled="true" />
   </wux-cell> -->
@@ -28,8 +26,11 @@
 
 </wux-cell-group>
 <wux-cell-group title="选填" label="">
+  <wux-cell hover-class="none">
+    <wux-input label="说明" placeholder="选填" bind:change="stateInput" value="{{state}}" controlled="true" />
+  </wux-cell>
   <picker bindchange="weekdayPickerChange" value="{{weekday}}" range="{{weekdayArray}}">
-    <wux-cell title="周标签" is-link label="在周几打卡" extra="{{weekday}}"></wux-cell>
+    <wux-cell title="周标签" is-link  extra="{{weekday}}"></wux-cell>
   </picker>
   <picker bindchange="startPickerChange" mode="date" value="{{start}}" start="{{currentDate}}">
     <wux-cell title="开始时间" is-link label="" extra="{{start}}"></wux-cell>

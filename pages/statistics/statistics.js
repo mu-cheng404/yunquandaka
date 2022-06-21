@@ -18,7 +18,7 @@ Page({
     rest: "",
     unOverList: [],
     overList: [],
-    currentDateDate: "", //当天日期
+    currentDate: "", //当天日期
     current: 'tab1',
     tabs: [{
         key: 'tab1',
@@ -45,7 +45,7 @@ Page({
     this.setData({
       taskType: task[0].cycle
     })
-    console.log("计划周期是"+task[0].cycle)
+    console.log("计划周期是" + task[0].cycle)
     //获取当前日期
     let current = utils.getCurrentFormatedDate()
     this.setData({
@@ -69,13 +69,52 @@ Page({
     //查询是否未管理员
     await this.checkAdmin()
     //获取已打卡人数
-    await this.getOverList(current)
+    await this.GetData(current);
+  },
+  /**
+   * 根据日期获取数据
+   * @param {*} date 日期
+   */
+  async GetData(date) {
+    //获取已打卡人数
+    await this.getOverList(date);
     //获取未打卡人数
-    await this.getUnOverList(current)
+    await this.getUnOverList(date);
     //获取图表数据
-    await this.getAndSetCharts()
+    await this.getAndSetCharts();
     //获取打卡时间轴
-    await this.getandSetTimeLineData(current)
+    await this.getandSetTimeLineData(date);
+  },
+  /**
+   * 日计划选择日期
+   */
+  async HandleDate(e) {
+    console.log(e)
+    const sDate = e.detail.value;
+    this.setData({ //更新页面
+      currentDate: sDate,
+    })
+    await this.GetData(sDate);//获取数据
+  },
+  /**
+   * 周计划选择start
+   */
+  async HandleStart(e) {
+    const sDate = e.detail.value;
+    this.setData({
+      'locate.start': sDate,
+    })
+    await this.GetData(sDate);//重新获取数据
+  },
+  /**
+   * 周计划选择end
+   */
+  async HandleEnd(e) {
+    const sDate = e.detail.value;
+    this.setData({
+      'locate.end': sDate,
+    })
+    await this.GetData(sDate);//重新获取数据
   },
   async checkAdmin() {
     let admin = await SQL.task_check_amdin(V.id, V.uid)
@@ -131,10 +170,6 @@ Page({
     wx.setStorageSync('statloading', 1)
   },
   onShow: function () {
-
-  },
-  async remind(e) {
-    let index = e.currentTarget.id
 
   },
   // async getProcess() {
@@ -203,13 +238,13 @@ Page({
     let list
     if (this.data.taskType == '日') {
       list = await SQL.user_select_task_uncover_day(V.id, date)
-    }else{
-      list = await SQL.user_select_task_uncover_week(V.id,this.data.locate.start,this.data.locate.end)
+    } else {
+      list = await SQL.user_select_task_uncover_week(V.id, this.data.locate.start, this.data.locate.end)
     }
     list = list && JSON.parse(list)
     this.setData({
       unOverList: list,
-      ['tabs[2].title']: `${this.data.tabs[2].title}(${list.length})`
+      ['tabs[2].title']: `${this.data.tabs[2].title.slice(0,3)}(${list.length})`
     })
   },
   /**
@@ -219,13 +254,13 @@ Page({
     let list
     if (this.data.taskType == '日') {
       list = await SQL.user_select_task_cover_day(V.id, date)
-    }else{
-      list = await SQL.user_select_task_cover_week(V.id,this.data.locate.start,this.data.locate.end)
+    } else {
+      list = await SQL.user_select_task_cover_week(V.id, this.data.locate.start, this.data.locate.end)
     }
     list = list && JSON.parse(list)
     this.setData({
       overList: list,
-      ['tabs[1].title']: `${this.data.tabs[1].title}(${list.length})`
+      ['tabs[1].title']: `${this.data.tabs[1].title.slice(0,3)}(${list.length})`
 
     })
   },
@@ -257,12 +292,16 @@ Page({
       rate: rate
     }
   },
+  /**
+   * 获取时间轴数据
+   * @param {*} date 
+   */
   async getandSetTimeLineData(date) {
     let list
     if (this.data.taskType == '日') {
       list = await SQL.task_time_line_day(V.id, date)
-    }else{
-      list = await SQL.task_time_line_week(V.id,this.data.locate.start,this.data.locate.end)
+    } else {
+      list = await SQL.task_time_line_week(V.id, this.data.locate.start, this.data.locate.end)
     }
     if (list == '[]') {
       list = []
@@ -288,13 +327,14 @@ Page({
     await this.getandSetTimeLineData(date)
     await this.getUnOverList(date)
   },
-  async remind() {
+  async remind(e) {
+    let toUser = e.currentTarget.id;
     wx.showLoading({
       title: '处理中',
       mask: true
     })
     //发送提醒信息
-    let message = await utils.send_unover_justify(V.id, V.uid)
+    let message = await utils.send_unover_justify(V.id, toUser)
     wx.hideLoading({})
     console.log(message)
     if (message == 'success') {

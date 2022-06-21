@@ -16,17 +16,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    let result = await SQL.user_select_by_id(globalData.user_id);
+    result = result && JSON.parse(result)
     this.setData({
-      hasUserInfo: globalData.hasUserInfo
-    }) //从全局变量中获取flag
-    if (this.data.hasUserInfo) {
-      let sql = `select * from user where id = ${globalData.user_id}`
-      let result = await utils.executeSQL(sql)
-      result = result && JSON.parse(result)
-      this.setData({
-        userInfo: result[0]
-      })
-    }
+      userInfo: result[0]
+    })
     await this.check_message()
   },
   /**
@@ -47,7 +41,6 @@ Page({
    * 当用户还没登录时，用户授权信息点击事件
    */
   getInfo: async function () {
-
     wx.getUserProfile({
       desc: '获取用户信息',
       success: async (res) => {
@@ -92,10 +85,19 @@ Page({
       url: '../admin/admin',
     })
   },
+  /**
+   * 退出登录
+   */
+  async HandleQuitLogin() {
+    wx.setStorageSync('login', 2)
+    wx.navigateTo({
+      url: '../authorize/authorize?state=2',
+    }) //跳转到登录页
+  },
   async openauthority() {
-    if(await utils.verifySubscription()){
+    if (await utils.verifySubscription()) {
       utils.show_toast("您已订阅")
-      return 
+      return
     }
     wx.showModal({
       title: "订阅提示",
@@ -103,9 +105,9 @@ Page({
       showCancel: false,
       success: async res => {
         let flag = await utils.popupSubscription()
-        if(flag){
+        if (flag) {
           utils.show_toast("订阅成功！")
-        }else{
+        } else {
           utils.show_toast("订阅失败，提供意见反馈给我们")
         }
       },

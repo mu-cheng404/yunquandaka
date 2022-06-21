@@ -1,16 +1,16 @@
 <wux-toast id="wux-toast"></wux-toast>
 <wux-cell-group title="输入信息">
-  <view style="width: 750rpx;height: 80rpx;display: flex;position: relative;">
+  <view style="width: 750rpx;height: 120rpx;display: flex;position: relative; "bindtap="updateImage">
       <view style="width: 120rpx;height: 100%;" class="center">头像</view>
-      <view style="position: absolute;right: 30rpx;width: 100rpx;height: 100%;" class="center">
-        <image mode="aspectFill" src="{{avatarUrl}}" style="width: 80rpx;height: 80rpx;border-radius: 50%;" bindtap="updateImage"></image>
+      <view style="position: absolute; left: 240rpx;width: 100rpx;height: 100%;" class="center">
+        <image mode="aspectFill" src="{{avatarUrl}}" style="width: 80rpx;height: 80rpx;border-radius: 20%;" ></image>
       </view>
     </view>
   <wux-cell hover-class="none">
-    <wux-input bind:change="onChangeOfNameInput" label="名称" controlled value="{{valueOfName}}"></wux-input>
+    <wux-input bind:change="onChangeOfNameInput" label="名称" controlled value="{{valueOfName}}" placeholder="请输入"></wux-input>
   </wux-cell>
   <wux-cell hover-class="none">
-    <wux-input bind:change="onChangeOfStateInput" label="签名" controlled value="{{valueOfState}}"></wux-input>
+    <wux-input bind:change="onChangeOfStateInput" label="签名" controlled value="{{valueOfState}}" placeholder="选填"></wux-input>
   </wux-cell>
   <picker mode="selector" range="{{typeArray}}" value="{{type}}" bindchange="typeChange">
     <wux-cell title="类别" is-link extra="{{type||'待选'}}"></wux-cell>

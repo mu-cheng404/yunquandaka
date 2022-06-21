@@ -13,79 +13,68 @@ Page({
     height: 0
   },
   onLoad: async function (options) {
-    let pie = {
-      canvasId: 'pieGraph', // canvas-id
-      type: 'pie', // 图表类型，可选值为pie, line, column, area, ring
-      series: [{
-        name: '已打卡',
-        data: 20,
-      }, {
-        name: '未打卡',
-        data: 30,
-      }],
-      width: 310, // 宽度，单位为px
-      height: 300, // 高度，单位为px
-      legend: false, // 是否显示图表下方各类别的标识
-      dataLabel: true, // 是否在图表中显示数据内容值
-      extra: {
-        pie: {
-          offsetAngle: -90
-        }
-      }
-    };
-    new wxCharts(pie);
+   
   },
+  async testAPI(){
+    let res = await wx.cloud.callFunction({
+      name: "mediaCheck",
+    })
+    console.log(res)
+  },
+
   execute: async function () {
     // let res = await wx.showModal({
 
     // })
     // console.log(res)
     // console.log("我最牛")
-    wx.requestSubscribeMessage({
-      tmplIds: [
-        "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
-      ],
-      success: res => {
-        console.log(res)
-      },
-      fail: res => {
-        console.log(res)
-      }
-    })
-    let subFlag = await utils.verifySubscription()
-    if (!subFlag) {
-      wx.requestSubscribeMessage({
-        tmplIds: [
-          "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
-        ],
-        success: res => {
-          console.log(res)
-        },
-        fail: res => {
-          console.log(res)
-        }
-      })
-    } else {
-      console.log("订阅成功")
-    }
+    // wx.requestSubscribeMessage({
+    //   tmplIds: [
+    //     "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
+    //   ],
+    //   success: res => {
+    //     console.log(res)
+    //   },
+    //   fail: res => {
+    //     console.log(res)
+    //   }
+    // })
+    // let subFlag = await utils.verifySubscription()
+    // if (!subFlag) {
+    //   wx.requestSubscribeMessage({
+    //     tmplIds: [
+    //       "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
+    //     ],
+    //     success: res => {
+    //       console.log(res)
+    //     },
+    //     fail: res => {
+    //       console.log(res)
+    //     }
+    //   })
+    // } else {
+    //   console.log("订阅成功")
+    // }
     // let arr = [1,2,4,5,6]
     // console.log(arr)
     // arr.push(9)
     // console.log(arr)
 
-    // let sql = `delete from flock where name='hello！'`
+    // let sql = `update flock set avatarUrl = 'http://ccreblog.cn/wp-content/uploads/2022/06/白底反黑图.png' where avatarUrl = 'https://pic4.zhimg.com/v2-a983007c6b9bbf2bf63dfb1c460a973f_r.jpg?source=1940ef5c'`
 
     // let sql= `update joining set nickName = (select nickName from user where id = joining.user_id) where nickName is NULL`
     // await utils.executeSQL(sql)
     // let sql= `update task set cycle = '日' where cycle = '每天' or cycle = '每周'`
     // await utils.executeSQL(sql)
-    //测试时间
-    // let myDate = new utils.myDate()
+    // 测试时间
+    let myDate = new utils.myDate()
 
-    // let date = new Date()
-    // let locate = myDate.locateWeek(date)
-    // console.log(locate.start)
-    //测试page
+    let date = new Date("2022-6-13")
+    let locate = myDate.locateWeek(date)
+    console.log(locate.start)
+    console.log(locate.end)
+
+    // 测试page
     // let page = getCurrentPages()
     // console.log(page)
     // console.log(page[0].route)

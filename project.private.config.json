@@ -179,7 +179,7 @@
         {
           "name": "统计",
           "pathName": "pages/statistics/statistics",
-          "query": "id=192458",
+          "query": "id=115929",
           "launchMode": "default",
           "scene": null
         },
@@ -200,6 +200,20 @@
         {
           "name": "引导页面",
           "pathName": "pages/welcome/welcome",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "按钮",
+          "pathName": "pages/button/button",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "更新日志",
+          "pathName": "pages/updateLog/updateLog",
           "query": "",
           "launchMode": "default",
           "scene": null

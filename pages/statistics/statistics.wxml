@@ -16,10 +16,22 @@
         <canvas canvas-id="pieCanvas" disable-scroll="true" class="canvas" style="width: 750rpx;height: {{windowHeight/2}}px;"></canvas>
       </view>
       <view style="width: 750rpx;height: 300rpx;display:flex;flex-direction: column;justify-content: center;align-items: center;font-weight:bold">
-        <view wx:if="{{taskType=='日'}}"> 统计时间：{{currentDate}}</view>
-        <view wx:if="{{taskType=='周'}}"> 统计时间：{{locate.start}}~{{locate.end}}</view>
+        <view wx:if="{{taskType=='日'}}">
+          <picker mode="date" start="" end="{{currentDate}}" bindchange="HandleDate">
+            统计时间：{{currentDate}}<icon class="iconfont icon-small icon-xiala1"></icon>
+          </picker>
+        </view>
+        <view wx:if="{{taskType=='周'}}">
+          <picker mode="date" value="{{locate.start}}" bindchange="HandleStart">
+            统计周期：{{locate.start}}<icon class="iconfont icon-small icon-xiala1"></icon>
+          </picker>
+          <picker mode="date" value="{{locate.end}}" bindchange="HandleEnd">
+            {{locate.end}}<icon class="iconfont icon-small icon-xiala1"></icon>
+          </picker>
+        </view>
         <view> 实打卡人数：{{overList.length}}人</view>
         <view>未打卡人数：{{unOverList.length}}人</view>
+        <view>总人数：{{overList.length+unOverList.length}}人</view>
       </view>
 
     </scroll-view>
@@ -29,7 +41,7 @@
   <swiper-item>
     <scroll-view scroll-y style="width:750rpx;height: {{windowHeight}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
       <view wx:if="{{list.length>0}}" style="width: 650rpx;padding: 50rpx;">
-        <wux-timeline wx:if="{{list.length}}" >
+        <wux-timeline wx:if="{{list.length}}">
           <block wx:for="{{list}}" wx:key="key">
             <wux-timeline-item content="{{item.date }}{{item.time+' '+item.nickName}} 打卡！" />
           </block>
@@ -46,19 +58,18 @@
     <scroll-view scroll-y style="width:750rpx;height: {{windowHeight}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
       <block wx:for="{{unOverList}}">
         <view style="width: 750rpx;height: 80rpx;display: flex;">
-          <view style="width:10%;height: inherit;" class="center">
-            {{index+1}}</view>
           <view style="width: 20%;height: inherit;" class="center">
-            <image src="{{item.avatarUrl}}" style="width: 50rpx;height: 50rpx;border-radius: 10rpx;"></image>
+            <image src="{{item.avatarUrl}}" style="width: 70rpx;height: 70rpx;border-radius: 10rpx;"></image>
           </view>
           <view style="width: 50%;height: inherit;" class="center">
             {{item.nickName}}
           </view>
           <!-- 管理员才显示提醒按钮 -->
-          <view wx:if="{{admin}}" style="width: 20%;height: inherit;" class="center">
-            <button id="{{index}}" size="mini" bindtap="remind">提醒</button>
+          <view wx:if="{{admin}}" style="width: 30%;height: inherit;" class="center">
+            <wux-button id="{{item.id}}" type="energized" size="small" bindclick="remind">提醒</wux-button>
           </view>
         </view>
+        <wux-divider show-text="{{ false }}"></wux-divider>
       </block>
       <view wx:if="{{unOverList.length==0}}" style="width: 750rpx;height: {{windowHeight}}px">
         <wux-prompt visible="{{unOverList.length==0}}" text="全部完成" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无灵感.png" />

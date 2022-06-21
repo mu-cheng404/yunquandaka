@@ -16,6 +16,7 @@
     <!-- <wux-tab key="tab2" title="推荐"></wux-tab> -->
     <wux-tab key="tab3" title="排行"></wux-tab>
   </wux-tabs>
+
   <!-- <view wx:if="{{current=='tab2'}}" style="width: 150rpx;float: left; position: fixed;left: 0rpx;top: 440rpx; z-index: 100;">
     <wux-tabs defaultCurrent="tab1" direction="vertical" bindchange="onTabsChange_1">
       <wux-tab key="1" title="伙伴"></wux-tab>
@@ -26,19 +27,28 @@
     </wux-tabs>
   </view> -->
 </view>
+<!-- 云圈 -->
 <scroll-view scroll-y style="width:750rpx;height: {{windowHeight-windowWidth/750*380}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
-  <!-- 云圈 -->
+
   <block wx:if="{{current=='tab1'}}">
-    <block wx:if="{{rList.length!=0}}" wx:for="{{rList}}" wx:key="id">
-      <navigator url="../detail/detail?id={{item.id}}">
+    <!-- 标签 -->
+    <wux-wing-blank>
+      <text style="font-size:small;color: #848C96">{{scope ? '与我有关' : '所有人'}}</text>
+      <view class="scope" bindtap="HandleScope">
+        <view class="scope_left {{!scope ? 'background_color_subject_1' : 'background_color_white'}} center">ALL</view>
+        <view class="scope_right {{scope ? 'background_color_subject_1' : 'background_color_white'}} center">MINE</view>
+      </view>
+    </wux-wing-blank>
+    <block wx:if="{{rList.length!=0}}" wx:for="{{rList}}" wx:key="key" wx:if="{{!scope || item.mine }}">
+      <navigator 	hover-class="none" 	hover-stop-propagation  url="../detail/detail?id={{item.id}}">
         <view style="background-color:white; width:710rpx;border-radius: 20rpx;margin: 20rpx;">
           <view style="width: 710rpx;height: 100rpx;display: flex;margin-top: 10rpx;">
             <view style="width: 100rpx;height: 100rpx;" class="center">
-              <image  src='{{item.avatarUrl}}' style="width:70rpx;height:70rpx;border-radius:50%;margin: 10rpx;"></image>
+              <image src='{{item.avatarUrl}}' style="width:70rpx;height:70rpx;border-radius:50%;margin: 10rpx;"></image>
             </view>
             <view style="width:500rpx;height:100rpx">
               <view style=" width: 500rpx;height:60rpx;font-size: medium;line-height: 60rpx;">{{item.nickName}}
-                <text style="font-size: small;" class="color_text_auxiliary">#{{item.fname}}小组</text>
+                <text style="font-size: small;" class="color_text_auxiliary">#{{item.fname}}</text>
               </view>
               <view style="width: 500rpx;height:40rpx;font-size: small;color: #848C96;line-height:40rpx;">{{item.date}} {{item.time}}</view>
             </view>
@@ -58,10 +68,11 @@
           <view class="color_text_auxiliary" style="width: 610rpx;height: 50rpx; margin-left: 100rpx;margin-top: 20rpx;font-size: medium;">留言{{item.remark_num}} ></view>
         </view>
       </navigator>
-      
     </block>
-
-
+    <view wx:if="{{bottomLoading}}" style="width: 750rpx;" class="center">
+      <wux-spin wux-class="spin" size="small" tip="加载中" />
+    </view>
+    <view wx:if="{{bottomNone}}" style="width: 750rpx;" class="center color_text_auxiliary">没有数据啦~</view>
   </block>
   <!-- 推荐小队 -->
 
@@ -82,7 +93,7 @@
         <view style="width:230rpx;height: 30rpx; text-align: left;margin-top: 20rpx; color: rgb(101, 137, 172);margin-left: 50rpx; float: left;">
           正在进行{{item.num_of_task}}个任务
         </view>
-        <navigator url="../flock/flock?id={{item.id}}">
+        <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{item.id}}">
           <button size="mini" style="margin-top: 30rpx;margin-left: 50rpx; color: rgb(125, 183, 197); ">
             查看
           </button>
@@ -104,15 +115,15 @@
           <image src='{{item.url}}' style="margin-left: 20rpx; width:60rpx;height:60rpx;border-radius:20%;"></image>
         </view>
         <view style="width:230rpx;margin-left:40rpx;height: 70rpx;float: left; text-align: left;margin-top: 40rpx; color: rgb(101, 137, 172);">
-          <navigator url="../flock/flock?id={{item.fid}}">
+          <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{item.fid}}">
             {{item.fname}}
           </navigator>
         </view>
         <view style="width:180rpx;height: 70rpx;text-align: left;margin-top: 40rpx;float: left; color: rgb(101, 137, 172);">
-          <navigator url="../task/task?tid={{item.tid}}&fid={{item.fid}}">
+          <navigator 	hover-class="none" 	hover-stop-propagation  url="../task/task?tid={{item.tid}}&fid={{item.fid}}">
             {{item.tname}}
           </navigator>
-        </view> 
+        </view>
         <view style="width:50rpx;height:70rpx;text-align: left;margin-top: 40rpx; color: rgb(101, 137, 172);float: right;margin-right: 50rpx;">
           <text wx:if="{{index == 0}}" style="color: gold;">{{item.ratio+'%'}}</text>
           <text wx:elif="{{index == 1}}" style="color: silver;">{{item.ratio+'%'}}</text>
@@ -122,7 +133,6 @@
       </view>
     </block>
   </block>
-  <view wx:if="{{bottomLoading}}" style="width: 750rpx;" class="center"> <wux-spin  wux-class="spin" size="small" tip="加载中" /></view>
-  <view wx:if="{{bottomNone}}" style="width: 750rpx;" class="center color_text_auxiliary">没有数据啦~</view>
+
   <!-- <view style="width: 750rpx;height: {{tabBarHeight}}rpx;scroll-snap-align: none;"></view> -->
 </scroll-view>

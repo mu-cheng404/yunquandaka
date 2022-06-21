@@ -1,5 +1,9 @@
 <wux-toast id="wux-toast"></wux-toast>
 
+<wux-white-space />
+<wux-wing-blank wx:if="{{list}}" size="large">
+  总人数：{{list.length}}
+</wux-wing-blank>
 <block wx:for="{{list}}" wx:key="key">
   <view style="margin:20rpx;padding-left: 20rpx;width: 690rpx;height: 80rpx;align-items: center;border-radius: 20rpx;display: flex;" class="background_color_white">
     <view style="width: 80rpx;height: 80rpx;" class="center">

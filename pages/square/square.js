@@ -25,7 +25,8 @@ Page({
     current_1: "1", //小标签栏的标签
     refresh: false,
     bottomLoading: false,
-    bottomNone: false
+    bottomNone: false,
+    scope: true, //管理所有人|与我有关 
   },
   onLoad: async function () {
 
@@ -43,9 +44,28 @@ Page({
       windowWidth: globalData.systeminfo.windowWidth,
       tabBarHeight: globalData.tabBarHeight
     })
-
+   
+  },
+  HandleScope: async function () {
+    wx.showLoading({
+      title: '切换中',
+    })
+    const scope = this.data.scope;
+    wx.setStorageSync('scope', !scope)
+    this.setData({
+      scope: !scope
+    });
+    
+    utils.show_toast("切换成功");
+    wx.hideLoading({
+    })
   },
   onShow: async function () {
+     //获取域
+     let scope = wx.getStorageSync('scope');
+     this.setData({
+       scope: scope ? true : false
+     });
     //获取缓存，检测是否加载过
     let flag = wx.getStorageSync("squareloading")
     console.log(flag)
@@ -251,22 +271,24 @@ Page({
   async lower() {
     let length = this.data.rList.length
     console.log(length)
-    this.setData({
-      bottomLoading: true
-    })
-    let list = await SQL.record_select_more(globalData.user_id, length)
-    if (list == '[]') {
+    if (!this.data.bottomLoading) {
       this.setData({
-        bottomNone: true
+        bottomLoading: true
       })
+      let list = await SQL.record_select_more(globalData.user_id, length)
+      if (list == '[]') {
+        this.setData({
+          bottomNone: true
+        })
+      }
+      list = list && JSON.parse(list)
+      console.log(list)
+      setTimeout(() => {
+        this.setData({
+          rList: this.data.rList.concat(list),
+          bottomLoading: false
+        })
+      }, 500);
     }
-    list = list && JSON.parse(list)
-    console.log(list)
-    setTimeout(() => {
-      this.setData({
-        rList: this.data.rList.concat(list),
-        bottomLoading: false
-      })
-    }, 500);
   }
 })

@@ -1,4 +1,3 @@
-<view wx:if="{{login}}">
   <wux-toast id="wux-toast" />
   <!-- 搜索框 -->
   <view id="searchBar" class="">
@@ -23,7 +22,7 @@
           </view>
           <!-- 按钮 -->
           <view class="center" style="width: 30%;height: inherit;">
-            <navigator url="../flock/flock?id={{item.id}}">
+            <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{item.id}}">
               <view class="item_operate center" bindtap="gotoTap" style="margin-right: 10rpx;">
                 查看
               </view>
@@ -39,7 +38,7 @@
   <block wx:if="{{!isFocus}}">
     <view style="padding-left: 20rpx;width: 730rpx;height: 60rpx;position: relative;display: flex;line-height: 60rpx;font-size: small;  ">
       小组列表
-      <navigator url="../init/init?type=1" style="position: absolute;right: 10rpx;top: 10rpx;height: 40rpx;">
+      <navigator 	hover-class="none" 	hover-stop-propagation  url="../init/init?type=1" style="position: absolute;right: 10rpx;top: 10rpx;height: 40rpx;">
         <view style="float: right;width:130rpx;height:100%;;display:flex;border-radius: 15rpx; " class="center background_color_subject color_subject border">
           新建<icon class="iconfont icon-xinjian color_subject " style="margin-left:20rpx"></icon>
         </view>
@@ -47,14 +46,14 @@
     </view>
     <!-- 横向滚动条 -->
     <view wx:if="{{groupList.length==0}}" style="width: 750rpx;height: 390rpx;">
-      <navigator url="../init/init?type=1" style="width: 100%;height: 100%;">
+      <navigator 	hover-class="none" 	hover-stop-propagation  url="../init/init?type=1" style="width: 100%;height: 100%;">
         <wux-prompt visible="1" text="点击右上角新建↗" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无灵感.png" />
       </navigator>
     </view>
     <scroll-view wx:if="{{groupList!=''}}" class="scroll-box" scroll-x="true">
       <block wx:for="{{groupList}}" wx:key="key">
         <view class="scroll-item">
-          <navigator url="../flock/flock?id={{item.id}}" style="height: 100%;width: 100%;">
+          <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{item.id}}" style="height: 100%;width: 100%;">
             <image style="height: 70%;width: 100%;border-radius: 10rpx;" mode="aspectFill" src="{{item.avatarUrl}}"></image>
             <view class="center background_color_label_background" style="height: 30%;width: 100%;display: flex;flex-direction: column;">
               <view style="width: 250rpx;height: 50%;padding-left: 10rpx; color: #0C141E;font-size: small2;font-weight: bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
@@ -72,7 +71,7 @@
     <view style="padding-left: 20rpx;width: 730rpx;height: 30rpx;font-size: small;">热门小组 <text style="" class="color_text_auxiliary"></text></view>
     <view style="padding: 20rpx;width: 710rpx;height: 110rpx;display: flex;flex-wrap: wrap;overflow: hidden;line-height: 60rpx;">
       <block wx:for="{{recommandList}}" wx:key="key">
-        <navigator url="../flock/flock?id={{item.id}}">
+        <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{item.id}}">
           <wux-tag color="#82E0AA ">{{item.name}}</wux-tag>
         </navigator>
       </block>
@@ -84,7 +83,7 @@
         <wux-prompt visible="1" buttons="{{groupList.length==0?'':button2}}" bind:click="toCollect" icon="http://ccreblog.cn/wp-content/uploads/2022/05/缺省页_暂无任务.png" />
       </view>
       <block wx:if="{{targetList!=''}}" wx:for="{{targetList}}" wx:key="key" class="bgwhite">
-        <navigator url="../task/task?tid={{item.id}}&fid={{item.flock_id}}">
+        <navigator 	hover-class="none" 	hover-stop-propagation  url="../task/task?tid={{item.id}}&fid={{item.flock_id}}">
           <view class="targetBox" id="{{index}}">
             <view class="targetIcon center">
               <icon class="iconfont icon-{{item.type}} icon-large  color_subject"></icon>
@@ -100,7 +99,7 @@
               </block>
               <!-- <image class="collect" src="../../images/{{item.over?'完成':'收藏'}}.png"></image> -->
               <view class="collect center">
-                <navigator url="../statistics/statistics?id={{item.id}}">
+                <navigator 	hover-class="none" 	hover-stop-propagation  	hover-class="none" 	hover-stop-propagation url="../statistics/statistics?id={{item.id}}">
                   <image src="http://ccreblog.cn/wp-content/uploads/2022/05/统计.png" style="width: 50rpx;height: 50rpx;"></image>
                 </navigator>
               </view>
@@ -111,4 +110,3 @@
     </view>
   </block>
   <view style="width: 750rpx;height: 50rpx;"></view>
-</view>

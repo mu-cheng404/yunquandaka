@@ -1,5 +1,7 @@
 <navigation></navigation>
 <wux-toast id="wux-toast" />
+<!-- 通告 -->
+<wux-notice-bar wx:if="{{isJoined && flock.notice}}" content="{{flock.notice}}" loop></wux-notice-bar>
 <view id="page">
   <view style="width: 750rpx;height: 220rpx" class="background_color_white">
     <!-- 头部 -->
@@ -7,7 +9,7 @@
       <view style="width: 100%;height: 220rpx;">
         <block wx:if="{{flock.id}}">
           <view style="width: 100%;height: 220rpx; display: flex;">
-            <image src="{{flock.avatarUrl}}" mode="aspectFill" style="width: 180rpx;height: 180rpx;margin:20rpx;border-radius: 20rpx;" bindtap="previewImage"></image>
+            <image src="{{flock.avatarUrl}}" mode="aspectFill" style="width: 180rpx;height: 180rpx;margin:20rpx;border-radius: 20rpx;border: 1rpx grey solid;" bindtap="previewImage"></image>
             <view style="width: 510rpx;height: 220rpx;margin-left: 20rpx;position: relative; ">
               <view style="width:100%;height: 35%;padding-top: 10rpx;display: flex;align-items: flex-end;font-size: x-large;">
                 {{flock.name}}
@@ -22,7 +24,7 @@
                 </view>
               </view>
               <view style="width: 100%;height: 35%;display: flex;align-items: center;">
-                <navigator wx:if="{{avatarList.length!=0}}" style="width: 100%;height: 100%;display: flex;align-items: center;" url="../members/members?flock_id={{flock.id}}">
+                <navigator 	hover-class="none" 	hover-stop-propagation  wx:if="{{avatarList.length!=0}}" style="width: 100%;height: 100%;display: flex;align-items: center;" url="../members/members?flock_id={{flock.id}}">
                   <block wx:for="{{avatarList}}" wx:key="key">
                     <block wx:if="{{index<=5}}">
                       <view style="z-index: {{100-index}};">
@@ -43,15 +45,15 @@
       </view>
     </view>
   </view>
-  <view wx:if="{{isJoined}}" class="background_color_white" style="display: flex;align-items: center;margin-left: 20rpx;"> 修改昵称：
-    <view style="padding:5rpx;height: 50rpx;border-radius: 20rpx;" class="background_color_label_background center" bindtap="updateNickName">{{nickName}}</view>
+  <view wx:if="{{isJoined}}" class="background_color_white" style="display: flex;align-items: center;padding-left: 20rpx;font-size: small;" bindtap="updateNickName"> 你的昵称：
+    <view style="margin: 3rpx;padding: 7rpx; border-radius: 2rpx; border-radius: 10rpx;" class="background_color_label_background">{{nickName}}</view>
   </view>
   <!-- 小组签名 -->
   <view id="stateBox" style="{{unfold?'white-space: nowrap;overflow: hidden;text-overflow: ellipsis;':''}}">
-    {{flock.state==""?"这个小队很懒，没有说明":flock.state}}
+    {{flock.state==""?"这个小组很懒，没有说明":flock.state}}
     <view wx:if="{{flock.state.length>=22}}" style="width: 750rpx;height: 50rpx;font-size: small;" class="center color_text_auxiliary" bindtap="unfold">[{{unfold?'展开':'收起'}}]</view>
   </view>
- 
+
   <!-- 提示信息 -->
   <view style="width: 750rpx;height: 15%;" class="">
     <view wx:if="{{isJoined}}" style="width: 750rpx;height: 100rpx;display: flex;position: relative;">
@@ -68,12 +70,12 @@
   </view>
   <!-- 缺省 -->
   <view wx:if="{{list.length==0}}" style="width: 750rpx;height:{{windowHeight*0.67}}px;">
-    <wux-prompt title="当下没有项目" text="点击下方新建" visible="{{true}}" />
+    <wux-prompt title="没有项目" text="点击下方新建" visible="{{true}}" />
   </view>
   <!-- 项目列表 -->
   <scroll-view scroll-y style="width:750rpx;height: {{windowHeight*0.67}}px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindrefresherrefresh="refresh" bindrefresherrestore="restore" bindrefresherabort="abort" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}} " refresher-enabled refresher-triggered="{{refresh}}" refresher-default-style="black" enhanced fast-deceleration>
     <block wx:if="{{list.length>0}}" wx:for="{{list}}" wx:key="key">
-      <navigator url="../task/task?tid={{item.id}}&fid={{item.flock_id}}">
+      <navigator 	hover-class="none" 	hover-stop-propagation  url="../task/task?tid={{item.id}}&fid={{item.flock_id}}">
         <view class="targetBox" id="{{index}}">
           <view wx:if="{{isJoined}}" class="targetIcon center">
             <icon id="{{index}}" class="iconfont {{!item.collect?'icon-shoucang1':'icon-shoucang'}} color_icon " style="font-size: 60rpx;" catchtap="collect"></icon>
@@ -92,7 +94,7 @@
                 </block>
               </view>
               <view wx:if="{{isJoined}}" class="collect center">
-                <navigator url="../statistics/statistics?id={{item.id}}">
+                <navigator 	hover-class="none" 	hover-stop-propagation  url="../statistics/statistics?id={{item.id}}">
                   <image src="http://ccreblog.cn/wp-content/uploads/2022/05/统计.png" style="width: 50rpx;height: 50rpx;"></image>
                 </navigator>
               </view>
@@ -106,7 +108,7 @@
 
 </view>
 <!-- 新建项目 -->
-<navigator wx:if="{{isJoined&&admin}}" url="../addtk/addtk?id={{flock.id}}&type=1">
+<navigator 	hover-class="none" 	hover-stop-propagation  wx:if="{{isJoined&&admin}}" url="../addtk/addtk?id={{flock.id}}&type=1">
   <view class="newTarget background_color_subject color_subject border" style="font-size: large;" hover-class="newTargetHover">
     <view class="center" style="width: 100rpx;height: 100rpx;">
       <icon class="iconfont icon-tianjia icon-large "></icon>

@@ -1,5 +1,5 @@
 <wux-toast id="wux-toast" />
-<!-- <navigator url="../demo/demo">跳转</navigator> -->
+<!-- <navigator 	hover-class="none" 	hover-stop-propagation  url="../demo/demo">跳转</navigator> -->
 <view wx:if="{{record!=''}}" style="width: 100%;height: 100%;">
   <view style="width:750rpx;background-color: white;">
     <view style="width:750rpx;height: 100rpx;display: flex;">
@@ -9,10 +9,10 @@
       <view style="width: 650rpx;height: 100rpx; display: flex;">
         <view style="width: 550rpx;height: 100rpx;">
           <view style=" width: 650rpx;height:60rpx;font-size: medium;line-height: 60rpx;display: flex;">{{record.nickName}}
-            <navigator url="../flock/flock?id={{record.fid}}">
+            <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{record.fid}}">
               <text style="font-size: small;" class="color_text_auxiliary">#{{record.fname}}小组</text>
             </navigator>
-            <navigator url="../task/task?tid={{record.tid}}&fid={{record.fid}}">
+            <navigator 	hover-class="none" 	hover-stop-propagation  url="../task/task?tid={{record.tid}}&fid={{record.fid}}">
               <wux-tag color="orange">{{record.tname}}</wux-tag>
             </navigator>
           </view>

@@ -62,6 +62,27 @@
   z-index: 2;
 }
 
+/* 常用标签 */
+.label{
+  margin: 0 30rpx;
+  padding: 0 20rpx 20rpx 20rpx;
+  width: 650rpx;
+
+  font-size: small;
+}
+.label_box{
+  margin: 0 30rpx;
+  padding: 0 30rpx 10rpx 30rpx;
+  width: 630rpx;
+  min-height: 50rpx;
+
+  display: flex;
+  flex-wrap: wrap;
+  /* background-color: aqua; */
+}
+.label{
+
+}
 
 #option{
   width: 50rpx;

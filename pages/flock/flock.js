@@ -52,83 +52,52 @@ Page({
     }],
     refresh: false, //下拉刷新
     list: [],
-    options_admin: ['修改小组信息', '解散小组', '修改昵称'],
+    options_admin: ['修改小组信息', '设置通告', '修改昵称', '解散小组'],
     options: ['退出小组', '修改昵称'],
   },
   /**
    * 生命周期函数
    */
-  onLoad: async function (options) {
-    console.log("onload")
+  onLoad: function (options) {
     V.flock_id = options.id; //获取随页面传递而来的flock_id
-    let admin = await SQL.flock_check_admin(V.flock_id, globalData.user_id)
-    this.setData({
-      admin: admin
-    })
+
 
   },
   onUnload: async function (options) {
     wx.setStorageSync('loading', 0)
     console.log("缓存已清除")
-    let login = await utils.verifyLogin()
-    if (!login) {
-      wx.navigateTo({
-        url: '../authorize/authorize',
-      })
-    }
   },
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: async function () {
     let loadFlag = wx.getStorageSync("loading")
-    console.log("拿到缓存", loadFlag)
+    console.log("缓存中拿到loading", loadFlag)
     if (!loadFlag) { //没有显示过加载中 flag = 0
       wx.showLoading({
         title: '加载中',
         mask: true
       })
     }
-    //获取屏幕信息
+    await new Promise((resolve, reject) => {
+      //集中力量办大事
+      utils.CheckLogin(); //守卫登录状态（独立）
+      this.getAdmin(); //查询身份（独立）
+      this.getJoin();//查询加入
+      this.getNickName(); //查询昵称
+      this.getBaseInfo(); //查询小组基本信息
+      this.getTaskList(); //获取任务列表
+      this.getAvatarList(); //获取头像列表
+      resolve();
+    })
+    
     this.setData({
+      //数据更新
       pixelRatio: globalData.systeminfo.pixelRatio,
       windowHeight: globalData.systeminfo.windowHeight,
       windowWidth: globalData.systeminfo.windowWidth,
       tabBarHeight: globalData.tabBarHeight
     })
-    //查询是否登陆过
-    let login = await utils.verifyLogin()
-    if (login) {
-      //查询是否是成员
-      let joinFlag = await SQL.flock_check_member(V.flock_id, globalData.user_id)
-      this.setData({
-        isJoined: joinFlag
-      })
-    } else {
-      wx.navigateTo({
-        url: '../authorize/authorize',
-      })
-    }
-    console.log("onshow")
-    //查询在该小组中的昵称
-    if (this.data.isJoined) {
-      let nickName = await SQL.joining_select_nickName_by_fid_uid(V.flock_id, globalData.user_id)
-      this.setData({
-        nickName: nickName
-      })
-    }
-    //查询小组基本信息
-    let result = await SQL.flock_select_by_id(V.flock_id)
-    result = result && JSON.parse(result)
-    if (result.length == 0) {
-      utils.show_toast("小组不存在", 'forbidden')
-    } else {
-      this.setData({
-        flock: result[0]
-      })
-      await this.getTaskList(); //获取target列表
-      await this.getAvatarList(); //获取头像列表
-    }
 
     if (!loadFlag) { //没有显示过加载中
       wx.hideLoading({
@@ -138,19 +107,62 @@ Page({
       console.log("将缓存设置成", 1)
     }
   },
+  async getAdmin() {
+    //获取身份
+    let admin = await SQL.flock_check_admin(V.flock_id, globalData.user_id);
+    this.setData({
+      admin: admin,
+    });
+  },
+  async getJoin() {
+    //获取加入状态
+    let join = await SQL.flock_check_member(V.flock_id, globalData.user_id); //查询加入状态(独立)
+    this.setData({
+      isJoined: join
+    });
+  },
+  async getNickName() {
+    //获取昵称
+    let nickName = await SQL.joining_select_nickName_by_fid_uid(V.flock_id, globalData.user_id); //查询在该小组中的昵称（独立）
+    this.setData({
+      nickName: nickName
+    });
+  },
   optionTap() {
     let that = this
+    let flock = this.data.flock
     let [admin, options, options_admin] = [this.data.admin, this.data.options, this.data.options_admin]
     wx.showActionSheet({
       itemList: admin ? options_admin : options,
       success: async res => {
         let option = res.tapIndex
-        if (admin) {
-          if (option == 0) {
+        if (admin) { //管理员
+          if (option == 0) { //修改信息
             wx.navigateTo({
               url: `../init/init?type=2&id=${V.flock_id}`,
             })
-          } else if (option == 1) {
+          } else if (option == 1) { //修改通告
+            wx.showModal({
+              title: "设置通告",
+              content: flock.notice ? flock.notice : '',
+              editable: true,
+              success: async res => {
+                let {
+                  confirm,
+                  content
+                } = res;
+                if (confirm) { //点击确定
+                  await SQL.flock_update_notice(V.flock_id, content);
+                  that.setData({
+                    'flock.notice': content
+                  })
+                  utils.show_toast("设置成功");
+                } else { //点击取消
+                  //pass
+                }
+              }
+            })
+          } else if (option == 3) { //解散小组
             wx.showModal({
               title: "提示",
               content: "解散后，所有的信息将会被清除，请再次确定",
@@ -164,7 +176,7 @@ Page({
                 }
               }
             })
-          } else {
+          } else if (option == 2) {
             await that.updateNickName()
           }
         } else {
@@ -273,8 +285,8 @@ Page({
     })
     if (res['MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI'] == 'reject') {
       await wx.showToast({
-        title:'订阅消息失败',
-        icon:"error"
+        title: '订阅消息失败',
+        icon: "error"
       })
     }
     let name = await SQL.user_select_name_by_id(globalData.user_id)
@@ -402,7 +414,19 @@ Page({
 
     }
   },
-
+  async getBaseInfo() {
+    //获取小组基本信息
+    let result = await SQL.flock_select_by_id(V.flock_id)
+    result = result && JSON.parse(result)
+    if (result.length == 0) {
+      utils.show_toast("小组不存在", 'forbidden')
+      return
+    } else {
+      this.setData({
+        flock: result[0]
+      })
+    }
+  },
   /**
    * 获取头像列表
    */
@@ -495,7 +519,7 @@ Page({
     }
     return {
       title: "快来加入我的小组",
-      imageUrl:"http://ccreblog.cn/wp-content/uploads/2022/05/logo配色图.png",
+      imageUrl: "http://ccreblog.cn/wp-content/uploads/2022/05/logo配色图.png",
 
     }
   },

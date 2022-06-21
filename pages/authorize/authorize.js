@@ -3,7 +3,7 @@ const SQL = require("../../utils/sql")
 import {
   $wuxDialog
 } from '../../dist/index'
-const globalData = getApp().globalData
+var globalData = getApp().globalData
 Page({
   data: {
     banner: ["http://ccreblog.cn/wp-content/uploads/2022/05/1.png", "http://ccreblog.cn/wp-content/uploads/2022/05/2.png", "http://ccreblog.cn/wp-content/uploads/2022/05/4.png", "http://ccreblog.cn/wp-content/uploads/2022/05/3.png"],
@@ -13,18 +13,19 @@ Page({
     subscribeFlag: "",
     user_id: "",
     showButton: false,
-    check:false,
+    check: false,
+    selectCicle: false, //是否选中
+    state: '',
   },
-  /**
-   * 用户点击游客访问
-   */
-  vistor: function () {
-    //拒绝登录信息加入缓存
-    wx.setStorageSync('refuse', true)
-    wx.navigateBack({
-      delta: 1,
+  onLoad: async function (options) {
+    // console.log("进入Onload,state=", options.state)
+    // console.log(options)
+    let state = options.state; //获取登录态，要不是2，要不是3
+    this.setData({
+      state: state
     })
   },
+
   fanye: function (e) {
     console.log(e)
     let current = e.detail.current
@@ -45,26 +46,40 @@ Page({
     globalData.user_id = this.data.user_id
     globalData.hasUserInfo = true
   },
-  radioChange(e){
-    console.log(e)
-    if(e.detail.value == "agree"){
-      this.setData({check:true})
-    }
+  radioChange() {
+    let old = this.data.selectCicle;
+    console.log(old)
+    this.setData({
+      selectCicle: !old,
+    })
   },
-  goto(){
+  goto() {
     wx.navigateTo({
       url: '../protocol/protocol',
     })
   },
   /**
-   * 用户授权
+   * 用户直接登录
    */
-  getInfo: async function () {
-    if(!this.data.check){
-      utils.show_toast('请先勾选隐私政策与隐私协议','forbidden')
+  async HandleLoginD() {
+    if (!this.data.selectCicle) {
+      utils.show_toast('请先勾选隐私政策与隐私协议', 'forbidden')
       return
     }
-    let openid, userInfo, sql
+    wx.setStorageSync('login', 1) //修改登录态
+    wx.navigateBack({ //返回上一级页面
+      delta: 1,
+    })
+  },
+  /**
+   * 用户授权登录
+   */
+  getInfo: async function () {
+    if (!this.data.selectCicle) {
+      utils.show_toast('请先勾选隐私政策与隐私协议', 'forbidden')
+      return
+    }
+    let openid, userInfo
     //弹窗获取用户信息
     wx.getUserProfile({
       desc: "获取头像和昵称信息",
@@ -77,22 +92,15 @@ Page({
         }).then(res => {
           openid = res.result.openid
         })
-        this.setData({
-          user_id: id,
-        })
-        //插入数据库
-        let [id, nickName, avatarUrl] = [utils.randomsForSixDigit(),userInfo.nickName,userInfo.avatarUrl]
-        await SQL.user_insert(id, openid, nickName, avatarUrl) 
-        //初始化一些数据
-        await this.initData(id)
-        console.log("用户完成信息授权")
-        //设置全局变量
-        this.setGlobalData()
-        //设置缓存
-        await wx.setStorage({
-          key: "user_id",
-          data: id
-        })
+
+        let id = utils.randomsForSixDigit();
+        let [nickName, avatarUrl] = [userInfo.nickName, userInfo.avatarUrl]
+        await SQL.user_insert(id, openid, nickName, avatarUrl)
+
+        globalData.user_id = id //设置全局变量
+        wx.setStorageSync('user_id', id) //
+        wx.setStorageSync('login', 1); //设置成已登录状态
+
         wx.navigateBack({
           delta: 1,
         })
@@ -100,27 +108,6 @@ Page({
       fail: (res) => {
         console.log("用户拒绝了信息授权")
       }
-    })
-  },
-  /**
-   * 初始化一些数据
-   * @param {*} id 用户id
-   */
-  async initData(user_id){
-    wx.showLoading({
-      title: '初始化中',
-    })
-    //插入一个提示用的小组
-    let [fid, creater_id, fname, fstate, avatarUrl, ftype] = [utils.randomsForSixDigit(),user_id,'hello！','新建在右上角|右上角设置删除该引导',globalData.logo,'组织']
-    await SQL.flock_insert(fid, creater_id, fname, fstate, avatarUrl, ftype)
-    //在小组内插入一个提示用的计划
-    let [tid, tname, tstate, creator, ttype, tform, defaultText, flock_id, tcycle, tweekday, tclock, tstart, tend] = [utils.randomsForSixDigit(),'底部新建计划|点击头像查看成员','点击星星收藏计划',user_id,"学习",'图片','默认文本',fid,'每天','周一','08:00',utils.formatTime(new Date()).slice(0, 10),"2032-05-31"]
-    await SQL.task_insert(tid, tname, tstate, creator, ttype, tform, defaultText, flock_id, tcycle, tweekday, tclock, tstart, tend)
-    //在记录内插入一个提示用的打卡
-    let [id,uid, date, time, content, url, duration] = [utils.randomsForSixDigit(),user_id,utils.formatTime(new Date()).slice(0, 10), utils.formatTime(new Date()).slice(11, 19),'右上角修改信息|右下角打卡 | 点击进入详情页面|详情页删除打卡','','']
-    await SQL.record_insert(id, fid, tid, uid, date, time, content, url, duration)
-    wx.hideLoading({
-      success: (res) => {},
     })
   },
   getSub: async function () {
@@ -194,9 +181,7 @@ Page({
     })
     return JSON.stringify(refer) == JSON.stringify(list)
   },
-  onLoad: async function () {
 
-  },
   // onLoad: async function (event) {
   //   let {
   //     loginFlag,

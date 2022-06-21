@@ -9,9 +9,9 @@ App({
         this.setStorageList()
     },
     globalData: {
+        initUrl: "http://ccreblog.cn/wp-content/uploads/2022/06/白底反黑图.png",
         userInfo: null,
         user_id: '',
-        // user_id: 133382, //测试
         // hasUserInfo: false,
         systeminfo: "", //系统信息
         tabBarHeight: 0, //tab栏高度
