@@ -210,7 +210,7 @@ Page({
     let nickName = await SQL.joining_select_nickName_by_fid_uid(V.flock_id, globalData.user_id)
     wx.showModal({
       title: "修改昵称",
-      content: nickName,
+      content: "",
       editable: true,
       success: async res => {
         let {
@@ -518,8 +518,8 @@ Page({
       console.log(res.target)
     }
     return {
-      title: "快来加入我的小组",
-      imageUrl: "http://ccreblog.cn/wp-content/uploads/2022/05/logo配色图.png",
+      title: "我正在邀请你加入我的小组",
+      imageUrl: "http://ccreblog.cn/wp-content/uploads/2022/06/5f10a93dd44af29c0a1fd29f22d77f0.jpg",
 
     }
   },

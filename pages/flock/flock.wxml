@@ -45,7 +45,7 @@
       </view>
     </view>
   </view>
-  <view wx:if="{{isJoined}}" class="background_color_white" style="display: flex;align-items: center;padding-left: 20rpx;font-size: small;" bindtap="updateNickName"> 你的昵称：
+  <view wx:if="{{isJoined}}" class="background_color_white" style="display: flex;align-items: center;padding-left: 20rpx;font-size: small;" bindtap="updateNickName"> 小组昵称：
     <view style="margin: 3rpx;padding: 7rpx; border-radius: 2rpx; border-radius: 10rpx;" class="background_color_label_background">{{nickName}}</view>
   </view>
   <!-- 小组签名 -->

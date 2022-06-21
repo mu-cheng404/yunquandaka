@@ -148,7 +148,7 @@ Page({
   toCal() {
     if (this.data.join) {
       wx.navigateTo({
-        url: `../calendar/calendar?id=${this.data.join}`,
+        url: `../calendar/calendar?id=${this.data.target.id}`,
       })
     } else {
       utils.show_toast("您不是该小组成员！", 'forbidden')
