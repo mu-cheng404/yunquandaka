@@ -83,14 +83,14 @@ Page({
       //集中力量办大事
       utils.CheckLogin(); //守卫登录状态（独立）
       this.getAdmin(); //查询身份（独立）
-      this.getJoin();//查询加入
+      this.getJoin(); //查询加入
       this.getNickName(); //查询昵称
       this.getBaseInfo(); //查询小组基本信息
       this.getTaskList(); //获取任务列表
       this.getAvatarList(); //获取头像列表
       resolve();
     })
-    
+
     this.setData({
       //数据更新
       pixelRatio: globalData.systeminfo.pixelRatio,
@@ -235,6 +235,66 @@ Page({
           })
           utils.show_toast("修改成功")
         }
+      }
+    })
+  },
+  /**
+   * 处理用户点击邀请
+   */
+  async HandleInvite() {
+    const flock = this.data.flock;
+    let content = `我正在“${flock.name}”小组打卡，ID是${flock.id}，附制☞这段话，打开云圈打卡小程序加入吧`
+    wx.showActionSheet({
+      itemList: ['生成小程序邀请码', '生成邀请连接', '分享给好友'],
+      success: res => {
+        const index = res.tapIndex;
+        switch (index) {
+          case 0:
+            wx.showLoading({
+              title: '生成中',
+              mask: true,
+            });
+            wx.cloud.callFunction({
+              name: "CreateQRCode",
+              data: {
+                id: flock.id,
+              },
+              success: res => {
+                console.log(res);
+                const buffer = res.result.buffer;
+
+              },
+              fail:err=>{
+                utils.show_toast("出错了","forbidden");
+              }
+            })
+            wx.hideLoading();
+            break;
+          case 1:
+            wx.showModal({
+              title: '提示',
+              content: content,
+              showCancel: true,
+              confirmText: '复制',
+              success: res => {
+                if (res.confirm) {
+                  wx.setClipboardData({
+                    data: content,
+                    success: res => {
+                      
+                    }
+                  })
+                }
+              }
+            })
+            break;
+          case 2:
+            utils.show_toast("可点击右上角分享");
+            break;
+          default:
+            break;
+        }
+
       }
     })
   },

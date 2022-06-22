@@ -60,10 +60,10 @@
       <view style=" padding: 20rpx;width: 750rpx;height: 80rpx; font-size: medium;">正在进行<text style="font-size: small;" class="color_text_auxiliary">(点击⭐将项目放在首页)</text></view>
       <view class="center background_color_subject" style="width: 130rpx; height:50rpx; position: absolute; right: 20rpx;top:15rpx;font-size: small; color: white;border-radius: 20rpx;">
         <block wx:if="{{isJoined}}">
-          <button open-type="share" class="center background_color_subject_3 color_white border" style="width: 130rpx; height:50rpx; position: absolute; right: 0rpx; top: 0rpx;font-size: small; border-radius: 20rpx;padding:0;">
+          <view class="center background_color_subject_3 color_white border" style="width: 130rpx; height:50rpx; position: absolute; right: 0rpx; top: 0rpx;font-size: small; border-radius: 20rpx;padding:0;" bindtap="HandleInvite">
             邀请
-            <icon class="iconfont icon-fenxiang icon-small"></icon>
-          </button>
+            <icon class="iconfont icon-fenxiang icon-small" style="margin-bottom: 15rpx;"></icon>
+          </view>
         </block>
       </view>
     </view>

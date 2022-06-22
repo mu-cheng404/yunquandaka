@@ -402,6 +402,14 @@ async function show_toast(text, type = 'success') {
     })
 
 }
+/**
+ * 使用正则表达式，从一端文本中找到一串数字
+ * 文本里不能有两串数字
+ * @param {} text 文本
+ */
+function find_num(text) {
+    return text.replace(/[^\d]/g, "");
+}
 module.exports = {
     formatTime,
     getWeekDate,
@@ -422,4 +430,5 @@ module.exports = {
     show_toast,
     send_unover_justify,
     CheckLogin,
+    find_num,
 }

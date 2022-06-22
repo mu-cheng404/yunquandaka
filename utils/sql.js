@@ -871,7 +871,7 @@ async function joining_update_nickName_by_fid_uid(nickName, fid, uid) {
 async function joining_select_nickName_by_fid_uid(fid, uid) {
     let sql = `select nickName from joining where flock_id = ${fid} and user_id = ${uid}`
     let nickName = await utils.executeSQL(sql)
-    if (nickName != "[]") {
+    if (nickName == "[]") {
         return '暂无';
     } else {
         nickName = nickName && JSON.parse(nickName);
