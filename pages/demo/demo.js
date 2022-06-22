@@ -16,10 +16,12 @@ Page({
    
   },
   async testAPI(){
-    let res = await wx.cloud.callFunction({
-      name: "mediaCheck",
-    })
-    console.log(res)
+    const page = getCurrentPages()
+    console.log(page)
+    console.log(page[0].data)
+    console.log(page[0].setData({flag: 1}))
+    console.log(page[0].data)
+
   },
 
   execute: async function () {

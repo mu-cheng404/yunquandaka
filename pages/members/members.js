@@ -32,11 +32,12 @@ Page({
       list: list
     })
   },
-
+  
   /**
    * 用户点击踢出成员
    * @param {*} e 
    */
+
   async kick_out(e) {
     let index = e.currentTarget.id
     let user = this.data.list[index]

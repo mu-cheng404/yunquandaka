@@ -151,6 +151,7 @@ Page({
    */
   async onShow() {
     await this.check_message()
+    console.log(this.data)
   },
 
   /**
