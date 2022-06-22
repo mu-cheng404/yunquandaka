@@ -186,8 +186,17 @@ Page({
               if (res.confirm) { //用户点击确定
                 await SQL.task_delete(V.tid)
                 //返回小队页面
+                const page = getCurrentPages();//页面栈
+                const flockPage = page[page.length - 2];//上一个页面
+                let list = flockPage.data.list;//拿到项目列表
+                console.log(list);
+                const index = list.findIndex(task => task.id == this.data.target.id);//找到当前项目在数组里的下标
+                console.log("找到了",index);
+                list.splice(index,1);
+                flockPage.setData({list: list});//提前修改
                 utils.show_toast("已注销")
-                wx.wx.navigateBack({
+
+                wx.navigateBack({
                   delta: 1,
                   success: (res) => {},
                   fail: (res) => {},
