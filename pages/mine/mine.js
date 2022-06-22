@@ -16,6 +16,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    const test = wx.getStorageSync('test');
+    this.setData({test:test});
     let result = await SQL.user_select_by_id(globalData.user_id);
     result = result && JSON.parse(result)
     this.setData({
@@ -36,6 +38,26 @@ Page({
         this.onLoad()
       }
     })
+  },
+  async HandleTest() {
+    //测试账号
+    wx.setStorageSync('lock_user_id', wx.getStorageSync('user_id'));//copy一份user_id
+    wx.setStorageSync('user_id', 111111);
+    globalData.user_id = '111111';
+    wx.setStorageSync('test', 1)
+    this.setData({test:1});
+    await this.onLoad();
+  },
+  async HandleQuitTest() {
+    //退出测试
+    const lock_user_id =  wx.getStorageSync('lock_user_id');
+    wx.removeStorageSync('lock_user_id');
+    wx.setStorageSync('user_id',lock_user_id);
+    wx.setStorageSync('test', 0);
+    globalData.user_id = lock_user_id;
+    this.setData({test:0});
+    await this.onLoad();
+
   },
   /**
    * 当用户还没登录时，用户授权信息点击事件

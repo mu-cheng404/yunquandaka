@@ -34,6 +34,8 @@ Page({
   },
   onUnload: async function (options) {
     wx.setStorageSync('homeloading', 0)
+    await this.readClipboard(); //检查剪贴板
+
   },
   /**
    * 页面显示
@@ -54,7 +56,6 @@ Page({
 
     const login = await utils.CheckLogin();
     console.log(login ? '已登录，当前global.user_id=' + globalData.user_id : '未登录')
-
     await new Promise((resolve, reject) => {
       this.getGroupList();
       this.getRecommand()
@@ -72,6 +73,41 @@ Page({
           wx.setStorageSync('homeloading', 1)
         },
       })
+    }
+  },
+  async readClipboard() {
+    //读取用户粘贴板
+    const gotoFlag = wx.getStorageSync('inviteGoto');
+    console.log("gotoFlag=", gotoFlag, !gotoFlag);
+    if (!gotoFlag) {
+      const text = await wx.getClipboardData();
+      const id = utils.find_num(text.data);
+      console.log(id, id.length)
+      if (id.length == 6) { //粘贴板满足情况
+        let flock = await SQL.flock_select_by_id(id);
+        if (flock != '[]') {
+          flock = flock && JSON.parse(flock);
+          const flockName = flock[0].name
+          wx.showModal({
+            cancelColor: 'cancelColor',
+            title: "提示",
+            showCancel: true,
+            content: `为您找到“${flockName}”小组，是否前往`,
+            success: res => {
+              wx.setStorageSync('inviteGoto', 1)
+              if (res.confirm) {
+                wx.navigateTo({
+                  url: `../flock/flock?id=${id}`,
+                })
+              } else {
+                //pass
+              }
+            }
+          })
+        } else {
+          console.log("没找到这个小组");
+        }
+      }
     }
   },
   /**
@@ -140,7 +176,9 @@ Page({
   getGroupList: async function () {
     let result = await SQL.flock_select_count_by_uid(globalData.user_id)
     if (result == "[]") {
-
+      this.setData({
+        groupList: [],
+      })
     } else {
       result = result && JSON.parse(result)
       this.setData({

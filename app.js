@@ -33,6 +33,8 @@ App({
       wx.setStorageSync('homeloading', 0)
       wx.setStorageSync('statloading', 0)
       wx.setStorageSync('recommandList', '')
-      wx.setStorageSync('user_id', '')
+      wx.setStorageSync('user_id', '');
+      wx.setStorageSync('inviteGoto',0);
+      wx.setStorageSync('test', 0)
     }
 })
