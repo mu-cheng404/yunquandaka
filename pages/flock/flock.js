@@ -264,8 +264,8 @@ Page({
                 const buffer = res.result.buffer;
 
               },
-              fail:err=>{
-                utils.show_toast("出错了","forbidden");
+              fail: err => {
+                utils.show_toast("出错了", "forbidden");
               }
             })
             wx.hideLoading();
@@ -281,7 +281,7 @@ Page({
                   wx.setClipboardData({
                     data: content,
                     success: res => {
-                      
+
                     }
                   })
                 }
@@ -337,20 +337,13 @@ Page({
    */
   async to_join() {
     let that = this
-    //检查订阅
-    let res = await wx.requestSubscribeMessage({
-      tmplIds: [
-        "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
-      ]
+    wx.showLoading({
+      title: '查询订阅状态',
+      mask: true,
     })
-    if (res['MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI'] == 'reject') {
-      await wx.showToast({
-        title: '订阅消息失败',
-        icon: "error"
-      })
-    }
     let name = await SQL.user_select_name_by_id(globalData.user_id)
     //提示输入昵称，在设置里可修改
+    wx.hideLoading();
     wx.showModal({
       title: "输入小组昵称",
       content: name,
@@ -362,19 +355,18 @@ Page({
           confirm
         } = res
         if (confirm) {
-          //处理
-          wx.showLoading({
-            title: '处理中',
-            mask: true
-          })
           //添加数据
+          wx.showLoading({
+            title: '加入中',
+            mask: true,
+          })
           let [user_id, flock_id, nickName] = [globalData.user_id, V.flock_id, content]
           await SQL.joining_insert(user_id, flock_id, nickName)
-          wx.hideLoading({
-            success: async res => {},
-          })
+          wx.hideLoading();
           utils.show_toast("加入成功")
           await this.onShow()
+        } else {
+          wx.hideLoading()
         }
       }
     })
