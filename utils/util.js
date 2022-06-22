@@ -298,11 +298,11 @@ async function verifySubscription() {
         withSubscriptions: true,
     }).then((res) => {
         let list = res.subscriptionsSetting.itemSettings //订阅列表
-        let status1 = list['MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI']
-        if (status1 == "accept") {
-            flag = 1
-        } else {
-            flag = 0
+        console.log(list);
+        if (list['MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI'])
+            flag = list['MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI'] == 'accept';
+        else {
+            flag = false;
         }
         // "XfpLvF_QtFsXoKcVz7sgMovDkTTW8wHhOa5mbwdiTTs": "accept",
         // "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI": "accept",
@@ -388,6 +388,34 @@ async function showToast(text) {
 
 }
 /**
+ * 查询订阅状态
+ * @returns
+ */
+async function CheckSubcribe() {
+    //检查订阅
+    // wx.showLoading({
+    //     title: "查询订阅状态",
+    //     mask: true,
+    // });
+    // const flag = await verifySubscription();
+    // wx.hideLoading()
+
+    // if (flag) {
+    //     return true;
+    // } else {
+    let res = await wx.requestSubscribeMessage({
+        tmplIds: [
+            "MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI"
+        ]
+    })
+    if (res['MJnrsOf3OJsBjZZ2E6yqz86sBR7_VgTQE4lGQ8eHwDI'] == 'reject') {
+        return false;
+    } else {
+        return true;
+    }
+
+}
+/**
  * 提示
  * @param {*} text 提示的文字
  * @param {*} type 提示类型
@@ -430,5 +458,6 @@ module.exports = {
     show_toast,
     send_unover_justify,
     CheckLogin,
+    CheckSubcribe,
     find_num,
 }

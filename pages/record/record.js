@@ -151,6 +151,12 @@ Page({
       content: value
     })
   },
+  async HandleCheck(){
+    const flag = await util.CheckSubcribe();
+    if(flag){
+      util.show_toast("订阅成功")
+    }
+  },
   submit: async function () {
     //加载
     wx.showLoading({
