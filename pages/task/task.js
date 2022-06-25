@@ -42,6 +42,7 @@ Page({
     xiaozubutton: false,
     bottomLoading: false,
     bottomNone: false,
+    notice: '',//通告
   },
   onLoad: async function (options) {
     //接收参数
@@ -136,9 +137,12 @@ Page({
     //获取基本信息
     let target = await SQL.task_select_by_id(V.tid)
     if (target != "[]") {
-      target = target && JSON.parse(target)
+      target = target && JSON.parse(target);
+      const notice = await SQL.flock_select_notice(target[0].flock_id);
+      console.log(notice)
       this.setData({
-        target: target[0]
+        target: target[0],
+        notice: notice
       })
     } else {
       utils.show_toast("找不到项目！", "forbidden")
@@ -267,18 +271,7 @@ Page({
     wx.setStorageSync('loading', 0)
 
   },
-  /**
-   * 获取当前项目的详细信息
-   * input:tid
-   * process:从数据库获取
-   * output:task对象
-   */
-  getTargetInfo: async function (id) {
-    let sql = `select * from task where id=${id}`
-    let result = await utils.executeSQL(sql)
-    result = result && JSON.parse(result)
-    return result[0]
-  },
+
   /**
    * 获取进度条和进度环信息
    * input：id, targetInfo
