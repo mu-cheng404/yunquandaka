@@ -68,7 +68,7 @@ async function flock_update(flock_id, name, state, type, avatarUrl) {
  * @param {*} type 
  */
 async function flock_insert(id, creater_id, name, state, avatarUrl, type) {
-    let sql1 = `insert into flock values(${id},${creater_id},'${name}','${state}','${avatarUrl}',0,0,'${type}','')`
+    let sql1 = `insert into flock values(${id},${creater_id},'${name}','${state}','${avatarUrl}',0,0,'${type}','负责人点击设置管理小组')`
     await utils.executeSQL(sql1)
     let nickName = await user_select_name_by_id(creater_id)
     let sql2 = `insert into joining(user_id,flock_id,nickName) values(${creater_id},${id},'${nickName}')`
@@ -160,6 +160,17 @@ async function flock_select_amdin(flock_id) {
     let sql = `select creater_id from flock where id =${flock_id}`
     let admin = await utils.executeSQL(sql)
     return admin
+}
+/**
+ * 查询小组通告
+ * @param {*} flock_id 
+ * @returns 
+ */
+async function flock_select_notice(flock_id) {
+    let sql = `select notice from flock where id =${flock_id}`;
+    let notice = await utils.executeSQL(sql);
+    notice = notice && JSON.parse(notice);
+    return notice[0].notice;
 }
 /**
  * 获取用元气值排序后的圈子列表
@@ -1029,6 +1040,7 @@ module.exports = {
     flock_select_member,
     flock_select_member_expect_creater,
     flock_select_amdin,
+    flock_select_notice,
     flock_select_order_by_value,
     flock_check_admin,
     flock_check_member,
