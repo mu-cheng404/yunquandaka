@@ -10,7 +10,7 @@
         <view style="width: 550rpx;height: 100rpx;">
           <view style=" width: 650rpx;height:60rpx;font-size: medium;line-height: 60rpx;display: flex;">{{record.nickName}}
             <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{record.fid}}">
-              <text style="font-size: small;" class="color_text_auxiliary">#{{record.fname}}小组</text>
+              <text style="font-size: small;" class="color_text_auxiliary">#{{record.fname}}</text>
             </navigator>
             <navigator 	hover-class="none" 	hover-stop-propagation  url="../task/task?tid={{record.tid}}&fid={{record.fid}}">
               <wux-tag color="orange">{{record.tname}}</wux-tag>

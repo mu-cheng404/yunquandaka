@@ -82,6 +82,7 @@ Page({
    * 用户点击删除帖子
    */
   async delete_record() {
+    const id = this.data.record.id;
     wx.showModal({
       title:"提示",
       content: "确定删除",
@@ -89,6 +90,15 @@ Page({
         let confirm = res.confirm
         if (confirm) {
           await SQL.record_delete(this.data.record.id)
+          let page = getCurrentPages();
+          console.log(page)
+          page = page[page.length - 2];
+          let record_list = page.data.recordList;
+          let remove = record_list.splice(record_list.findIndex(record => record.id = id),1);
+          page.setData({
+            recordList: record_list,
+          })
+          console.log("已删除",remove);
           utils.show_toast("删除成功")
           setTimeout(() => {
             wx.navigateBack({
