@@ -78,14 +78,14 @@ Page({
    * @param {*} e 标签id
    */
   async HandleChange(e) {
+    const label_id = e.currentTarget.id;
     console.log(e)
     const that = this
     wx.showModal({
       title: '提示',
-      content: "确定删除？",
+      content: `确定删除'${that.data.labelList[label_id]}'快捷内容？`,
       success: res => {
         const {confirm} = res;
-        const label_id = e.currentTarget.id;
         let list = that.data.labelList; //拷贝一份
         if (confirm) {
           list.splice(label_id, 1);
