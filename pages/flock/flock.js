@@ -52,7 +52,7 @@ Page({
     }],
     refresh: false, //下拉刷新
     list: [],
-    options_admin: ['修改小组信息', '设置通告', '修改昵称', '解散小组'],
+    options_admin: ['修改小组信息', '设置通告', '管理成员', '修改昵称', '解散小组'],
     options: ['退出小组', '修改昵称'],
   },
   /**
@@ -162,7 +162,14 @@ Page({
                 }
               }
             })
-          } else if (option == 3) { //解散小组
+          } else if (option == 2) { //管理成员
+            wx.navigateTo({
+              url: `../members/members?flock_id=${that.data.flock.id}`,
+            })
+          } else if (option == 3) { //修改昵称
+            await that.updateNickName()
+
+          } else if (option == 4) { //解散小组
             wx.showModal({
               title: "提示",
               content: "解散后，所有的信息将会被清除，请再次确定",
@@ -176,8 +183,6 @@ Page({
                 }
               }
             })
-          } else if (option == 2) {
-            await that.updateNickName()
           }
         } else {
           if (option == 0) {
