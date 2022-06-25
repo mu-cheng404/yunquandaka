@@ -44,7 +44,7 @@
   </view>
 </view>
 <!-- 缺省提示 -->
-<view wx:if="{{recordList.length==0}}" style="width:750rpx;height: 500rpx;background-color: rgb(248, 248, 248;">
+<view wx:if="{{recordList.length==0}}" style="width:750rpx;height: 500rpx;">
   <wux-prompt visible="{{recordList.length==''}}" title="暂无打卡数据" />
 </view>
 <!-- 打卡记录 -->
@@ -81,6 +81,7 @@
   <wux-spin wux-class="spin" size="small" tip="加载中" />
 </view>
 <view wx:if="{{bottomNone}}" style="width: 750rpx;" class="center color_text_auxiliary">没有数据啦~</view>
+<wux-white-space/>
 <!-- 打卡图标 -->
 <view class="center background_color_subject_1 color_white border" style="position: fixed; right:50rpx; bottom: 100rpx;width: 150rpx; height:120rpx; font-size: medium;border-radius: 30rpx;" bindtap="toRecord">
   <view style="width: 60%;height: 100%;" class="center">

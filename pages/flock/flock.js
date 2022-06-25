@@ -216,6 +216,7 @@ Page({
     wx.showModal({
       title: "修改昵称",
       content: "",
+      placeholderText: '不同小组之间昵称独立  ',
       editable: true,
       success: async res => {
         let {
@@ -351,7 +352,8 @@ Page({
     wx.hideLoading();
     wx.showModal({
       title: "输入小组昵称",
-      content: name,
+      content: "",
+      placeholderText:"不同小组之间昵称独立",
       editable: true,
       showCancel: false,
       success: async res => {
