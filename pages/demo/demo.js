@@ -13,17 +13,45 @@ Page({
     height: 0
   },
   onLoad: async function (options) {
-   
-  },
-  async testAPI(){
-    const page = getCurrentPages()
-    console.log(page)
-    console.log(page[0].data)
-    console.log(page[0].setData({flag: 1}))
-    console.log(page[0].data)
+    console.log("onload")
 
   },
+  onShow: async function () {
+    console.log("onshow")
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: async function () {
+    console.log("onready")
 
+  },
+  async addJoin() {
+    //993527 135738 536288 325682
+    let flock = [940112, 373960];
+    let user = [993527, 135738, 157892, 536288, 325682, 738193, 368532, 283918];
+    let name = ['王旭', '姜泽', '杨秦玉', '张博', '李文小', '李权', '吴桂龙', '魏士瑞']
+    for (let i = 0; i < flock.length; i++) {
+      for (let j = 0; j < user.length; j++) {
+        let sql = `insert into joining(user_id,flock_id,nickName) values(${user[j]},${flock[i]},'${name[j]}')`
+        await utils.executeSQL(sql);
+      }
+    }
+  },
+  async addRecord() {
+    let flock = [940112, 373960];
+    let user = [993527, 135738, 157892, 536288, 325682, 738193, 368532, 283918];
+    let task1 = [711710, 921439, 378537];
+    let task2 = [587045, 928550, 170744];
+    let date = ['2022-05-15', '2022-05-12', '2022-05-13', '2022-05-11', '2022-05-16', '2022-05-15', '2022-05-17', '2022-05-17'];
+    let time = ['11:52:38', '10:56:17', '09:03:19', '16:15:35', '09:36:41', '23:58:56', '16:23:25', '22:48:02'];
+    for (let i = 0; i < task2.length; i++) {
+      for (let j = 0; j < user.length; j++) {
+        await SQL.record_insert(utils.randomsForSixDigit(), 373960, task2[i], user[j], date[j], time[j], date[j]+'打卡','','');
+      }
+    }
+
+  },
   execute: async function () {
     // let res = await wx.showModal({
 
@@ -185,16 +213,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: async function () {
-    let {
-      windowHeight,
-      windowWidth
-    } = await wx.getSystemInfo()
-    console.log(windowHeight, windowWidth)
-  },
+
 
   /**
    * 生命周期函数--监听页面显示

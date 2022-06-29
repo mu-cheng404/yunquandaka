@@ -39,8 +39,8 @@
     <view style="padding-left: 20rpx;width: 730rpx;height: 60rpx;position: relative;display: flex;line-height: 60rpx;font-size: small;  ">
       小组列表
       <navigator 	hover-class="none" 	hover-stop-propagation  url="../init/init?type=1" style="position: absolute;right: 10rpx;top: 10rpx;height: 40rpx;">
-        <view style="float: right;width:130rpx;height:100%;;display:flex;border-radius: 15rpx; " class="center background_color_subject color_subject border">
-          新建<icon class="iconfont icon-xinjian color_subject " style="margin-left:20rpx"></icon>
+        <view style="float: right;width:130rpx;height:100%;;display:flex;border-radius: 15rpx; " class="center background_color_subject_1 color_white border">
+          新建<icon class="iconfont icon-xinjian color_white " style="margin-left:20rpx"></icon>
         </view>
       </navigator>
     </view>
@@ -54,7 +54,7 @@
       <block wx:for="{{groupList}}" wx:key="key">
         <view class="scroll-item">
           <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{item.id}}" style="height: 100%;width: 100%;">
-            <image style="height: 70%;width: 100%;border-radius: 10rpx;" mode="aspectFill" src="{{item.avatarUrl}}"></image>
+            <image style="height: 70%;width: 100%;border-radius: 10rpx;" mode="aspectFill" src="{{item.avatarUrl}}" lazy-load></image>
             <view class="center background_color_label_background" style="height: 30%;width: 100%;display: flex;flex-direction: column;">
               <view style="width: 250rpx;height: 50%;padding-left: 10rpx; color: #0C141E;font-size: small2;font-weight: bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                 {{item.name}}

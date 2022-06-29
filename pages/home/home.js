@@ -30,7 +30,7 @@ Page({
    * 页面加载
    */
   onLoad: async function (options) {
-
+    
   },
   onUnload: async function (options) {
     wx.setStorageSync('homeloading', 0)
@@ -53,7 +53,7 @@ Page({
       })
     }
     //守卫登录状态
-
+    let start = new Date();
     const login = await utils.CheckLogin();
     console.log(login ? '已登录，当前global.user_id=' + globalData.user_id : '未登录')
     await new Promise((resolve, reject) => {
@@ -63,6 +63,8 @@ Page({
       console.log("成功获取数据")
       resolve()
     })
+    let end = new Date();
+    console.log("cost:",end-start,'ms');
 
     //取消加载
     //将缓存设置为1

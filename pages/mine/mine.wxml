@@ -19,9 +19,9 @@
 </view>
 <view id="body">
   <wux-cell-group wux-class="group">
-    <navigator 	hover-class="none" 	hover-stop-propagation  url="../accomplishment/accomplishment">
+    <!-- <navigator 	hover-class="none" 	hover-stop-propagation  url="../accomplishment/accomplishment">
       <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/记录-1.png" title="历史报告" is-link hasLine="false"></wux-cell>
-    </navigator>
+    </navigator> -->
     <wux-cell hasLine thumb="http://ccreblog.cn/wp-content/uploads/2022/05/客服.png" title="客服中心" is-link open-type="contact" bind:contact="onContact">
     </wux-cell>
     <wux-white-space size="small" />

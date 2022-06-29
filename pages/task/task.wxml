@@ -12,7 +12,7 @@
       </navigator>
     </view>
     <view style="width: 300rpx;height: 100%;" class="center">
-      <view style="width: 80%;height: 50%;background-color: rgba(255, 255, 255, 0.336);font-size: large;border-radius: 20rpx;" class="center color_subject border">{{target.name}}</view>
+      <view style="width: 80%;height: 50%;font-size: large;border-radius: 20rpx;" class="center  border">{{target.name}}</view>
     </view>
     <view wx:if="{{admin&&target}}" style="position: absolute;right: 20rpx;top: 20rpx;width: 100rpx;height: 50rpx;border-radius: 20rpx;font-size: small;" class="center background_color_subject_3 color_white border" bindtap="optionTap">
       设置
@@ -69,7 +69,7 @@
         </view>
         <view class="fengmian">
           <view style=" width:600rpx;margin-left:100rpx;padding: 0rpx 10rpx 10rpx 0rpx;word-break: break-all; overflow-y: auto;">{{item.content}}</view>
-          <image mode="aspectFill" wx:if="{{item.url}}" style="width: 300rpx;max-height: 200rpx;margin-left: 100rpx; border-radius: 10rpx;" src="{{item.url}}"></image>
+          <image mode="aspectFill" wx:if="{{item.url}}" style="width: 300rpx;max-height: 200rpx;margin-left: 100rpx; border-radius: 10rpx;" src="{{item.url}}" lazy-load></image>
         </view>
         <view class="color_subject" style="width: 610rpx;height: 50rpx; margin-left: 100rpx;margin-top: 20rpx;font-size: medium;">留言{{item.remark_num}}></view>
       </view>

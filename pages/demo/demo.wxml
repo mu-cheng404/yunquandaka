@@ -1,1 +1,2 @@
-<button bindtap="testAPI">测试</button>
+<button bindtap="addJoin">小组添加成员</button>
+<button bindtap="addRecord">添加打卡记录</button>

@@ -6,7 +6,7 @@ import {
 var globalData = getApp().globalData
 Page({
   data: {
-    banner: ["http://ccreblog.cn/wp-content/uploads/2022/05/1.png", "http://ccreblog.cn/wp-content/uploads/2022/05/2.png", "http://ccreblog.cn/wp-content/uploads/2022/05/4.png", "http://ccreblog.cn/wp-content/uploads/2022/05/3.png"],
+    banner: ["http://ccreblog.cn/wp-content/uploads/2022/05/1-1.png", "http://ccreblog.cn/wp-content/uploads/2022/05/2.png", "http://ccreblog.cn/wp-content/uploads/2022/05/4-1.png", "http://ccreblog.cn/wp-content/uploads/2022/05/3.png"],
     currendIndex: 0,
     endIndex: 3,
     loginFlag: "",
@@ -62,10 +62,6 @@ Page({
    * 用户直接登录
    */
   async HandleLoginD() {
-    if (!this.data.selectCicle) {
-      utils.show_toast('请先勾选隐私政策与隐私协议', 'forbidden')
-      return
-    }
     wx.setStorageSync('login', 1) //修改登录态
     wx.navigateBack({ //返回上一级页面
       delta: 1,

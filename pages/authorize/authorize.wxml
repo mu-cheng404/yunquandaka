@@ -1,18 +1,24 @@
 <wux-toast id="wux-toast"></wux-toast>
 
-<!-- <swiper bindchange="fanye" style="width: 750rpx;height: 100vh;" indicator-dots="{{true}}" indicator-active-color="#fff">
+<swiper bindchange="fanye" style="width: 750rpx;height: 100vh;" indicator-dots="{{true}}" indicator-active-color="#fff">
   <swiper-item wx:for="{{banner}}" wx:key="key" style="width: 100%;height: 100%;">
     <image src="{{item}}" mode="aspectFill" style="width:100%;height:100%; position: relative;z-index: -1;"></image>
   </swiper-item>
 </swiper>
-<view wx:if="{{showButton}}" class="center" style="left: 50%;margin-left: -100rpx;bottom: 200rpx;width: 200rpx;height: 80rpx;border-radius: 20rpx; font-size: medium;font-weight: bold;position: absolute;z-index: 1;background-color: rgb(227, 248, 255);color: rgb(104, 225, 253);" bindtap="getInfo">授权登录</view>
-<view wx:if="{{showButton}}" style="width: 250rpx;height: 100rpx;bottom: 100rpx;left: 50%;margin-left: -125rpx;font-size: small;color: rgb(123, 123, 123);position: absolute;z-index: 2;" >
-  <radio-group bindchange="radioChange">
-    <radio color="rgb(179, 200, 121)"value="agree" /> 已同意并阅读
-  </radio-group>
-  <text style="color: cadetblue;" bindtap="goto">《云圈打卡APP用户隐私政策》《云圈打卡用户服务协议》</text>
-</view> -->
-<image style="width: 750rpx;height: 750rpx;border-radius: 50rpx;" src="cloud://yuan-1-1gylic1ae84507a5.7975-yuan-1-1gylic1ae84507a5-1309718930/admin/logo.png"></image>
+<view wx:if="{{showButton}}" class="center" style="left: 50%;margin-left: -100rpx;bottom: 200rpx;width: 200rpx;height: 80rpx;border-radius: 20rpx; font-size: medium;font-weight: bold;position: absolute;z-index: 1;background-color: rgb(227, 248, 255);color: rgb(104, 225, 253);" bindtap="{{state==3 ? 'getInfo' : 'HandleLoginD'}}">{{state==3 ? '微信登录' : '登录'}}</view>
+<wux-button block type="balanced" bindclick=""></wux-button>
+<view wx:if="{{showButton && state == 3}}" style="width: 500rpx;height: 100rpx;bottom: 100rpx;left: 50%;margin-left: -250rpx;font-size: small;color: rgb(123, 123, 123);position: absolute;z-index: 2;">
+  <view style="width: 40rpx;height: 40rpx; display: inline-block;" class="center">
+    <icon wx:if="{{selectCicle}}" class="iconfont icon-yuanxingxuanzhongfill icon-small" style="color: rgb(104, 225, 253);" bindtap="radioChange"></icon>
+    <icon wx:else class="iconfont icon-yuanxingweixuanzhong color_subject " bindtap="radioChange"></icon>
+  </view>
+  <text style="font-size: small;" bindtap="goto">已同意并阅读 <text style="color: cadetblue;">《用户隐私政策》《用户服务协议》</text></text>
+</view>
+
+
+
+
+<!-- <image style="width: 750rpx;height: 750rpx;border-radius: 50rpx;" src="cloud://yuan-1-1gylic1ae84507a5.7975-yuan-1-1gylic1ae84507a5-1309718930/admin/logo.png"></image>
 
 <wux-wing-blank size="large">
   <wux-button block type="balanced" bindclick="{{state==3 ? 'getInfo' : 'HandleLoginD'}}">{{state==3 ? '微信登录' : '登录'}}</wux-button>
@@ -21,4 +27,4 @@
     <icon wx:else class="iconfont icon-yuanxingweixuanzhong color_subject " bindtap="radioChange"></icon>
   </view>
   <text style="font-size: small;" bindtap="goto">已同意并阅读 <text style="color: cadetblue;">《用户隐私政策》《用户服务协议》</text></text>
-</wux-wing-blank>
+</wux-wing-blank> -->
