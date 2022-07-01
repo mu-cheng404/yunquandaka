@@ -251,32 +251,11 @@ Page({
     const flock = this.data.flock;
     let content = `我正在“${flock.name}”小组打卡，ID是${flock.id}，附制☞这段话，打开云圈打卡小程序加入吧`
     wx.showActionSheet({
-      itemList: ['生成小程序邀请码', '生成邀请连接', '分享给好友'],
+      itemList: [ '生成邀请连接', '分享给好友'],
       success: res => {
         const index = res.tapIndex;
         switch (index) {
           case 0:
-            wx.showLoading({
-              title: '生成中',
-              mask: true,
-            });
-            wx.cloud.callFunction({
-              name: "CreateQRCode",
-              data: {
-                id: flock.id,
-              },
-              success: res => {
-                console.log(res);
-                const buffer = res.result.buffer;
-
-              },
-              fail: err => {
-                utils.show_toast("出错了", "forbidden");
-              }
-            })
-            wx.hideLoading();
-            break;
-          case 1:
             wx.showModal({
               title: '提示',
               content: content,
@@ -294,7 +273,7 @@ Page({
               }
             })
             break;
-          case 2:
+          case 1:
             utils.show_toast("可点击右上角分享");
             break;
           default:
