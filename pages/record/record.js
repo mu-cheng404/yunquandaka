@@ -66,13 +66,13 @@ Page({
    * 点击
    * @param {*} e 
    */
-  async HandleClick(e){
+  async HandleClick(e) {
     const label_id = e.currentTarget.id;
     const label_value = this.data.labelList[label_id];
     this.setData({
       content: label_value,
     })
-},
+  },
   /**
    * 删除标签
    * @param {*} e 标签id
@@ -85,7 +85,9 @@ Page({
       title: '提示',
       content: `确定删除'${that.data.labelList[label_id]}'快捷内容？`,
       success: res => {
-        const {confirm} = res;
+        const {
+          confirm
+        } = res;
         let list = that.data.labelList; //拷贝一份
         if (confirm) {
           list.splice(label_id, 1);
@@ -119,23 +121,32 @@ Page({
   },
   /**
    * 上传图片
-   * @param {*} tempUrl 图片临时链接
    */
   uploadImage: async function (tempUrl) {
-    const date = util.formatTime(new Date())
-    let fileList
-    await wx.cloud.uploadFile({
-      cloudPath: V.user_id + " userImage/" + date,
-      filePath: tempUrl,
-    }).then(res => {
-      console.log(res, typeof (res))
-      fileList = res.fileID
+    wx.showLoading({
+      title: '上传图片中',
     })
-    return fileList
+    const fileList = this.data.fileList;
+    let ffp = [];
+    for (let i = 0; i < fileList.length; i++) {
+      await wx.cloud.uploadFile({
+        cloudPath: 'recordImage/' + Date.parse(new Date()) + '.jpg',
+        filePath: fileList[i].url,
+      }).then(res => {
+        console.log(res);
+        ffp.push(res.fileID);
+      })
+    }
+    wx.hideLoading({
+    })
+    return ffp.join(',');
   },
   //用户选择图片
   chooseImage: async function () {
-    await wx.chooseImage({
+
+
+
+    await wx.chooseMedia({
       count: 1,
     }).then(async (res) => {
       let tempUrl = res.tempFilePaths[0]
@@ -151,30 +162,30 @@ Page({
       content: value
     })
   },
-  async HandleCheck(){
+  async HandleCheck() {
     const flag = await util.CheckSubcribe();
-    if(flag){
+    if (flag) {
       util.show_toast("订阅成功")
     }
   },
   submit: async function () {
-    //加载
-    wx.showLoading({
-      title: '上传数据中',
-      mask: true
-    })
+    
     //获取数据
-    let [id, fid, tid, uid, date, time, content, url, duration] = [util.randomsForSixDigit(), V.fid, V.tid, V.uid, util.formatTime(new Date()).slice(0, 10), util.formatTime(new Date()).slice(11, 19), this.data.content, '', this.data.hourValue * 60 + this.data.minuteValue]
+    let [id, fid, tid, uid, date, time, content,duration] = [util.randomsForSixDigit(), V.fid, V.tid, V.uid, util.formatTime(new Date()).slice(0, 10), util.formatTime(new Date()).slice(11, 19), this.data.content, this.data.hourValue * 60 + this.data.minuteValue]
     //判空
     if (content == "") {
       util.show_toast("打卡内容为空", "forbidden")
       return
     }
-    if (this.data.fileList != '') {
-      url = await this.uploadImage(this.data.fileList[0].url)
-    }
-
+    
+    let url = await this.uploadImage();//上传照片
+    console.log(url)
     //操作数据库
+    //加载
+    wx.showLoading({
+      title: '上传数据中',
+      mask: true
+    })
     await SQL.record_insert(id, fid, tid, uid, date, time, content, url, duration)
     //停止加载
     wx.hideLoading({})
@@ -185,27 +196,16 @@ Page({
       delta: 1,
     })
   },
-  onChange(e) {
+  async onChange(e) {
     console.log('onChange', e)
     const {
       file,
       fileList
     } = e.detail
-    if (file.status === 'uploading') {
-      this.setData({
-        progress: 0,
-      })
-      wx.showLoading()
-    } else if (file.status === 'done') {
-      this.setData({
-        imageUrl: file.url,
-      })
-    }
-
-    // Controlled state should set fileList
     this.setData({
-      fileList
+      fileList,
     })
+    // Controlled state should set fileList
   },
   onSuccess(e) {
     console.log('onSuccess', e)
@@ -235,6 +235,5 @@ Page({
     })
   },
   onRemove(e) {
-
   },
 })

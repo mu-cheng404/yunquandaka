@@ -69,7 +69,9 @@
         </view>
         <view class="fengmian">
           <view style=" width:600rpx;margin-left:100rpx;padding: 0rpx 10rpx 10rpx 0rpx;word-break: break-all; overflow-y: auto;">{{item.content}}</view>
-          <image mode="aspectFill" wx:if="{{item.url}}" style="width: 300rpx;max-height: 200rpx;margin-left: 100rpx; border-radius: 10rpx;" src="{{item.url}}" lazy-load></image>
+          <view style="width:600rpx; margin-left: 100rpx;">
+              <image wx:if="{{item.url}}" wx:for="{{fn.split(item.url,',')}}" wx:for-item="pItem" wx:key="key" mode="aspectFill" style="width: 180rpx;max-height: 180rpx; border-radius: 10rpx;margin:0 5rpx;" src="{{pItem}}" lazy-load></image>
+            </view>
         </view>
         <view class="color_subject" style="width: 610rpx;height: 50rpx; margin-left: 100rpx;margin-top: 20rpx;font-size: medium;">留言{{item.remark_num}}></view>
       </view>
@@ -89,3 +91,10 @@
   </view>
   打卡
 </view>
+<wxs module="fn">
+  module.exports = {
+    split: function (str, sign) {
+      return str.split(sign);
+    }
+  }
+</wxs>

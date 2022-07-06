@@ -356,7 +356,6 @@ Page({
         }
       }
     })
-    console.log(res)
   },
   /**
    * 用户预览头像

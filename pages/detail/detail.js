@@ -3,7 +3,7 @@ const message = require("../../utils/message")
 const SQL = require("../../utils/sql")
 var V = {
   id: "",
-  uid:"",
+  uid: "",
 }
 Page({
   data: {
@@ -60,7 +60,7 @@ Page({
     let index = e.currentTarget.id
     let remark = this.data.remarkList[index]
     wx.showModal({
-      title:'提示',
+      title: '提示',
       content: "确定删除",
       success: async res => {
         let confirm = res.confirm
@@ -78,13 +78,25 @@ Page({
 
     })
   },
+  async previewImage(e) {
+    const imageList = this.data.record.url.split(',');
+    const index = e.currentTarget.id;
+    console.log();
+    wx.previewImage({
+      urls: imageList,
+      current: imageList[index],
+      fail:res=>{
+        utils.show_toast("出错啦",'forbidden');
+      }
+    })
+  },
   /**
    * 用户点击删除帖子
    */
   async delete_record() {
     const id = this.data.record.id;
     wx.showModal({
-      title:"提示",
+      title: "提示",
       content: "确定删除",
       success: async res => {
         let confirm = res.confirm
@@ -94,11 +106,11 @@ Page({
           console.log(page)
           page = page[page.length - 2];
           let record_list = page.data.recordList;
-          let remove = record_list.splice(record_list.findIndex(record => record.id = id),1);
+          let remove = record_list.splice(record_list.findIndex(record => record.id = id), 1);
           page.setData({
             recordList: record_list,
           })
-          console.log("已删除",remove);
+          console.log("已删除", remove);
           utils.show_toast("删除成功")
           setTimeout(() => {
             wx.navigateBack({
@@ -149,7 +161,7 @@ Page({
     wx.hideLoading({})
     utils.show_toast("点赞成功！")
     //生成点赞通知
-    await message.send_like_message(V.uid, this.data.record.user_id,this.data.record.flock_id,this.data.record.task_id, this.data.record.id)
+    await message.send_like_message(V.uid, this.data.record.user_id, this.data.record.flock_id, this.data.record.task_id, this.data.record.id)
   },
   async record_cancelLike(e) {
     let record = this.data.record
@@ -177,7 +189,7 @@ Page({
     //反馈
     utils.show_toast("点赞成功！")
     //生成点赞通知
-    await message.send_like_message(V.uid, remark.user_id,this.data.record.flock_id,this.data.record.task_id, this.data.record.id)
+    await message.send_like_message(V.uid, remark.user_id, this.data.record.flock_id, this.data.record.task_id, this.data.record.id)
   },
   async remark_cancelLike(e) {
     console.log(e)
@@ -213,9 +225,9 @@ Page({
     //插入评论信息
     let [user_id, record_id, time, content] = [V.uid, this.data.record.id, utils.formatTime(new Date()), this.data.value]
     //
-    if(content == ''){
-      utils.show_toast("内容为空！","forbidden")
-      return 
+    if (content == '') {
+      utils.show_toast("内容为空！", "forbidden")
+      return
     }
     wx.showLoading({
       title: '提交数据中',
@@ -227,12 +239,12 @@ Page({
     await this.getRemarkList()
 
     //生成通知
-    await message.send_remark_message(V.uid, this.data.record.user_id,this.data.record.flock_id,this.data.record.task_id, this.data.record.id)
+    await message.send_remark_message(V.uid, this.data.record.user_id, this.data.record.flock_id, this.data.record.task_id, this.data.record.id)
     wx.hideLoading({})
     utils.show_toast('评论成功')
     //将评论内容清除
     this.setData({
-      value:''
+      value: ''
     })
   }
 })

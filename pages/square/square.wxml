@@ -40,7 +40,7 @@
       </view>
     </wux-wing-blank>
     <block wx:if="{{rList.length!=0}}" wx:for="{{rList}}" wx:key="key" wx:if="{{!scope || item.mine }}">
-      <navigator 	hover-class="none" 	hover-stop-propagation  url="../detail/detail?id={{item.id}}">
+      <navigator hover-class="none" hover-stop-propagation url="../detail/detail?id={{item.id}}">
         <view style="background-color:white; width:710rpx;border-radius: 20rpx;margin: 20rpx;">
           <view style="width: 710rpx;height: 100rpx;display: flex;margin-top: 10rpx;">
             <view style="width: 100rpx;height: 100rpx;" class="center">
@@ -48,7 +48,7 @@
             </view>
             <view style="width:500rpx;height:100rpx">
               <view style=" width: 500rpx;height:60rpx;font-size: medium;line-height: 60rpx;display: flex;"><text style="display: block;">{{item.nickName}}</text>
-                <text style="font-size: small;display: block;flex: 1; " class="color_text_auxiliary line-limit-length" >#{{item.fname}}</text>
+                <text style="font-size: small;display: block;flex: 1; " class="color_text_auxiliary line-limit-length">#{{item.fname}}</text>
               </view>
               <view style="width: 500rpx;height:40rpx;font-size: small;color: #848C96;line-height:40rpx;">{{item.date}} {{item.time}}</view>
             </view>
@@ -60,7 +60,10 @@
           </view>
           <view class="fengmian">
             <view style=" width:600rpx;margin-left:100rpx;padding: 0rpx 10rpx 10rpx 0rpx;word-break: break-all; overflow-y: auto;">{{item.content}}</view>
-            <image mode="aspectFill" wx:if="{{item.url}}" style="width: 300rpx;max-height: 200rpx;margin-left: 100rpx; border-radius: 10rpx;" src="{{item.url}}" lazy-load></image>
+            <view style="width:600rpx; margin-left: 100rpx;">
+              <image wx:if="{{item.url}}" wx:for="{{fn.split(item.url,',')}}" wx:for-item="pItem" wx:key="key" mode="aspectFill" style="width: 180rpx;max-height: 180rpx; border-radius: 10rpx;margin:0 5rpx;" src="{{pItem}}" lazy-load></image>
+            </view>
+
           </view>
           <view style="width: 500rpx;height: 50rpx;margin-left: 100rpx; ">
             <wux-tag color="orange">{{item.tname}}</wux-tag>
@@ -115,12 +118,12 @@
           <image src='{{item.url}}' style="margin-left: 20rpx; width:60rpx;height:60rpx;border-radius:20%;"></image>
         </view>
         <view style="width:230rpx;margin-left:40rpx;height: 70rpx;float: left; text-align: left;margin-top: 40rpx; color: rgb(101, 137, 172);">
-          <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{item.fid}}">
+          <navigator hover-class="none" hover-stop-propagation url="../flock/flock?id={{item.fid}}">
             {{item.fname}}
           </navigator>
         </view>
         <view style="width:180rpx;height: 70rpx;text-align: left;margin-top: 40rpx;float: left; color: rgb(101, 137, 172);">
-          <navigator 	hover-class="none" 	hover-stop-propagation  url="../task/task?tid={{item.tid}}&fid={{item.fid}}">
+          <navigator hover-class="none" hover-stop-propagation url="../task/task?tid={{item.tid}}&fid={{item.fid}}">
             {{item.tname}}
           </navigator>
         </view>
@@ -136,3 +139,10 @@
 
   <!-- <view style="width: 750rpx;height: {{tabBarHeight}}rpx;scroll-snap-align: none;"></view> -->
 </scroll-view>
+<wxs module="fn">
+  module.exports = {
+    split: function (str, sign) {
+      return str.split(sign);
+    }
+  }
+</wxs>

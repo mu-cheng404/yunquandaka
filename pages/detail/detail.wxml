@@ -12,9 +12,7 @@
             <navigator 	hover-class="none" 	hover-stop-propagation  url="../flock/flock?id={{record.fid}}">
               <text style="font-size: small;" class="color_text_auxiliary">#{{record.fname}}</text>
             </navigator>
-            <navigator 	hover-class="none" 	hover-stop-propagation  url="../task/task?tid={{record.tid}}&fid={{record.fid}}">
-              <wux-tag color="orange">{{record.tname}}</wux-tag>
-            </navigator>
+            
           </view>
           <view style="width: 650rpx;height:40rpx;font-size: small;color: #848C96;line-height:40rpx;">{{record.time}}</view>
 
@@ -26,9 +24,15 @@
     </view>
     <view style="width: 710rpx;padding:20rpx;display: flex;flex-direction: column; word-break: break-all">
       {{record.content}}
-      <view wx:if="{{record.url}}" style="width: 710rpx;" class="center">
-        <image mode="widthFix" src="{{record.url}}" style="border-radius:10rpx;" lazy-load bindtap="previewImage"></image>
+      
+      <view wx:if="{{record.url}}" style="width: 710rpx;" class="">
+        <view style="width:710rpx;margin: 20rpx 0;margin-left: -5rpx;">
+              <image id="{{index}}" wx:if="{{record.url}}" wx:for="{{fn.split(record.url,',')}}" wx:for-item="pItem" wx:key="key" mode="aspectFill" style="width: 180rpx;max-height: 180rpx; border-radius: 10rpx;margin:0 5rpx;" src="{{pItem}}" lazy-load 	show-menu-by-longpress bindtap="previewImage"></image>
+            </view>
       </view>
+      <navigator 	hover-class="none" 	hover-stop-propagation  url="../task/task?tid={{record.tid}}&fid={{record.fid}}">
+              <wux-tag color="orange">{{record.tname}}</wux-tag>
+            </navigator>
     </view>
     <view style="width: 750rpx;height: 100rpx;display: flex;font-size: large;" class="color_subject">
       <view style="width: 200rpx;height: 100rpx;" class="center">
@@ -88,3 +92,10 @@
     </view>
   </view>
 </view>
+<wxs module="fn">
+  module.exports = {
+    split: function (str, sign) {
+      return str.split(sign);
+    }
+  }
+</wxs>
