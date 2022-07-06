@@ -30,17 +30,18 @@ Page({
    * 页面加载
    */
   onLoad: async function (options) {
-    
+
   },
   onUnload: async function (options) {
     wx.setStorageSync('homeloading', 0)
-    await this.readClipboard(); //检查剪贴板
 
   },
   /**
    * 页面显示
    */
-  onShow: async function () {
+  onShow: async function (options) {
+    
+    // await this.readClipboard(); //检查剪贴板
     //获取缓存，检测是否加载过
     let flag = wx.getStorageSync("homeloading");
     console.log("获取homeloading缓存=", flag);
@@ -64,7 +65,7 @@ Page({
       resolve()
     })
     let end = new Date();
-    console.log("cost:",end-start,'ms');
+    console.log("cost:", end - start, 'ms');
 
     //取消加载
     //将缓存设置为1
@@ -79,38 +80,44 @@ Page({
   },
   async readClipboard() {
     //读取用户粘贴板
-    const gotoFlag = wx.getStorageSync('inviteGoto');
-    console.log("gotoFlag=", gotoFlag, !gotoFlag);
-    if (!gotoFlag) {
-      const text = await wx.getClipboardData();
-      const id = utils.find_num(text.data);
-      console.log(id, id.length)
-      if (id.length == 6) { //粘贴板满足情况
-        let flock = await SQL.flock_select_by_id(id);
-        if (flock != '[]') {
-          flock = flock && JSON.parse(flock);
-          const flockName = flock[0].name
-          wx.showModal({
-            cancelColor: 'cancelColor',
-            title: "提示",
-            showCancel: true,
-            content: `为您找到“${flockName}”小组，是否前往`,
-            success: res => {
-              wx.setStorageSync('inviteGoto', 1)
-              if (res.confirm) {
-                wx.navigateTo({
-                  url: `../flock/flock?id=${id}`,
-                })
-              } else {
-                //pass
-              }
-            }
+    let text;
+    await new Promise((resolve, reject) => {
+      wx.getClipboardData({
+        success: res => {
+          text = res
+          wx.hideToast({
+            success: (res) => {},
           })
-        } else {
-          console.log("没找到这个小组");
+          resolve();
         }
+      })
+    })
+    const id = utils.find_num(text.data);
+    console.log(id, id.length)
+    if (id.length == 6) { //粘贴板满足情况
+      let flock = await SQL.flock_select_by_id(id);
+      if (flock != '[]') {
+        flock = flock && JSON.parse(flock);
+        const flockName = flock[0].name
+        wx.showModal({
+          title: "提示",
+          showCancel: true,
+          content: `为您找到“${flockName}”小组`,
+          success: res => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: `../flock/flock?id=${id}`,
+              })
+            } else {
+              //pass
+            }
+          }
+        })
+      } else {
+        console.log("没找到这个小组");
       }
     }
+
   },
   /**
    * 获取推荐小组
