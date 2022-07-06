@@ -1,32 +1,41 @@
 /* 右上角浮动定位 */
-.rightTopFloat {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-}
 
+.rightTopFloat {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
 
 
 /* 浮动布局 */
+
 .flex {
-  display: flex;
+    display: flex;
 }
 
+
 /* 水平和垂直居中 */
+
 .center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .displayNone {
-  display: none;
+    display: none;
 }
 
 .cc_label {
-  width: 730rpx;
-  height: 80rpx;
-  padding-left: 20rpx;
-  display: flex;
-  align-items: center;
+    width: 730rpx;
+    height: 80rpx;
+    padding-left: 20rpx;
+    display: flex;
+    align-items: center;
+}
+
+.line-limit-length {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
