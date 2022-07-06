@@ -1,6 +1,6 @@
 const globalData = getApp().globalData
-const utils = require("../../utils/util")
 const message = require("../../utils/message")
+const utils = require("../../utils/util")
 const SQL = require("../../utils/sql")
 var V = {
   loaded: false
@@ -40,7 +40,7 @@ Page({
    * 页面显示
    */
   onShow: async function (options) {
-    
+
     // await this.readClipboard(); //检查剪贴板
     //获取缓存，检测是否加载过
     let flag = wx.getStorageSync("homeloading");

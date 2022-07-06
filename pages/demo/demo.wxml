@@ -1,2 +1,17 @@
+
+<button bindtap="test">测试</button>
 <button bindtap="addJoin">小组添加成员</button>
 <button bindtap="addRecord">添加打卡记录</button>
+<button bindtap="loadImage">上传图片</button>
+
+<view wx:for="{{fn.split(imageList,',')}}" wx:key="124">
+  {{item}}
+  141
+</view>
+<wxs module="fn">
+  module.exports={
+    split: function(str,sign){
+      return str.split(sign);
+    }
+  }
+</wxs>

@@ -10,7 +10,8 @@ Page({
    */
   data: {
     avatarList: ["../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", "../../images/avatar.jpg", ],
-    height: 0
+    height: 0,
+    imageList: '1241421'
   },
   onLoad: async function (options) {
     console.log("onload")
@@ -25,6 +26,13 @@ Page({
   onReady: async function () {
     console.log("onready")
 
+  },
+  async test() {
+    let url = ['121','1241','1241'];
+    let pitch = url.join(',');
+  
+    let arr = pitch.split('&');
+    console.log(arr);
   },
   async addJoin() {
     //993527 135738 536288 325682
@@ -47,10 +55,40 @@ Page({
     let time = ['11:52:38', '10:56:17', '09:03:19', '16:15:35', '09:36:41', '23:58:56', '16:23:25', '22:48:02'];
     for (let i = 0; i < task2.length; i++) {
       for (let j = 0; j < user.length; j++) {
-        await SQL.record_insert(utils.randomsForSixDigit(), 373960, task2[i], user[j], date[j], time[j], date[j]+'打卡','','');
+        await SQL.record_insert(utils.randomsForSixDigit(), 373960, task2[i], user[j], date[j], time[j], date[j] + '打卡', '', '');
       }
     }
 
+  },
+  async loadImage() {
+    wx.chooseMedia({
+      camera: ['camera', 'album'],
+      count: 3,
+      success: async res => {
+        wx.showLoading({
+          title: '上传中',
+          mask: true,
+        })
+        console.log(res);
+        let [tfp, ffp] = [res.tempFiles, []];
+        for (let i = 0; i < tfp.length; i++) {
+          await wx.cloud.uploadFile({
+            cloudPath: 'recordImage/' + Date.parse(new Date()) + '.jpg',
+            filePath: tfp[i].tempFilePath
+          }).then(res => {
+            console.log(res);
+            ffp.push(res.fileID);
+          })
+        }
+        wx.hideLoading({})
+        console.log(ffp);
+      },
+      //23
+      //17 25 19
+      fail: res => {
+        utils.show_toast("出错啦");
+      }
+    })
   },
   execute: async function () {
     // let res = await wx.showModal({

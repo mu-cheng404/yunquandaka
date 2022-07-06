@@ -1,0 +1,15 @@
+<wux-toast id="wux-toast"></wux-toast>
+<text class="title">更新日志</text>
+<navigator url="../addLog/addLog" class="addLog">
+  <text wx:if="{{identify}}" >添加</text>
+</navigator>
+
+<view wx:for="{{logList}}" wx:key="key" class="logBox">
+  <view class="logID">{{item.id}}</view>
+  <view class="logTime">{{item.date}}</view>
+  <view class="logContent">{{item.content}}
+    <icon id="{{item.id}}" wx:if="{{identify}}" class="iconfont icon-shanchu icon" bindtap="handleRemove"></icon>
+  </view>
+</view>
+
+{{current}}{{test}}

@@ -1,1 +1,35 @@
-/* pages/updateLog/updateLog.wxss */
+.title{
+  margin: 32rpx;
+  font-size: x-large;
+  font-weight: bold;
+}
+.addLog{
+  color: #7b7b7b;
+  display: inline;
+}
+.logBox{
+  margin: 32rpx;
+  width: 686rpx;
+  border-bottom: solid #d2d2d2 1rpx;
+  position: relative;
+}
+.logID{
+  font-weight: bold;
+}
+.logTime{
+  position: absolute;
+  right: 0rpx;
+  top: 0rpx;
+  color: #7b7b7b;
+}
+.logContent{
+  width: 666rpx;
+  padding: 10rpx;
+  word-wrap: break-word;
+  position: relative;
+}
+.icon{
+  position: absolute;
+  top: 0rpx;
+  right: 0rpx;
+}

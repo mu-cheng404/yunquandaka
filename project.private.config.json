@@ -217,6 +217,20 @@
           "query": "",
           "launchMode": "default",
           "scene": null
+        },
+        {
+          "name": "更新日志",
+          "pathName": "pages/updateLog/updateLog",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "新建日志",
+          "pathName": "pages/addLog/addLog",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

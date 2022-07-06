@@ -1,0 +1,7 @@
+<wux-toast id="wux-toast"></wux-toast>
+<wux-cell-group>
+  <wux-cell hover-class="none">
+    <wux-textarea name="content" hasCount rows="3" cursorSpacing="80" placeholder="更新内容..." bind:change="handleInput" />
+  </wux-cell>
+</wux-cell-group>
+<wux-button wux-class="button" outline type="energized" bindtap="submit" size="default" block>提交</wux-button>

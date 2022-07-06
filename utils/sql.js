@@ -1025,6 +1025,20 @@ async function poter_select() {
     let list = await utils.executeSQL(sql)
     return list
 }
+async function log_select() {
+    let sql = `select * from updateLog order by date desc`;
+    return await utils.executeSQL(sql);
+}
+async function log_insert(id, content, date) {
+    let sql = `insert into updateLog values(${id},'${content}','${date}')`;
+    await utils.executeSQL(sql);
+    return true;
+}
+async function log_remove(id) {
+    let sql = `delete from updateLog where id = ${id}`;
+    await utils.executeSQL(sql);
+    return true;
+}
 module.exports = {
     accomplish_insert,
     accomplish_update_grade,
@@ -1110,4 +1124,7 @@ module.exports = {
     user_select_id_by_openid,
     user_select_name_by_id,
     poter_select,
+    log_select,
+    log_insert,
+    log_remove,
 }

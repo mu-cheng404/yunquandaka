@@ -29,7 +29,8 @@
     "pages/protocol/protocol",
     "pages/toturial/toturial",
     "pages/button/button",
-    "pages/updateLog/updateLog"
+    "pages/updateLog/updateLog",
+    "pages/addLog/addLog"
   ],
   "window": {
     "backgroundTextStyle": "light",

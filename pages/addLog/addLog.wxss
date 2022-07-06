@@ -1,0 +1,4 @@
+.button{
+  width: 500rpx;
+  margin: 20rpx;
+}

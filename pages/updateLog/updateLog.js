@@ -1,4 +1,6 @@
-// pages/updateLog/updateLog.js
+const utils = require("../../utils/util")
+const SQL = require("../../utils/sql")
+const app = getApp()
 Page({
 
   /**
@@ -11,10 +13,44 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  async onLoad(options) {
+    
+    let logList = await SQL.log_select();
+    logList = logList && JSON.parse(logList);
 
+    const myDate = new utils.myDate();
+    let current = utils.getCurrentFormatedDate();
+    logList.forEach((value,index) => {
+      let tag = myDate.getDiffYmdBetweenDate(value.date, current);
+      if (tag.y > 0) {
+        logList[index].date = tag.y + "年前";
+      } else if (tag.m > 0) {
+        logList[index].date = tag.m + "月前";
+      } else if (tag.d > 0) {
+        logList[index].date = tag.d + '天前';
+      } else{
+        logList[index].date = "今天"
+      }
+    })
+    this.setData({
+      logList,
+      identify: app.globalData.user_id != '383343',
+    })
   },
-
+  async handleRemove(e){
+    let id = e.currentTarget.id;
+    wx.showModal({
+      title:"提示",
+      content:"确定删除",
+      success:async res=>{
+        if(res.confirm){
+          await SQL.log_remove(id);
+          utils.show_toast("删除成功");
+        }
+        await this.onLoad()
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

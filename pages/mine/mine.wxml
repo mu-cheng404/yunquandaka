@@ -15,7 +15,7 @@
   <wux-wing-blank>
     <wux-button type="balanced " size="small" outline bindclick="HandleQuitLogin">退出登录</wux-button>
   </wux-wing-blank>
-    <wux-button type="balanced " size="small" outline bindclick="{{test ? 'HandleQuitTest' : 'HandleTest'}}">{{test ? '退出体验' : '体验账号'}}</wux-button>
+  <wux-button type="balanced " size="small" outline bindclick="{{test ? 'HandleQuitTest' : 'HandleTest'}}">{{test ? '退出体验' : '体验账号'}}</wux-button>
 </view>
 <view id="body">
   <wux-cell-group wux-class="group">
@@ -25,17 +25,19 @@
     <wux-cell hasLine thumb="http://ccreblog.cn/wp-content/uploads/2022/05/客服.png" title="客服中心" is-link open-type="contact" bind:contact="onContact">
     </wux-cell>
     <wux-white-space size="small" />
-    <navigator 	hover-class="none" 	hover-stop-propagation  url="../advice/advice">
+    <navigator hover-class="none" hover-stop-propagation url="../advice/advice">
       <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/意见反馈-1.png" title="意见反馈" is-link open-type="feedback" hasLine="false"></wux-cell>
     </navigator>
     <wux-white-space size="small" />
     <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/微信分享.png" title="分享给朋友" is-link open-type="share" hasLine="0"></wux-cell>
     <wux-white-space size="small" />
-    <navigator 	hover-class="none" 	hover-stop-propagation  url="../aboutus/aboutus">
+    <navigator hover-class="none" hover-stop-propagation url="../aboutus/aboutus">
       <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/关于我们-1.png" title="关于我们" is-link hasLine="false"></wux-cell>
     </navigator>
- 
-    <!-- <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/订阅.png" title="订阅消息" is-link hasLine="false" bindtap="openauthority"></wux-cell> -->
-    <wux-white-space size="small" />
+
+    <navigator url="../updateLog/updateLog">
+      <wux-cell thumb="http://ccreblog.cn/wp-content/uploads/2022/05/订阅.png" title="更新日志" is-link hasLine="false" bindtap="openauthority"></wux-cell>
+      <wux-white-space size="small" />
+    </navigator>
   </wux-cell-group>
 </view>
