@@ -297,7 +297,7 @@ async function user_select_by_id(id) {
  * @returns 
  */
 async function task_select_by_fid_uid(flock_id, user_id) {
-    let sql = `select task.* ,(select nickName from user where task.creator = user.id) as creator,exists (select id from collect where task_id=task.id and user_id=${user_id}) as collect from task where task.flock_id = ${flock_id} order by collect desc,task.name`
+    let sql = `select task.* ,(creator = ${user_id}) as admin,(select nickName from user where task.creator = user.id) as creator,exists (select id from collect where task_id=task.id and user_id=${user_id}) as collect from task where task.flock_id = ${flock_id} order by collect desc,task.name`
     let list = await utils.executeSQL(sql)
     return list
 }

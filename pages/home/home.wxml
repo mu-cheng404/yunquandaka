@@ -99,8 +99,11 @@
               </block>
               <!-- <image class="collect" src="../../images/{{item.over?'完成':'收藏'}}.png"></image> -->
               <view class="collect center">
-                <navigator 	hover-class="none" 	hover-stop-propagation  	hover-class="none" 	hover-stop-propagation url="../statistics/statistics?id={{item.id}}">
+                <navigator wx:if="{{item.admin}}"	hover-class="none" 	hover-stop-propagation  	hover-class="none" 	hover-stop-propagation url="../statistics/statistics?id={{item.id}}">
                   <image src="http://ccreblog.cn/wp-content/uploads/2022/05/统计.png" style="width: 50rpx;height: 50rpx;"></image>
+                </navigator>
+                <navigator wx:else	hover-class="none" 	hover-stop-propagation  	hover-class="none" 	hover-stop-propagation url="../calendar/calendar?id={{item.id}}">
+                  <icon class="iconfont icon-rili1 " style="color: #ffba01;font-size: 65rpx;"></icon>
                 </navigator>
               </view>
             </view>
