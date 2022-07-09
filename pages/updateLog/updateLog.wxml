@@ -5,8 +5,8 @@
 </navigator>
 
 <view wx:for="{{logList}}" wx:key="key" class="logBox">
-  <view class="logID">{{item.id}}</view>
-  <view class="logTime">{{item.date}}</view>
+  <view class="logID">{{item.date}}</view>
+  <view class="logTime">{{item.time}}</view>
   <view class="logContent">{{item.content}}
     <icon id="{{item.id}}" wx:if="{{identify}}" class="iconfont icon-shanchu icon" bindtap="handleRemove"></icon>
   </view>

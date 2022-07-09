@@ -15,27 +15,7 @@ Page({
    */
   async onLoad(options) {
     
-    let logList = await SQL.log_select();
-    logList = logList && JSON.parse(logList);
-
-    const myDate = new utils.myDate();
-    let current = utils.getCurrentFormatedDate();
-    logList.forEach((value,index) => {
-      let tag = myDate.getDiffYmdBetweenDate(value.date, current);
-      if (tag.y > 0) {
-        logList[index].date = tag.y + "年前";
-      } else if (tag.m > 0) {
-        logList[index].date = tag.m + "月前";
-      } else if (tag.d > 0) {
-        logList[index].date = tag.d + '天前';
-      } else{
-        logList[index].date = "今天"
-      }
-    })
-    this.setData({
-      logList,
-      identify: app.globalData.user_id != '383343',
-    })
+    
   },
   async handleRemove(e){
     let id = e.currentTarget.id;
@@ -47,7 +27,7 @@ Page({
           await SQL.log_remove(id);
           utils.show_toast("删除成功");
         }
-        await this.onLoad()
+        await this.onShow()
       }
     })
   },
@@ -61,8 +41,28 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {
+  async onShow() {
+    let logList = await SQL.log_select();
+    logList = logList && JSON.parse(logList);
 
+    const myDate = new utils.myDate();
+    let current = utils.getCurrentFormatedDate();
+    logList.forEach((value,index) => {
+      let tag = myDate.getDiffYmdBetweenDate(value.date, current);
+      if (tag.y > 0) {
+        logList[index].time = tag.y + "年前";
+      } else if (tag.m > 0) {
+        logList[index].time = tag.m + "月前";
+      } else if (tag.d > 0) {
+        logList[index].time = tag.d + '天前';
+      } else{
+        logList[index].time = "今天"
+      }
+    })
+    this.setData({
+      logList,
+      identify: app.globalData.user_id == '383343',
+    })
   },
 
   /**

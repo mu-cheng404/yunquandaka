@@ -1026,7 +1026,7 @@ async function poter_select() {
     return list
 }
 async function log_select() {
-    let sql = `select * from updateLog order by date desc`;
+    let sql = `select * from updateLog order by date`;
     return await utils.executeSQL(sql);
 }
 async function log_insert(id, content, date) {
