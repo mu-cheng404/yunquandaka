@@ -1,8 +1,15 @@
 <wux-toast id='wux-toast'></wux-toast>
 
-<view style="width: 100%;height: 100vh;flex-direction: column;" class="background_color_subject_1 center">
-  <view style="width: 630rpx;">点击查询<text class=" background_color_white color_subject_2" style="padding: 5rpx;border-radius: 10rpx;" bindtap="HandleCheck">订阅情况</text><text style="font-size: small;">(建议勾选不再询问)</text> </view>
+<view class="background_color_subject_1 center record-box">
+
   <view class="bgwhite center" style="width:630rpx;height:400rpx;padding:20rpx;;margin: 40rpx 0;border-radius: 20rpx;">
+    <view class="record-tip color_white">
+      <navigator url="../updateLog/updateLog" hover-class="none">
+        <icon class="icon-large iconfont icon-bangzhuguanyuwomen "></icon>
+        <text class="tip-text">更新</text>
+      </navigator>
+    </view>
+    
     <view class="textareaBox" style="position: relative;">
       <textarea name="content" id="textarea1" cols="60" rows="10" placeholder="请输入正文" cursor-spacing="20" bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{content}}">
     </textarea>
@@ -15,7 +22,7 @@
   </view>
   <!-- 常用标签，存储在缓存 -->
   <view class="label color_text_auxiliary">
-    快捷内容，点击即用
+    常用标签
   </view>
   <view class="label_box">
     <wux-tag wx:for="{{labelList}}" wx:key="key" controlled id="{{index}}" closable color="#87d068" bind:change="HandleChange" bind:click="HandleClick">{{item}}</wux-tag>

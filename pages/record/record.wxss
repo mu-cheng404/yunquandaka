@@ -1,4 +1,20 @@
+.record-box {
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
+  position: relative;
+}
 
+.record-tip {
+  position: absolute;
+  top: 20rpx;
+  left: 20rpx;
+  width: 120rpx;
+  height: 60rpx;
+}
+.tip-text{
+  margin-bottom: 20rpx;
+}
 .name {
   width: 100%;
   height: 80px;
@@ -29,11 +45,13 @@
   width: 100%;
   height: 400rpx;
 }
-#upload{
+
+#upload {
   width: 200rpx;
   height: 200rpx;
 }
-#textarea{
+
+#textarea {
   width: 100%;
   height: 400rpx;
   background-color: white;
@@ -41,7 +59,8 @@
   line-height: 21px;
   position: relative;
 }
-#textarea1{
+
+#textarea1 {
   width: 100%;
   height: 250rpx;
   background-color: white;
@@ -63,28 +82,25 @@
 }
 
 /* 常用标签 */
-.label{
+.label {
   margin: 0 30rpx;
   padding: 0 20rpx 20rpx 20rpx;
   width: 650rpx;
 
   font-size: small;
 }
-.label_box{
+
+.label_box {
   margin: 0 30rpx;
   padding: 0 30rpx 10rpx 30rpx;
   width: 630rpx;
   min-height: 50rpx;
-
   display: flex;
   flex-wrap: wrap;
   /* background-color: aqua; */
 }
-.label{
 
-}
-
-#option{
+#option {
   width: 50rpx;
   height: 50rpx;
 }
