@@ -13,6 +13,7 @@
     <view class="textareaBox" style="position: relative;">
       <textarea name="content" id="textarea1" cols="60" rows="10" placeholder="请输入正文" cursor-spacing="20" bindinput="_contentInput" show-confirm-bar="false" placeholder-style="textarea" value="{{content}}">
     </textarea>
+    
       <view style="width: 600rpx;height: 150rpx;position: absolute;bottom: 0rpx;">
         <wux-upload listType="picture-card" fileList="{{ fileList }}" controlled url="https://www.skyvow.cn/api/common/file" max="3" count="3" bind:change="onChange" bind:success="onSuccess" bind:fail="onFail" bind:complete="onComplete" catch:preview="onPreview" bind:remove="onRemove">
           <icon class="iconfont icon-icons01 color_subject" style="font-size: 70rpx;"></icon>
